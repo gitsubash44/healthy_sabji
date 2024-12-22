@@ -1,0 +1,80 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<!-- Single Page Header start -->
+<div class="container-fluid page-header py-5">
+    <h1 class="text-center text-white display-6">Order History</h1>
+    
+</div>
+<!-- Single Page Header End -->
+
+<div class="container my-5">
+    <h2 class="text-center mb-4">Order #00123 Details</h2>
+    
+    <!-- Order Summary Section -->
+    <div class="row mb-4">
+        <div class="col-md-6">
+            <h5>Order Summary</h5>
+            <ul class="list-group">
+                <li class="list-group-item"><strong>Order Date:</strong> 2024-10-15</li>
+                <li class="list-group-item"><strong>Status:</strong> <span class="badge bg-success">Delivered</span></li>
+                <li class="list-group-item"><strong>Total:</strong> Rs: 120.00</li>
+            </ul>
+        </div>
+        <div class="col-md-6">
+            <h5>Shipping Information</h5>
+            <ul class="list-group">
+                <li class="list-group-item"><strong>Recipient:</strong> John Doe</li>
+                <li class="list-group-item"><strong>Address:</strong> 1234 Elm St, Springfield, IL</li>
+                <li class="list-group-item"><strong>Contact:</strong> +123 456 7890</li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- Product Details Table -->
+    <div class="table-responsive mb-4">
+        <table class="table table-striped table-hover">
+            <thead class="table-dark">
+                <tr>
+                    <th scope="col">Product</th>
+                    <th scope="col">Quantity</th>
+                    <th scope="col">Price</th>
+                    <th scope="col">Subtotal</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Organic Lettuce</td>
+                    <td>5</td>
+                    <td>Rs: 24.00</td>
+                    <td>Rs: 120.00</td>
+                </tr>
+            </tbody>
+            <tfoot>
+                <tr>
+                    <th colspan="3" class="text-end">Total</th>
+                    <th>Rs: 120.00</th>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+
+    <!-- Payment and Actions -->
+    <div class="row">
+        <div class="col-md-6">
+            <h5>Payment Information</h5>
+            <ul class="list-group">
+                <li class="list-group-item"><strong>Payment Method:</strong> Credit Card</li>
+                <li class="list-group-item"><strong>Transaction ID:</strong> 5A3F8B7G6H</li>
+                <li class="list-group-item"><strong>Payment Status:</strong> Paid</li>
+            </ul>
+        </div>
+        <div class="col-md-6 d-flex align-items-center justify-content-end">
+            <button class="btn btn-secondary me-2">Download Invoice</button>
+        </div>
+    </div>
+</div>
+
+
+{% endblock  %}

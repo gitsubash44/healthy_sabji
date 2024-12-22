@@ -1,0 +1,61 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<!-- Page Header -->
+<div class="container-fluid page-header py-5">
+    <h1 class="text-center text-white display-6">Order History</h1>
+</div>
+
+<div class="container my-5">
+    <h2 class="text-center mb-4">All Orders</h2>
+
+    <!-- Orders Table -->
+    <div class="table-responsive">
+        <table class="table table-striped table-hover">
+            <thead class="table-dark">
+                <tr>
+                    <th scope="col">Order ID</th>
+                    <th scope="col">Order Date</th>
+                    <th scope="col">Products</th>
+                    <th scope="col">Total</th>
+                    <th scope="col">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Example row 1 -->
+                <tr>
+                    <td>#00123</td>
+                    <td>2024-10-15</td>
+                    <td>Apples</td>
+                    <td>Rs: 120.00</td>
+                    <td>
+                        <a href="{% url 'orderhistory' %}" class="btn btn-sm btn-primary">View Details</a>
+                    </td>
+                </tr>
+                <!-- Example row 2 -->
+                <tr>
+                    <td>#00124</td>
+                    <td>2024-10-16</td>
+                    <<td>Potato</td>
+                    <td>Rs: 240.00</td>
+                    <td>
+                        <a href="{% url 'orderhistory' %}" class="btn btn-sm btn-primary">View Details</a>
+                    </td>
+                </tr>
+                <!-- Example row 3 -->
+                <tr>
+                    <td>#00125</td>
+                    <td>2024-10-17</td>
+                    <td>Brocoli</td>
+                    <td>Rs: 0.00</td>
+                    <td>
+                        <a href="{% url 'orderhistory' %}" class="btn btn-sm btn-primary">View Details</a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+{% endblock %}

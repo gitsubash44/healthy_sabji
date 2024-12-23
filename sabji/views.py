@@ -41,6 +41,9 @@ def order_track(request):
 def delivery_dashboard(request):
     return render(request,'delivery/delivery_dashboard.html')
 
+def pickup(request):
+    return render(request,'delivery/pickup.html')
+
 # for Farmer site.
 def farmer_dashboard(request):
     return render(request,'farmer/farmer_dashboard.html')

@@ -44,6 +44,12 @@ def delivery_dashboard(request):
 def pickup(request):
     return render(request,'delivery/pickup.html')
 
+def drop(request):
+    return render(request,'delivery/drop.html')
+
+def evidence(request):
+    return render(request,'delivery/evidence.html')
+
 # for Farmer site.
 def farmer_dashboard(request):
     return render(request,'farmer/farmer_dashboard.html')

@@ -27,9 +27,9 @@
                         class="fas fa-tachometer-alt me-2"></i>Dashboard</a>
                 <a href="{% url 'pickup' %}" class="list-group-item list-group-item-action bg-transparent second-text fw-bold"><i
                         class="fas fa-truck-pickup me-2"></i>Pickup Order</a>
-                <a href="#" class="list-group-item list-group-item-action bg-transparent second-text fw-bold"><i
+                <a href="{% url 'drop' %}" class="list-group-item list-group-item-action bg-transparent second-text fw-bold"><i
                         class="fas fa-gift me-2"></i>Drop Order</a>
-                <a href="#" class="list-group-item list-group-item-action bg-transparent second-text fw-bold"><i
+                <a href="{% url 'evidence' %}" class="list-group-item list-group-item-action bg-transparent second-text fw-bold"><i
                         class="fas fa-upload me-2"></i>Evidence Submit</a>
                 <a href="#" class="list-group-item list-group-item-action bg-transparent text-danger fw-bold"><i
                         class="fas fa-power-off me-2"></i>Logout</a>
@@ -54,14 +54,9 @@
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
                         <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle second-text fw-bold" href="#" id="navbarDropdown"
-                                role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                <i class="fas fa-user me-2"></i>John Doe
+                            <a class="fw-bold h4" href="#">
+                                <i class="fas fa-user me-2"></i>Subash Dhami
                             </a>
-                            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                <li><a class="dropdown-item" href="#">Profile</a></li>
-                                <li><a class="dropdown-item" href="#">Logout</a></li>
-                            </ul>
                         </li>
                     </ul>
                 </div>
@@ -69,33 +64,24 @@
 
             <div class="container-fluid px-4">
                 <div class="row g-4 my-2">
-                    <div class="col-12 col-md-6 col-lg-4">
+                    <div class="col-12 col-md-6 col-lg-6">
                         <div class="p-4 bg-white shadow-sm d-flex justify-content-around align-items-center rounded">
                             <div>
                                 <h3 class="fs-2">2342</h3>
-                                <p class="fs-5">Products</p>
+                                <p class="fs-5">Total Drop</p>
                             </div>
-                            <i class="fas fa-gift fs-1 primary-text border rounded-full secondary-bg p-3"></i>
+                            <i class="fas fa-gift fs-1 primary-text border rounded-full secondary-bg p-4"></i>
                         </div>
                     </div>
             
-                    <div class="col-12 col-md-6 col-lg-4">
-                        <div class="p-4 bg-white shadow-sm d-flex justify-content-around align-items-center rounded">
-                            <div>
-                                <h3 class="fs-2">4920</h3>
-                                <p class="fs-5">Sales</p>
-                            </div>
-                            <i class="fas fa-hand-holding-usd fs-1 primary-text border rounded-full secondary-bg p-3"></i>
-                        </div>
-                    </div>
             
-                    <div class="col-12 col-md-6 col-lg-4">
+                    <div class="col-12 col-md-6 col-lg-6">
                         <div class="p-4 bg-white shadow-sm d-flex justify-content-around align-items-center rounded">
                             <div>
                                 <h3 class="fs-2">3899</h3>
-                                <p class="fs-5">Delivery</p>
+                                <p class="fs-5">Total Pickup</p>
                             </div>
-                            <i class="fas fa-truck fs-1 primary-text border rounded-full secondary-bg p-3"></i>
+                            <i class="fas fa-truck fs-1 primary-text border rounded-full secondary-bg p-4"></i>
                         </div>
                     </div>
                 </div>
@@ -117,23 +103,23 @@
                                 <tr>
                                     <th scope="row">1</th>
                                     <td>ORD1234</td>
-                                    <td>123 Main St, City</td>
-                                    <td>456 Oak Rd, City</td>
-                                    <td><button class="btn border border-secondary rounded-pill px-3 text-primary btn-sm">View Details</button></td>
+                                    <td>1 number street gol chautara</td>
+                                    <td>6 number street hospital chok</td>
+                                    <td><button class="btn border border-secondary rounded-pill px-3 text-primary btn-sm">Details</button></td>
                                 </tr>
                                 <tr>
                                     <th scope="row">2</th>
                                     <td>ORD1235</td>
-                                    <td>789 Pine Ave, City</td>
-                                    <td>321 Elm St, City</td>
-                                    <td><button class="btn border border-secondary rounded-pill px-3 text-primary btn-sm">View Details</button></td>
+                                    <td>12 number street hospital </td>
+                                    <td>1 number street gol chautara</td>
+                                    <td><button class="btn border border-secondary rounded-pill px-3 text-primary btn-sm">Details</button></td>
                                 </tr>
                                 <tr>
                                     <th scope="row">3</th>
                                     <td>ORD1236</td>
-                                    <td>456 Birch Rd, City</td>
-                                    <td>654 Maple St, City</td>
-                                    <td><button class="btn border border-secondary rounded-pill px-3 text-primary btn-sm">View Details</button></td>
+                                    <td>4 number street new road</td>
+                                    <td>15 number street lekhside</td>
+                                    <td><button class="btn border border-secondary rounded-pill px-3 text-primary btn-sm">Details</button></td>
                                 </tr>
                             </tbody>
                         </table>

@@ -14,32 +14,23 @@
 
     <!-- Custom Css Link -->
     <link rel="stylesheet" href="/static/css/delivery.css">
-    <title>Bootstap 5 Responsive Admin Dashboard</title>
+    <title>Farmer Dashboard</title>
 </head>
 
 <body>
     <div class="d-flex" id="wrapper">
         <!-- Sidebar -->
         <div class="bg-white" id="sidebar-wrapper">
-            <div class="sidebar-heading text-center py-4 primary-text fs-4 fw-bold text-uppercase border-bottom"><i
-                    class="fas fa-user-secret me-2"></i>Codersbite</div>
+            <div class="sidebar-heading text-center py-4 primary-text fs-4 fw-bold text-uppercase border-bottom">Healthy Sabji</div>
             <div class="list-group list-group-flush my-3">
-                <a href="#" class="list-group-item list-group-item-action bg-transparent second-text active"><i
+                <a href="{% url 'delivery_dashboard' %}" class="list-group-item list-group-item-action bg-transparent second-text active"><i
                         class="fas fa-tachometer-alt me-2"></i>Dashboard</a>
-                <a href="#" class="list-group-item list-group-item-action bg-transparent second-text fw-bold"><i
-                        class="fas fa-project-diagram me-2"></i>Projects</a>
-                <a href="#" class="list-group-item list-group-item-action bg-transparent second-text fw-bold"><i
-                        class="fas fa-chart-line me-2"></i>Analytics</a>
-                <a href="#" class="list-group-item list-group-item-action bg-transparent second-text fw-bold"><i
-                        class="fas fa-paperclip me-2"></i>Reports</a>
-                <a href="#" class="list-group-item list-group-item-action bg-transparent second-text fw-bold"><i
-                        class="fas fa-shopping-cart me-2"></i>Store Mng</a>
-                <a href="#" class="list-group-item list-group-item-action bg-transparent second-text fw-bold"><i
-                        class="fas fa-gift me-2"></i>Products</a>
-                <a href="#" class="list-group-item list-group-item-action bg-transparent second-text fw-bold"><i
-                        class="fas fa-comment-dots me-2"></i>Chat</a>
-                <a href="#" class="list-group-item list-group-item-action bg-transparent second-text fw-bold"><i
-                        class="fas fa-map-marker-alt me-2"></i>Outlet</a>
+                <a href="{% url 'pickup' %}" class="list-group-item list-group-item-action bg-transparent second-text fw-bold"><i
+                        class="fas fa-truck-pickup me-2"></i>New Orders</a>
+                <a href="{% url 'drop' %}" class="list-group-item list-group-item-action bg-transparent second-text fw-bold"><i
+                        class="fas fa-gift me-2"></i>Drop Order</a>
+                <a href="{% url 'evidence' %}" class="list-group-item list-group-item-action bg-transparent second-text fw-bold"><i
+                        class="fas fa-upload me-2"></i>Evidence Submit</a>
                 <a href="#" class="list-group-item list-group-item-action bg-transparent text-danger fw-bold"><i
                         class="fas fa-power-off me-2"></i>Logout</a>
             </div>
@@ -63,107 +54,84 @@
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
                         <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle second-text fw-bold" href="#" id="navbarDropdown"
-                                role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                <i class="fas fa-user me-2"></i>John Doe
+                            <a class="fw-bold h4" href="#">
+                                <i class="fas fa-user me-2"></i>Subash Dhami
                             </a>
-                            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                <li><a class="dropdown-item" href="#">Profile</a></li>
-                                <li><a class="dropdown-item" href="#">Settings</a></li>
-                                <li><a class="dropdown-item" href="#">Logout</a></li>
-                            </ul>
                         </li>
                     </ul>
                 </div>
             </nav>
 
             <div class="container-fluid px-4">
-                <div class="row g-3 my-2">
-                    <div class="col-md-3">
-                        <div class="p-3 bg-white shadow-sm d-flex justify-content-around align-items-center rounded">
+                <div class="row g-4 my-2">
+                    <div class="col-12 col-md-6 col-lg-6">
+                        <div class="p-4 bg-white shadow-sm d-flex justify-content-around align-items-center rounded">
                             <div>
-                                <h3 class="fs-2">720</h3>
-                                <p class="fs-5">Products</p>
+                                <h3 class="fs-2">2342</h3>
+                                <p class="fs-5">Total Orders</p>
                             </div>
-                            <i class="fas fa-gift fs-1 primary-text border rounded-full secondary-bg p-3"></i>
+                            <i class="fas fa-gift fs-1 primary-text border rounded-full secondary-bg p-4"></i>
                         </div>
                     </div>
-
-                    <div class="col-md-3">
-                        <div class="p-3 bg-white shadow-sm d-flex justify-content-around align-items-center rounded">
+            
+            
+                    <div class="col-12 col-md-6 col-lg-6">
+                        <div class="p-4 bg-white shadow-sm d-flex justify-content-around align-items-center rounded">
                             <div>
-                                <h3 class="fs-2">4920</h3>
-                                <p class="fs-5">Sales</p>
+                                <h3 class="fs-2">RS 20000</h3>
+                                <p class="fs-5">Total Income</p>
                             </div>
-                            <i
-                                class="fas fa-hand-holding-usd fs-1 primary-text border rounded-full secondary-bg p-3"></i>
-                        </div>
-                    </div>
-
-                    <div class="col-md-3">
-                        <div class="p-3 bg-white shadow-sm d-flex justify-content-around align-items-center rounded">
-                            <div>
-                                <h3 class="fs-2">3899</h3>
-                                <p class="fs-5">Delivery</p>
-                            </div>
-                            <i class="fas fa-truck fs-1 primary-text border rounded-full secondary-bg p-3"></i>
-                        </div>
-                    </div>
-
-                    <div class="col-md-3">
-                        <div class="p-3 bg-white shadow-sm d-flex justify-content-around align-items-center rounded">
-                            <div>
-                                <h3 class="fs-2">%25</h3>
-                                <p class="fs-5">Increase</p>
-                            </div>
-                            <i class="fas fa-chart-line fs-1 primary-text border rounded-full secondary-bg p-3"></i>
+                            <i class="fas fa-money-bill-wave-alt fs-1 primary-text border rounded-full secondary-bg p-4"></i>
                         </div>
                     </div>
                 </div>
-
+            
                 <div class="row my-5">
                     <h3 class="fs-4 mb-3">Recent Orders</h3>
                     <div class="col">
-                        <table class="table bg-white rounded shadow-sm  table-hover">
+                        <table class="table bg-white rounded shadow-sm table-hover">
                             <thead>
                                 <tr>
                                     <th scope="col" width="50">#</th>
-                                    <th scope="col">Product</th>
-                                    <th scope="col">Customer</th>
-                                    <th scope="col">Price</th>
+                                    <th scope="col">Order ID</th>
+                                    <th scope="col">Pickup Address</th>
+                                    <th scope="col">Drop Address</th>
+                                    <th scope="col">Action</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <tr>
                                     <th scope="row">1</th>
-                                    <td>Television</td>
-                                    <td>Jonny</td>
-                                    <td>$1200</td>
+                                    <td>ORD1234</td>
+                                    <td>1 number street gol chautara</td>
+                                    <td>6 number street hospital chok</td>
+                                    <td><button class="btn border border-secondary rounded-pill px-3 text-primary btn-sm">Details</button></td>
                                 </tr>
                                 <tr>
-                                    <th scope="row">11</th>
-                                    <td>Carpet</td>
-                                    <td>Jeco</td>
-                                    <td>$1236</td>
+                                    <th scope="row">2</th>
+                                    <td>ORD1235</td>
+                                    <td>12 number street hospital </td>
+                                    <td>1 number street gol chautara</td>
+                                    <td><button class="btn border border-secondary rounded-pill px-3 text-primary btn-sm">Details</button></td>
                                 </tr>
                                 <tr>
-                                    <th scope="row">12</th>
-                                    <td>Food</td>
-                                    <td>Haso</td>
-                                    <td>$422</td>
+                                    <th scope="row">3</th>
+                                    <td>ORD1236</td>
+                                    <td>4 number street new road</td>
+                                    <td>15 number street lekhside</td>
+                                    <td><button class="btn border border-secondary rounded-pill px-3 text-primary btn-sm">Details</button></td>
                                 </tr>
                             </tbody>
                         </table>
                     </div>
                 </div>
-
+                
             </div>
+            
         </div>
     </div>
-    <!-- /#page-content-wrapper -->
-    </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js"></script>
+
     <script>
         var el = document.getElementById("wrapper");
         var toggleButton = document.getElementById("menu-toggle");
@@ -172,6 +140,7 @@
             el.classList.toggle("toggled");
         };
     </script>
+<!-- Bootstrap js link -->
+<script src="/static/js/bootstrap.js"></script>
 </body>
-
 </html>

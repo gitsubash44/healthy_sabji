@@ -41,4 +41,5 @@ urlpatterns = [
     
     #Path for Farmer Dashboard
     path('farmer_dashboard/',views.farmer_dashboard,name="farmer_dashboard"),
+    path('farmer_profile/',views.farmer_profile,name="farmer_profile"),
 ]

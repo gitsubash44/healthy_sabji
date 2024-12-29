@@ -54,7 +54,7 @@
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
                         <li class="nav-item dropdown">
-                            <a class="fw-bold h4" href="#">
+                            <a class="fw-bold h4" href="{% url 'farmer_profile' %}">
                                 <i class="fas fa-user me-2"></i>Subash Dhami
                             </a>
                         </li>
@@ -87,15 +87,15 @@
                 </div>
             
                 <div class="row my-5">
-                    <h3 class="fs-4 mb-3">Recent Orders</h3>
+                    <h3 class="fs-4 mb-3">Orders List</h3>
                     <div class="col">
                         <table class="table bg-white rounded shadow-sm table-hover">
                             <thead>
                                 <tr>
                                     <th scope="col" width="50">#</th>
                                     <th scope="col">Order ID</th>
-                                    <th scope="col">Pickup Address</th>
-                                    <th scope="col">Drop Address</th>
+                                    <th scope="col">Products Name</th>
+                                    <th scope="col">Quantity</th>
                                     <th scope="col">Action</th>
                                 </tr>
                             </thead>
@@ -103,22 +103,22 @@
                                 <tr>
                                     <th scope="row">1</th>
                                     <td>ORD1234</td>
-                                    <td>1 number street gol chautara</td>
-                                    <td>6 number street hospital chok</td>
+                                    <td>Poteto</td>
+                                    <td>2 KG</td>
                                     <td><button class="btn border border-secondary rounded-pill px-3 text-primary btn-sm">Details</button></td>
                                 </tr>
                                 <tr>
                                     <th scope="row">2</th>
                                     <td>ORD1235</td>
-                                    <td>12 number street hospital </td>
-                                    <td>1 number street gol chautara</td>
+                                    <td>Tomato</td>
+                                    <td>1 KG</td>
                                     <td><button class="btn border border-secondary rounded-pill px-3 text-primary btn-sm">Details</button></td>
                                 </tr>
                                 <tr>
                                     <th scope="row">3</th>
                                     <td>ORD1236</td>
-                                    <td>4 number street new road</td>
-                                    <td>15 number street lekhside</td>
+                                    <td>Cauliflower</td>
+                                    <td>3 KG</td>
                                     <td><button class="btn border border-secondary rounded-pill px-3 text-primary btn-sm">Details</button></td>
                                 </tr>
                             </tbody>

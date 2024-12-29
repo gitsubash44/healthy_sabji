@@ -53,3 +53,6 @@ def evidence(request):
 # for Farmer site.
 def farmer_dashboard(request):
     return render(request,'farmer/farmer_dashboard.html')
+
+def farmer_profile(request):
+    return render(request,'farmer/farmer_profile.html')

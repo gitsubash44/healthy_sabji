@@ -56,3 +56,9 @@ def farmer_dashboard(request):
 
 def farmer_profile(request):
     return render(request,'farmer/farmer_profile.html')
+
+def add_products(request):
+    return render(request,'farmer/add_products.html')
+
+def farmer_products(request):
+    return render(request,'farmer/farmer_products.html')

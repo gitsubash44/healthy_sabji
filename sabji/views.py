@@ -1,5 +1,12 @@
 from django.shortcuts import render
 
+# For Users authentication
+def login(request):
+    return render(request,'account/login.html')
+
+def register(request):
+    return render(request,'account/register.html')
+
 # For User views Site.
 def index(request):
     return render(request, 'user/index.html')

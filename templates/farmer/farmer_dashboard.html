@@ -26,11 +26,11 @@
                 <a href="{% url 'farmer_dashboard' %}" class="list-group-item list-group-item-action bg-transparent second-text active"><i
                         class="fas fa-tachometer-alt me-2"></i>Dashboard</a>
                 <a href="{% url 'farmer_products' %}" class="list-group-item list-group-item-action bg-transparent second-text fw-bold"><i
-                        class="fas fa-truck-pickup me-2"></i>Products</a>
-                <a href="" class="list-group-item list-group-item-action bg-transparent second-text fw-bold"><i
-                        class="fas fa-truck-pickup me-2"></i>New Orders</a>
-                <a href="" class="list-group-item list-group-item-action bg-transparent second-text fw-bold"><i
-                        class="fas fa-gift me-2"></i>Drop Order</a>
+                        class="fas fa-box me-2"></i>Products</a>
+                <a href="{% url 'new_order' %}" class="list-group-item list-group-item-action bg-transparent second-text fw-bold"><i
+                        class="fas fa-gift me-2"></i>New Orders</a>
+                <a href="{% url 'drop_delivery' %}" class="list-group-item list-group-item-action bg-transparent second-text fw-bold"><i
+                        class="fas fa-gift me-2"></i>Drop to Delivery</a>
                 <a href="#" class="list-group-item list-group-item-action bg-transparent text-danger fw-bold"><i
                         class="fas fa-power-off me-2"></i>Logout</a>
             </div>

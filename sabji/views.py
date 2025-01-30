@@ -69,3 +69,9 @@ def add_products(request):
 
 def farmer_products(request):
     return render(request,'farmer/farmer_products.html')
+
+def new_order(request):
+    return render(request,'farmer/new_order.html')
+
+def drop_delivery(request):
+    return render(request,'farmer/drop_delivery.html')

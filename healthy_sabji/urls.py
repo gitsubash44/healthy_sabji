@@ -19,12 +19,15 @@ from django.urls import path
 from sabji import views
 
 urlpatterns = [
+    # path for Admin Dashboard
+    path('admin/', admin.site.urls),
+    path('admin_dashboard/',views.admin_dashboard,name="admin_dashboard"),
+    
     # path for Users authentication
     path('login/',views.login,name="login"),
     path('register/',views.register,name="register"),
     
     # path for Users Dashboard
-    path('admin/', admin.site.urls),
     path('',views.index,name="index"),
     path('about/',views.about,name="about"),
     path('product/',views.product,name="product"),

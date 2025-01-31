@@ -1,5 +1,9 @@
 from django.shortcuts import render
 
+# For Admin Dashboard
+def admin_dashboard(request):
+    return render(request,'admin/admin_dashboard.html')
+
 # For Users authentication
 def login(request):
     return render(request,'account/login.html')
@@ -56,6 +60,7 @@ def drop(request):
 
 def evidence(request):
     return render(request,'delivery/evidence.html')
+
 
 # for Farmer site.
 def farmer_dashboard(request):

@@ -4,6 +4,9 @@ from django.shortcuts import render
 def admin_dashboard(request):
     return render(request,'admin/admin_dashboard.html')
 
+def user_manage(request):
+    return render(request,'admin/user_manage.html')
+
 # For Users authentication
 def login(request):
     return render(request,'account/login.html')

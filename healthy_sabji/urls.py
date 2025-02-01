@@ -22,6 +22,7 @@ urlpatterns = [
     # path for Admin Dashboard
     path('admin/', admin.site.urls),
     path('admin_dashboard/',views.admin_dashboard,name="admin_dashboard"),
+    path('user_manage/',views.user_manage,name="user_manage"),
     
     # path for Users authentication
     path('login/',views.login,name="login"),

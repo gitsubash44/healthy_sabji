@@ -27,7 +27,7 @@
                         class="fas fa-tachometer-alt me-2"></i>Dashboard</a>
                 <a href="#" class="list-group-item list-group-item-action bg-transparent second-text fw-bold"><i
                         class="fas fa-truck-pickup me-2"></i>Delivery manage</a>
-                <a href="#" class="list-group-item list-group-item-action bg-transparent second-text fw-bold"><i
+                <a href="{% url 'user_manage' %}" class="list-group-item list-group-item-action bg-transparent second-text fw-bold"><i
                         class="fas fa-user me-2"></i>User Manage</a>
                 <a href="#" class="list-group-item list-group-item-action bg-transparent second-text fw-bold"><i
                         class="fas fa-seedling me-2"></i>Farmer Manage</a>
@@ -62,21 +62,16 @@
 
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle second-text fw-bold" href="#" id="navbarDropdown"
-                                role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                <i class="fas fa-user me-2"></i>John Doe
+                        <li class="nav-item">
+                            <a class="fw-bold h4" href="#">
+                                <i class="fas fa-user me-2"></i>Subash Dhami
                             </a>
-                            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                <li><a class="dropdown-item" href="#">Profile</a></li>
-                                <li><a class="dropdown-item" href="#">Logout</a></li>
-                            </ul>
                         </li>
                     </ul>
                 </div>
             </nav>
 
-            <div class="container-fluid px-4">
+            <div class="container-fluid">
                 <div class="row g-4 my-2">
                     <div class="col-12 col-md-6 col-lg-4">
                         <div class="p-4 bg-white shadow-sm d-flex justify-content-around align-items-center rounded">

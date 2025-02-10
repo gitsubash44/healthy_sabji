@@ -15,43 +15,18 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path
+from django.urls import path, include
 from sabji import views
+from django.conf import settings
+from django.conf.urls.static import static
 
 urlpatterns = [
     # path for Admin Dashboard
     path('admin/', admin.site.urls),
+    path('', include('accounts.urls')),
+    path('', include('orders.urls')),  
+    path('', include('sabji.urls')),
+    
     path('admin_dashboard/',views.admin_dashboard,name="admin_dashboard"),
     path('user_manage/',views.user_manage,name="user_manage"),
-    
-    # path for Users authentication
-    path('login/',views.login,name="login"),
-    path('register/',views.register,name="register"),
-    
-    # path for Users Dashboard
-    path('',views.index,name="index"),
-    path('about/',views.about,name="about"),
-    path('product/',views.product,name="product"),
-    path('product_desc/',views.productDetail,name="productDetail"),
-    path('cart/',views.cart,name="cart"),
-    path('checkout/',views.checkout,name="checkout"),
-    path('contact/',views.contact,name="contact"),
-    path('user_profile/',views.user_profile,name="user_profile"),
-    path('orderhistory/',views.orderhistory,name="orderhistory"),
-    path('all_order_history/',views.all_order_history,name="all_order_history"),
-    path('order_track/',views.order_track,name="order_track"),
-    
-    # Path for Delivery Dashboard
-    path('delivery_dashboard/',views.delivery_dashboard,name="delivery_dashboard"),
-    path('pickup/',views.pickup,name="pickup"),
-    path('drop/',views.drop,name="drop"),
-    path('evidence/',views.evidence,name="evidence"),
-    
-    #Path for Farmer Dashboard
-    path('farmer_dashboard/',views.farmer_dashboard,name="farmer_dashboard"),
-    path('farmer_profile/',views.farmer_profile,name="farmer_profile"),
-    path('add_products/',views.add_products,name="add_products"),
-    path('farmer_products/',views.farmer_products,name="farmer_products"),
-    path('new_order/',views.new_order,name="new_order"),
-    path('drop_delivery/',views.drop_delivery,name="drop_delivery"),
-]
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT) + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

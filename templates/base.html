@@ -21,7 +21,17 @@
 </head>
 <body>
 
-        <!-- Navbar start -->
+    <!-- Navbar start -->
+        {% if messages %}
+        <div class="container mt-4">
+            {% for message in messages %}
+                <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                    {{ message }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
 <div class="container-fluid fixed-top">
     <div class="container topbar bg-primary d-none d-lg-block">
         <div class="d-flex justify-content-between">
@@ -44,7 +54,7 @@
     </div>
     <div class="container px-0">
         <nav class="navbar navbar-light bg-white navbar-expand-xl">
-            <a href="index.html" class="navbar-brand">
+            <a href="#" class="navbar-brand">
                 <img src="/static/img/Healthy.png" alt="Logo" style="height: 60px;">
             </a>
             <button class="navbar-toggler py-2 px-3" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
@@ -55,7 +65,10 @@
                     <a href="{% url 'index' %}" class="nav-item nav-link active">Home</a>
                     <a href="{% url 'about' %}" class="nav-item nav-link">About Us</a>
                     <a href="{% url 'product' %}" class="nav-item nav-link">Product</a>
-                    <a href="{% url 'productDetail' %}" class="nav-item nav-link">Product Detail</a>
+                    {% if product %}
+                    <a href="{% url 'productDetail' product.id %}" class="nav-item nav-link">Product Detail</a>
+                    {% else %}
+                    {% endif %}
                     <div class="nav-item dropdown">
                         <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Pages</a>
                         <div class="dropdown-menu m-0 bg-secondary rounded-0">

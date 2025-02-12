@@ -26,6 +26,7 @@ urlpatterns = [
     path('', include('accounts.urls')),
     path('', include('orders.urls')),  
     path('', include('sabji.urls')),
+    path('', include('cart.urls')),
     
     path('admin_dashboard/',views.admin_dashboard,name="admin_dashboard"),
     path('user_manage/',views.user_manage,name="user_manage"),

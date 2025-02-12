@@ -6,7 +6,7 @@
         <!-- Single Page Header start -->
         <div class="container-fluid page-header py-5">
             <h1 class="text-center text-white display-6">Product</h1>
-            <ol class="breadcrumb justify-content-center mb-0">
+            <ol class="breadcrumb justify-content-start mb-0">
                 <li class="breadcrumb-item"><a href="{% url 'index' %}">Home</a></li>
                 <li class="breadcrumb-item"><a href="{% url 'product' %}">Pages</a></li>
                 <li class="breadcrumb-item active text-white">Product</li>
@@ -105,7 +105,6 @@
                                     {% for product in products %}
                                     <div class="col-md-6 col-lg-6 col-xl-4">
                                         <a href="{% url 'productDetail' product.id %}">
-
                                         <div class="rounded position-relative fruite-item">
                                             <div class="fruite-img">
                                                 <img src="{{product.image.url}}" class="img-fluid w-100 rounded-top" alt="">
@@ -115,11 +114,15 @@
                                                 <p>{{product.description}}</p>
                                                 <div class="d-flex justify-content-between flex-lg-wrap">
                                                     <p class="text-dark fs-5 fw-bold mb-0">Nrs{{product.price}} / kg</p>
-                                                    <a href="#" class="btn border border-secondary rounded-pill px-3 text-primary"><i class="fa fa-shopping-bag me-2 text-primary"></i> Add to cart</a>
+                                                    <a href="#" class="btn border border-secondary rounded-pill px-3 text-primary"
+                                                    hx-get="{% url 'add_to_cart' product.id 1 %}"
+														hx-target="#cartCount"
+														hx-swap="outerHTML"
+														hx-trigger="click"><i class="fa fa-shopping-bag me-2 text-primary"></i> Add to cart</a>
                                                 </div>
                                             </div>
-                                        </a>
                                         </div>
+                                        </a>
                                     </div>{% endfor %}
                                     
                                     <div class="col-12">

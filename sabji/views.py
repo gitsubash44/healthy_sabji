@@ -76,12 +76,6 @@ def productDetail(request,id):
     return render(request,'user/product_desc.html',{'product':product})
 
 
-def cart(request):
-    return render(request,'user/cart.html')
-
-def checkout(request):
-    return render(request,'user/checkout.html')
-
 def contact(request):
     if request.method == 'POST':
         name = request.POST.get('name')
@@ -95,12 +89,3 @@ def contact(request):
 
 def user_profile(request):
     return render(request,'user/user_profile.html')
-
-def orderhistory(request):
-    return render(request,'user/orderhistory.html')
-
-def all_order_history(request):
-    return render(request,'user/all_order_history.html')
-
-def order_track(request):
-    return render(request,'user/order_track.html')

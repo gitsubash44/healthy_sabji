@@ -1,0 +1,65 @@
+
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home page</title>
+
+    <!-- Icon Font Stylesheet -->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css"/>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
+
+    <!-- bootstrap css link -->
+    <link rel="stylesheet" href="/static/css/bootstrap.css">
+    <link rel="stylesheet" href="/static/css/bootstrap.min.css">
+    
+
+    <!-- Custom Css Link -->
+    <link rel="stylesheet" href="/static/css/style.css">
+    <link rel="stylesheet" href="../static/css/style.css">
+</head>
+<body>
+
+<!-- Confirm Order Page Start -->
+<div class="container-fluid py-5">
+    <div class="container py-5">
+      <h1 class="mb-4">Review Your Order</h1>
+      <div class="bg-light rounded py-3 px-4">
+        <h2>Order Details</h2>
+        <p><strong>User:</strong> {{ order.user }}</p>
+        <p><strong>Location:</strong> {{ order.location }}</p>
+        <p><strong>Status:</strong> {{ order.status }}</p>
+        <p><strong>Payment:</strong> {{ order.payment }}</p>
+      </div>
+      <hr>
+      <div class="bg-light rounded py-3 px-4">
+        <h2>Delivery Details</h2>
+        <p><strong>First Name:</strong> {{ location.first_name }}</p>
+        <p><strong>Last Name:</strong> {{ location.last_name }}</p>
+        <p><strong>Address:</strong> {{ location.address }}</p>
+        <p><strong>House Number & Street Name:</strong> {{ location.house_number_street_name }}</p>
+        <p><strong>City Area:</strong> {{ location.city_area }}</p>
+        <p><strong>Mobile:</strong> {{ location.mobile }}</p>
+        <p><strong>Email:</strong> {{ location.email }}</p>
+        <p><strong>Order Notes:</strong> {{ location.order_notes }}</p>
+      </div>
+      <hr>
+      <div class="bg-light rounded py-3 px-4">
+        <h2>Payment</h2>
+        <form action="https://rc-epay.esewa.com.np/api/epay/main/v2/form" method="POST">
+          {{form|safe}}
+          <button type="submit" class="btn border-secondary py-3 px-4 text-uppercase w-100 text-primary">Proceed to Payment</button>
+        </form>
+      </div>
+    </div>
+  </div>
+  <!-- Confirm Order Page End -->
+
+
+      
+<!-- Bootstrap js link -->
+<script src="/static/js/bootstrap.js"></script>
+</body>
+</html>

@@ -6,7 +6,7 @@
         <!-- Single Page Header start -->
         <div class="container-fluid page-header py-5">
             <h1 class="text-center text-white display-6">Shop Detail</h1>
-            <ol class="breadcrumb justify-content-center mb-0">
+            <ol class="breadcrumb justify-content-start mb-0">
                 <li class="breadcrumb-item"><a href="{% url 'index' %}">Home</a></li>
                 <li class="breadcrumb-item"><a href="{% url 'productDetail' product.id %}">Pages</a></li>
                 <li class="breadcrumb-item active text-white">Product Detail</li>
@@ -24,7 +24,7 @@
                             <div class="col-lg-6">
                                 <div class="border rounded">
                                     <a href="#">
-                                        <img src="{{product.image.url}}" class="img-fluid rounded" alt="Image">
+                                        <img src="{{product.image.url}}" class="img-fluid w-100 rounded" alt="Image">
                                     </a>
                                 </div>
                             </div>
@@ -33,20 +33,69 @@
                                 <p class="mb-3">Category:{{product.category}}</p>
                                 <h5 class="fw-bold mb-3">Rs:{{product.price}} </h5>
                                 <p class="mb-4">{{product.description|truncatechars:5}}</p>
-                                <div class="input-group quantity mb-5" style="width: 100px;">
+                                <div class="input-group quantity mb-3" style="width: 150px;">
                                     <div class="input-group-btn">
-                                        <button class="btn btn-sm btn-minus rounded-circle bg-light border" >
+                                        <button class="btn btn-sm btn-minus rounded-circle bg-light border" data-product-id="{{ product.id }}">
                                             <i class="fa fa-minus"></i>
                                         </button>
                                     </div>
-                                    <input type="text" class="form-control form-control-sm text-center border-0" value="1">
+                                    <input type="text" class="form-control form-control-sm text-center border-0 quantity-input" value="1" id="quantity-{{ product.id }}">
                                     <div class="input-group-btn">
-                                        <button class="btn btn-sm btn-plus rounded-circle bg-light border">
+                                        <button class="btn btn-sm btn-plus rounded-circle bg-light border" data-product-id="{{ product.id }}">
                                             <i class="fa fa-plus"></i>
                                         </button>
                                     </div>
                                 </div>
-                                <a href="#" class="btn border border-secondary rounded-pill px-4 py-2 mb-4 text-primary"><i class="fa fa-shopping-bag me-2 text-primary"></i> Add to cart</a>
+                                
+                                <button class="btn btn-primary add-to-cart" data-product-id="{{ product.id }}">
+                                    Add to Cart
+                                </button>
+                                
+                                <script>
+                                document.addEventListener("DOMContentLoaded", function () {
+                                    // Handle plus and minus buttons
+                                    document.querySelectorAll(".btn-minus, .btn-plus").forEach(function (button) {
+                                        button.addEventListener("click", function () {
+                                            let productId = this.getAttribute("data-product-id");
+                                            let quantityInput = document.getElementById(`quantity-${productId}`);
+                                            let currentValue = parseInt(quantityInput.value) || 1;
+                                
+                                            if (this.classList.contains("btn-plus")) {
+                                                quantityInput.value = currentValue + 1;
+                                            } else if (this.classList.contains("btn-minus") && currentValue > 1) {
+                                                quantityInput.value = currentValue - 1;
+                                            }
+                                        });
+                                    });
+                                
+                                    // Handle Add to Cart button
+                                    document.querySelectorAll(".add-to-cart").forEach(function (button) {
+                                        button.addEventListener("click", function () {
+                                            let productId = this.getAttribute("data-product-id");
+                                            let quantityInput = document.getElementById(`quantity-${productId}`);
+                                            let quantity = quantityInput ? quantityInput.value : 1;
+                                
+                                            fetch(`/cart/add/${productId}/${quantity}/`, {
+                                                method: "GET",
+                                                headers: {
+                                                    "X-Requested-With": "XMLHttpRequest",
+                                                },
+                                            })
+                                            .then(response => response.json())
+                                            .then(data => {
+                                                if (data.success) {
+                                                    alert("Product added to cart!");
+                                                } else {
+                                                    alert("Failed to add product.");
+                                                }
+                                            })
+                                            .catch(error => console.error("Error:", error));
+                                        });
+                                    });
+                                });
+                                </script>
+                                
+                                
                             </div>
                             <div class="col-lg-12">
                                 <nav>

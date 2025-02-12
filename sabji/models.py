@@ -1,5 +1,5 @@
 from django.db import models
-
+from django.urls import reverse
 # Create your models here.
 
 class Product(models.Model):
@@ -14,9 +14,9 @@ class Product(models.Model):
     def __str__(self):
         return f'{self.name} - {self.price} - {self.quantity}'
     
-    # TODO: add get_absolute_url method
     def get_absolute_url(self):
-        pass
+        return reverse('productDetail', args=[str(self.id)])
+    
     def increase_quantity(self, quantity):
         self.quantity += quantity
         self.save()

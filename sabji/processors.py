@@ -3,7 +3,8 @@ from .models import Product, Category
 
 def productprocessor(request):
     products = Product.objects.filter(quantity__gt=0)
-    return {'products': products}
+    lowest_price = products.filter(quantity__gt=0).order_by('price').first()
+    return {'products': products, 'lowest_price': lowest_price}
 
 
 def categoryprocessor(request):

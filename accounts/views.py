@@ -1,10 +1,23 @@
 from django.shortcuts import render
+from sabji.models import Product
+from orders.models import Order
 
 # Create your views here.
 
 # for Farmer site.
 def farmer_dashboard(request):
-    return render(request,'farmer/farmer_dashboard.html')
+    products = Product.objects.all()
+    orders = Order.objects.all()
+    total = 0 
+    for o in orders:
+        total += o.payment.amount
+    context = {
+        'products':products,
+        'orders':orders,
+        'total':total
+    }
+    return render(request,'farmer/farmer_dashboard.html', context)
+
 
 def farmer_profile(request):
     return render(request,'farmer/farmer_profile.html')

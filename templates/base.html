@@ -46,8 +46,15 @@
                 </small>
             </div>
             <div class="top-link gap-2 pe-2">
+                {% if request.user.is_authenticated %}
+                <form action="{% url 'logout' %}" method="post">
+                    {% csrf_token %}
+                    <button type="submit" class="btn border-2 border-secondary px-3 text-primary"><small class="text-white mx-2">Logout</small></button>
+                </form>
+                {% else %}
                 <a href="{% url 'register' %}" class="btn btn btn-secondary px-3 text-primary"><small class="text-white mx-2">Register</small></a>
                 <a href="{% url 'login' %}" class="btn border-2 border-secondary px-3 text-primary"><small class="text-white mx-2">login</small></a>
+                {% endif %}
                 <a href="#" class="text-white"><small class="text-white mx-2">Terms of Use</small></a>
             </div>
         </div>

@@ -71,7 +71,7 @@
                     <div class="col-12 col-md-6 col-lg-6">
                         <div class="p-4 bg-white shadow-sm d-flex justify-content-around align-items-center rounded">
                             <div>
-                                <h3 class="fs-2">2342</h3>
+                                <h3 class="fs-2">{{orders.count}}</h3>
                                 <p class="fs-5">Total Orders</p>
                             </div>
                             <i class="fas fa-gift fs-1 primary-text border rounded-full secondary-bg p-4"></i>
@@ -82,7 +82,7 @@
                     <div class="col-12 col-md-6 col-lg-6">
                         <div class="p-4 bg-white shadow-sm d-flex justify-content-around align-items-center rounded">
                             <div>
-                                <h3 class="fs-2">RS 20000</h3>
+                                <h3 class="fs-2">RS {{total}}</h3>
                                 <p class="fs-5">Total Income</p>
                             </div>
                             <i class="fas fa-money-bill-wave-alt fs-1 primary-text border rounded-full secondary-bg p-4"></i>
@@ -99,32 +99,27 @@
                                     <th scope="col" width="50">#</th>
                                     <th scope="col">Order ID</th>
                                     <th scope="col">Products Name</th>
+                                    <th scope="col">Location</th>
                                     <th scope="col">Quantity</th>
                                     <th scope="col">Action</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr>
-                                    <th scope="row">1</th>
-                                    <td>ORD1234</td>
-                                    <td>Poteto</td>
-                                    <td>2 KG</td>
+                                {% for order in orders %}
+                                <th scope="row">{{forloop.counter}}</th>
+                                    <td>{{order.payment.payment_uuid}}</td>
+                                    <td>
+                                        {% for item in order.items.all %}
+                                        {{item.product.name}}
+                                            {% if not forloop.last %},
+                                            {% endif %}
+                                        {% endfor %}
+                                    </td>
+                                    <td>{{order.location}}</td>
+                                    <td> {{ order.total}}KG</td>
                                     <td><button class="btn border border-secondary rounded-pill px-3 text-primary btn-sm">Details</button></td>
                                 </tr>
-                                <tr>
-                                    <th scope="row">2</th>
-                                    <td>ORD1235</td>
-                                    <td>Tomato</td>
-                                    <td>1 KG</td>
-                                    <td><button class="btn border border-secondary rounded-pill px-3 text-primary btn-sm">Details</button></td>
-                                </tr>
-                                <tr>
-                                    <th scope="row">3</th>
-                                    <td>ORD1236</td>
-                                    <td>Cauliflower</td>
-                                    <td>3 KG</td>
-                                    <td><button class="btn border border-secondary rounded-pill px-3 text-primary btn-sm">Details</button></td>
-                                </tr>
+                                {% endfor %}
                             </tbody>
                         </table>
                     </div>

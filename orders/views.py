@@ -65,6 +65,11 @@ def confirm_order(request):
         order = Order.objects.create(
             user=request.user, location=location,
             status='P', payment=payment)
+        
+        for product in carts:
+            OrderItem.objects.create(
+                order=order, product=product.product,
+                quantity=product.quantity, price=product.product.price)
 
         epayment = EsewaPayment(
         success_url=f"http://localhost:8000/success/{payment.id}",

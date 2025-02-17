@@ -50,7 +50,7 @@
                                     <div class="input-group quantity mt-4" style="width: 100px;">
                                         <div class="input-group-btn">
                                             <button class="btn btn-sm btn-minus rounded-circle bg-light border" 
-                                            hx-get="{% url "decrease_cart" cart.product.id %}" 
+                                            hx-get="{% url 'decrease_cart' cart.product.id %}" 
                                             hx-target="#container"
                                             hx-swap="outerHTML">
                                             <i class="fa fa-minus"></i>
@@ -59,7 +59,7 @@
                                         <input type="text" class="form-control form-control-sm text-center border-0" value="{{cart.quantity}}" readonly>
                                         <div class="input-group-btn">
                                             <button class="btn btn-sm btn-plus rounded-circle bg-light border"
-                                            hx-get="{% url "increase_cart" cart.product.id %}" 
+                                            hx-get="{% url 'increase_cart' cart.product.id %}" 
                                             hx-target="#container"
                                             hx-swap="outerHTML">
                                                 <i class="fa fa-plus"></i>
@@ -72,7 +72,7 @@
                                 </td>
                                 <td>
                                     <button
-                                    hx-get="{% url "remove_from_cart" cart.product.id cart.quantity %}" 
+                                    hx-get="{% url 'remove_from_cart' cart.product.id cart.quantity %}" 
                                             hx-target="#container"
                                             hx-swap="outerHTML" class="btn btn-md rounded-circle bg-light border mt-4" >
                                         <i class="fa fa-times text-danger"></i>

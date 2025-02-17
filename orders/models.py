@@ -50,3 +50,6 @@ class Location(models.Model):
     mobile = models.CharField(max_length=15)
     email = models.EmailField()
     order_notes = models.TextField(blank=True)
+    
+    def __str__(self):
+        return self.address + ' ' + self.city_area

@@ -2,6 +2,10 @@ from django.urls import path
 from . import views
 
 urlpatterns = [
+        # path for Users authentication
+    path('login/',views.login_view,name="login"),
+    path('register/',views.register,name="register"),
+    path('logout/',views.logout_view,name="logout"),
     #Path for Farmer Dashboard
     path('farmer_dashboard/',views.farmer_dashboard,name="farmer_dashboard"),
     path('farmer_profile/',views.farmer_profile,name="farmer_profile"),

@@ -85,20 +85,18 @@
                                     <th>Price (Rs)</th>
                                     <th>Weight (Kg)</th>
                                     <th>Min-Weight (Kg)</th>
-                                    <th>Quality</th>
                                     <th>Actions</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <!-- Sample Product Row Start -->
+                                {% for product in products %}
                                 <tr>
-                                    <td>1</td>
-                                    <td>Broccoli</td>
-                                    <td>Vegetables</td>
-                                    <td>335</td>
-                                    <td>1</td>
-                                    <td>0.25</td>
-                                    <td>Organic</td>
+                                    <td>{{forloop.counter}}</td>
+                                    <td>{{product.name}}</td>
+                                    <td>{{product.category}}</td>
+                                    <td>{{product.price}}</td>
+                                    <td>N/A</td>
                                     <td>
                                         <a href="/edit-product/1" class="btn btn-warning btn-sm rounded-pill px-3">
                                             <i class="fa fa-edit"></i> Edit
@@ -109,6 +107,7 @@
                                         </a>
                                     </td>
                                 </tr>
+                                {% endfor %}
                                 <!-- Sample Product Row End -->
 
                                 <!-- Additional product rows should be dynamically rendered here -->

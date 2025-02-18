@@ -77,49 +77,37 @@
                                 <th scope="col">Total Amount</th>
                                 <th scope="col">Order Date</th>
                                 <th scope="col">Status</th>
-                                <th scope="col">Action</th>
+                                <th scope="col">Select Deliverer</th>
                             </tr>
                         </thead>
                         <tbody>
+                            {% for order in orders %}
                             <tr>
-                                <th scope="row">1</th>
-                                <td>ORD1234</td>
-                                <td>John Doe</td>
-                                <td>Potato (2 KG), Tomato (1 KG)</td>
-                                <td>Rs 300</td>
-                                <td>2023-10-01</td>
+                                <td>{{order.id}}</td>
+                                <td>{{order.user.username}}</td>
+                                <td>{% for item in order.items.all %}
+                                    {{item.product.name}}
+                                    {% if not forloop.last %}
+                                    ,
+                                    {% endif %}
+                                    {% endfor %}</td>
+                                <td>Rs {{order.payment.amount}}</td>
+                                <td>{{order.payment.payment_date}}</td>
                                 <td><span class="badge bg-warning">Pending</span></td>
                                 <td>
-                                    <button class="btn border border-secondary rounded-pill px-3 text-primary btn-sm">Accept</button>
-                                    <button class="btn border border-secondary rounded-pill px-3 text-danger btn-sm">Reject</button>
+                                    <form method="post" action="{% url 'assign_deliverer' order.id %}">
+                                        {% csrf_token %}
+                                        <select class="form-select" id="deliverer" name="deliverer" required>
+                                            <option value="">Select Deliverer</option>
+                                            {% for deliverer in deliverers %}
+                                            <option value="{{ deliverer.id }}">{{ deliverer.username }} - {{deliverer.address}}</option>
+                                            {% endfor %}
+                                        </select>
+                                        <button type="submit" class="btn border border-secondary rounded-pill px-3 text-primary btn-sm mt-2">Accept</button>
+                                    </form>
                                 </td>
                             </tr>
-                            <tr>
-                                <th scope="row">2</th>
-                                <td>ORD1235</td>
-                                <td>Jane Smith</td>
-                                <td>Cauliflower (3 KG), Onion (1 KG)</td>
-                                <td>Rs 450</td>
-                                <td>2023-10-02</td>
-                                <td><span class="badge bg-warning">Pending</span></td>
-                                <td>
-                                    <button class="btn border border-secondary rounded-pill px-3 text-primary btn-sm">Accept</button>
-                                    <button class="btn border border-secondary rounded-pill px-3 text-danger btn-sm">Reject</button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <th scope="row">3</th>
-                                <td>ORD1236</td>
-                                <td>Alice Johnson</td>
-                                <td>Carrot (2 KG), Beans (1 KG)</td>
-                                <td>Rs 250</td>
-                                <td>2023-10-03</td>
-                                <td><span class="badge bg-warning">Pending</span></td>
-                                <td>
-                                    <button class="btn border border-secondary rounded-pill px-3 text-primary btn-sm">Accept</button>
-                                    <button class="btn border border-secondary rounded-pill px-3 text-danger btn-sm">Reject</button>
-                                </td>
-                            </tr>
+                            {% endfor %}
                         </tbody>
                     </table>
                 </div>

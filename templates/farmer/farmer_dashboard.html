@@ -39,6 +39,18 @@
 
         <!-- Page Content -->
         <div id="page-content-wrapper">
+
+            {% if messages %}
+            <ul class="messages">
+            {% for message in messages %}
+            <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                {{ message }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+            {% endfor %}
+            </ul
+            {% endif %}
+
             <nav class="navbar navbar-expand-lg navbar-light bg-transparent py-4 px-4">
                 <div class="d-flex align-items-center">
                     <i class="fas fa-align-left primary-text fs-4 me-3" id="menu-toggle"></i>
@@ -117,7 +129,34 @@
                                     </td>
                                     <td>{{order.location}}</td>
                                     <td> {{ order.total}}KG</td>
-                                    <td><button class="btn border border-secondary rounded-pill px-3 text-primary btn-sm">Details</button></td>
+                                    <td>
+                                        <button class="btn border border-secondary rounded-pill px-3 text-primary btn-sm" data-bs-toggle="modal" data-bs-target="#orderDetailsModal{{ forloop.counter }}">Details</button>
+                                        <!-- Modal -->
+                                        <div class="modal fade" id="orderDetailsModal{{ forloop.counter }}" tabindex="-1" aria-labelledby="orderDetailsModalLabel{{ forloop.counter }}" aria-hidden="true">
+                                            <div class="modal-dialog">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title" id="orderDetailsModalLabel{{ forloop.counter }}">Order Details</h5>
+                                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        <p><strong>Order ID:</strong> {{ order.payment.payment_uuid }}</p>
+                                                        <p><strong>Products:</strong>
+                                                            {% for item in order.items.all %}
+                                                                {{ item.product.name }} ({{ item.quantity }} KG)
+                                                                {% if not forloop.last %}, {% endif %}
+                                                            {% endfor %}
+                                                        </p>
+                                                        <p><strong>Location:</strong> {{ order.location }}</p>
+                                                        <p><strong>Total Quantity:</strong> {{ order.total }} KG</p>
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </td>                                
                                 </tr>
                                 {% endfor %}
                             </tbody>

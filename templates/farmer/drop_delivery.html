@@ -80,30 +80,24 @@
                             </tr>
                         </thead>
                         <tbody>
+                            {% for order in orders %}
                             <tr>
-                                <th scope="row">1</th>
-                                <td>ORD1237</td>
-                                <td>Michael Scott</td>
-                                <td>Spinach (2 KG), Broccoli (1 KG)</td>
-                                <td>Rs 400</td>
-                                <td>2023-10-05</td>
-                                <td>
-                                    <button class="btn border border-secondary rounded-pill text-primary">Drop to Delivery</button>
-                                </td>
-                            </tr>
-                        </tbody>
-                        <tbody>
-                            <tr>
-                                <th scope="row">2</th>
-                                <td>ORD1234</td>
-                                <td>subash Scott</td>
-                                <td>Spinach (3 KG), Broccoli (2 KG)</td>
-                                <td>Rs 700</td>
-                                <td>2023-10-08</td>
+                                <th scope="row">{{forloop.counter}}</th>
+                                <td>{{order.id}}</td>
+                                <td>{{order.user.username}}</td>
+                                <td>{% for item in order.items.all %}
+                                    {{item.product.name}}
+                                    {% if not forloop.last %}
+                                    ,
+                                    {% endif %}
+                                    {% endfor %}</td>
+                                <td>Rs {{order.payment.amount}}</td>
+                                <td>{{order.payment.payment_date}}</td>
                                 <td>
                                     <button class="btn btn-secondary rounded-pill text-white">Droped</button>
                                 </td>
                             </tr>
+                            {% endfor %}
                         </tbody>
                     </table>
                 </div>

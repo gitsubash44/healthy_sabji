@@ -1,10 +1,11 @@
 from django.shortcuts import render, redirect
-from sabji.models import Product
+from sabji.models import Product,Category
 from orders.models import Order
 from django.contrib import messages
 from accounts.models import CustomUser
 from django.contrib.auth import authenticate,login,logout 
 from django.http import HttpResponse
+
 
 # Create your views here.
 
@@ -83,13 +84,80 @@ def farmer_profile(request):
     return render(request,'farmer/farmer_profile.html')
 
 def add_products(request):
+    if request.method == "POST":
+        name = request.POST.get('name')
+        price = request.POST.get('price')
+        description = request.POST.get('description')
+        image = request.FILES.get('image')
+        quantity = request.POST.get('quantity')
+        category = request.POST.get('category')
+        product = Product(
+            name = name,
+            price = price,
+            description = description,
+            image = image,
+            quantity = quantity,
+            category = Category.objects.get(id=category)
+        )
+        product.save()
+        messages.success(request,'Product added successfully')
+        return redirect('farmer_dashboard')
     return render(request,'farmer/add_products.html')
+
+def edit_product(request,id):
+    product = Product.objects.get(id=id)
+    if request.method == "POST":
+        product.name = request.POST.get('name')
+        product.price = request.POST.get('price')
+        product.description = request.POST.get('description')
+        if request.FILES.get('image'):
+            product.image = request.FILES.get('image')
+        product.quantity = request.POST.get('quantity')
+        product.category = Category.objects.get(id=request.POST.get('category'))
+        product.save()
+        messages.success(request,'Product updated successfully')
+        return redirect('farmer_dashboard')
+    context = {
+        'product':product
+    }
+    return render(request,'farmer/add_products.html',context)
+
 
 def farmer_products(request):
     return render(request,'farmer/farmer_products.html')
 
 def new_order(request):
-    return render(request,'farmer/new_order.html')
+    orders = Order.objects.filter(status='P')
+    deliverers = CustomUser.objects.filter(is_delivery_person=True)
+    for order in orders:
+        total = 0
+        for item in order.items.all():
+            total += item.quantity
+        order.total = total
+    context = {
+        'orders':orders,
+        'deliverers':deliverers
+    }
+    return render(request,'farmer/new_order.html',context)
 
 def drop_delivery(request):
-    return render(request,'farmer/drop_delivery.html')
+    orders = Order.objects.filter(status='OD')
+    for order in orders:
+        total = 0
+        for item in order.items.all():
+            total += item.quantity
+        order.total = total
+    context = {
+        'orders':orders
+    }
+    return render(request,'farmer/drop_delivery.html',context)
+
+
+def assign_deliverer(request,id):
+    if request.method == 'POST':
+        order = Order.objects.get(id=id)
+        order.delivery_person = CustomUser.objects.get(id=request.POST.get('deliverer'))
+        order.status = 'OD'
+        order.save()
+        messages.success(request,'Order assigned to deliverer')
+        return redirect('new_order')

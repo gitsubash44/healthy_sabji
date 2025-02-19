@@ -24,7 +24,6 @@ def add_to_cart(request, id, quantity):
     else:
         cart = Cart(user=user, product=product, quantity=quantity)
         cart.save()
-   
     return render(request, 'cart/cart_count.html')
 
 @login_required
@@ -91,7 +90,6 @@ def checkout(request):
 
 @login_required
 def remove_from_cart(request, id, quantity):
-    
     user = request.user
     product = Product.objects.get(id=id)
     cart = Cart.objects.filter(user=user, product=product, quantity=quantity)

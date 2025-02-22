@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from .models import Order, OrderItem, Payment, Location
 from cart.models import Cart
 from esewa.payment import EsewaPayment
@@ -6,12 +6,22 @@ from esewa.signature import verify_signature
 from django.contrib import messages
 import uuid
 import base64
+from django.core.exceptions import PermissionDenied
+from django.contrib.auth.decorators import login_required
 
 
 # Create your views here.
 # For delivery Site.
 def delivery_dashboard(request):
-    return render(request,'delivery/delivery_dashboard.html')
+    if request.user.is_delivery_person != True:
+        raise PermissionDenied
+    orders = Order.objects.filter(status='OD',delivery_person=request.user)
+    all_orders = Order.objects.filter(delivery_person=request.user)
+    context = {
+        'orders':orders,
+        'all_orders':all_orders,
+        }
+    return render(request,'delivery/delivery_dashboard.html',context)
 
 def pickup(request):
     return render(request,'delivery/pickup.html')
@@ -19,8 +29,23 @@ def pickup(request):
 def drop(request):
     return render(request,'delivery/drop.html')
 
-def evidence(request):
-    return render(request,'delivery/evidence.html')
+@login_required
+def evidence(request,order_id):
+    if request.method == "POST":
+        image = request.FILES.get('evidence')
+        order = Order.objects.get(id=order_id)
+        order.evidence = image
+        order.save()
+        return redirect('delivery_dashboard')
+    return redirect('delivery_dashboard')
+
+@login_required
+def evidences(request):
+    orders = Order.objects.filter(status='D',delivery_person=request.user)
+    context = {
+        'orders':orders
+        }
+    return render(request,'delivery/evidences.html',context)
 
 def orderhistory(request):
     return render(request,'user/orderhistory.html')

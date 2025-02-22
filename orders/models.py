@@ -14,6 +14,17 @@ class Order(models.Model):
     location = models.ForeignKey('Location', on_delete=models.CASCADE,null=True, blank=True)
     status = models.CharField(max_length=10,choices=order_choices)
     payment = models.ForeignKey('Payment', on_delete=models.CASCADE, null=True, blank=True)
+    evidence = models.ImageField(upload_to='evidence/',null=True, blank=True)
+
+    def __str__(self):
+        return self.user.email
+    
+    def save(self, *args, **kwargs):
+        if self.status == 'OD' and self.delivery_person is None:
+            raise ValueError('Delivery person is required for out for delivery status')
+        if self.evidence :
+            self.status = 'D'
+        super(Order, self).save(*args, **kwargs)
 
 class OrderItem(models.Model):
     order = models.ForeignKey(Order, on_delete=models.CASCADE,related_name='items')

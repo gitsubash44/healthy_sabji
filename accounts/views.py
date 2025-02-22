@@ -5,24 +5,39 @@ from django.contrib import messages
 from accounts.models import CustomUser
 from django.contrib.auth import authenticate,login,logout 
 from django.http import HttpResponse
-
+from django.contrib.auth.decorators import login_required
 
 # Create your views here.
 
 
 # For Users authentication
+from django.shortcuts import render, redirect
+from django.contrib.auth import authenticate, login
+from django.contrib import messages
+
 def login_view(request):
     if request.method == 'POST':
         username = request.POST.get('username')
         password = request.POST.get('password')
-        user = authenticate(username = username,password=password)
+        user = authenticate(username=username, password=password)
+
         if user is not None:
-            login(request,user)
-            return redirect('index')
+            login(request, user)
+            
+            # Redirect based on user role
+            if user.is_farmer:
+                return redirect('farmer_dashboard')  # Redirect farmers
+            elif user.is_delivery_person:
+                return redirect('delivery_dashboard')  # Redirect delivery personnel
+            else:
+                return redirect('index')  # Redirect regular users
+        
         else:
-            messages.error(request,'Username or Password is incorrect')
+            messages.error(request, 'Username or Password is incorrect')
             return redirect('login')
-    return render(request,'account/login.html')
+
+    return render(request, 'account/login.html')
+
 
 def register(request):
     if request.method == 'POST':
@@ -61,6 +76,7 @@ def logout_view(request):
 
 
 # for Farmer site.
+@login_required
 def farmer_dashboard(request):
     products = Product.objects.all()
     orders = Order.objects.filter(status='P')
@@ -79,10 +95,11 @@ def farmer_dashboard(request):
     }
     return render(request,'farmer/farmer_dashboard.html', context)
 
-
+@login_required
 def farmer_profile(request):
     return render(request,'farmer/farmer_profile.html')
 
+@login_required
 def add_products(request):
     if request.method == "POST":
         name = request.POST.get('name')
@@ -104,6 +121,7 @@ def add_products(request):
         return redirect('farmer_dashboard')
     return render(request,'farmer/add_products.html')
 
+@login_required
 def edit_product(request,id):
     product = Product.objects.get(id=id)
     if request.method == "POST":
@@ -126,6 +144,7 @@ def edit_product(request,id):
 def farmer_products(request):
     return render(request,'farmer/farmer_products.html')
 
+@login_required
 def new_order(request):
     orders = Order.objects.filter(status='P')
     deliverers = CustomUser.objects.filter(is_delivery_person=True)
@@ -140,6 +159,7 @@ def new_order(request):
     }
     return render(request,'farmer/new_order.html',context)
 
+@login_required
 def drop_delivery(request):
     orders = Order.objects.filter(status='OD')
     for order in orders:
@@ -152,7 +172,7 @@ def drop_delivery(request):
     }
     return render(request,'farmer/drop_delivery.html',context)
 
-
+@login_required
 def assign_deliverer(request,id):
     if request.method == 'POST':
         order = Order.objects.get(id=id)

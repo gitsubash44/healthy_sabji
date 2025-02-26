@@ -5,6 +5,16 @@
         <!-- start user profile  -->
         <div class="container-fluid hero-header py-3 ">
             <div class="container py-5">
+        {% if messages %}
+            <div class="container mt-4">
+                {% for message in messages %}
+                <div class="alert alert-{{message.tags}} alert-dismissible fade show" role="alert">
+                    {{ message }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+                {% endfor %}
+            </div>
+        {% endif %}
                 <h4 class="fw-bold mb-4 ">
                     Account Settings
                 </h4>
@@ -25,62 +35,65 @@
                                 <div class="tab-pane fade show active" id="account-general">
                                     <h2 id="exampleModalLabel py-5">Your Profile</h2>
                                     <div class="d-flex align-items-center mb-3">
-                                        <img src="https://bootdey.com/img/Content/avatar/avatar1.png" alt class="rounded-circle me-3" width="80">
+                                        <img src="{{request.user.photo.url}}" alt class="rounded-circle me-3" width="80">
                                         <div>
-                                            <label class="btn btn-outline-primary">
-                                                Upload New Photo
-                                                <input type="file" class="form-control d-none">
-                                            </label>
+                                            <form action="{% url 'upload_photo' %}" method="post" enctype="multipart/form-data">
+                                                {% csrf_token %}
+                                                <label class="btn btn-outline-primary">
+                                                    Upload New Photo
+                                                    <input type="file"  name="photo" accept="image" class="form-control d-none" onchange="this.form.submit()">
+                                                </label>
+                                            </form>
                                             <small class="d-block text-muted mt-1">Allowed JPG, GIF or PNG. Max size of 12MB</small>
                                         </div>
                                     </div>
                                     <hr>
                                     <div class="mb-3">
                                         <label class="form-label">User ID</label>
-                                        <input type="text" class="form-control" value="">
+                                        <input type="text" class="form-control" readonly value="{{request.user.id}}">
                                     </div>
                                     <div class="mb-3">
                                         <label class="form-label">Name</label>
-                                        <input type="text" class="form-control" value="">
+                                        <input type="text" class="form-control" name="name" value="{{request.user.first_name}} {{request.user.last_name}}">
                                     </div>
                                     <div class="mb-3">
                                         <label class="form-label">Address</label>
-                                        <input type="text" class="form-control" value="">
+                                        <input type="text" class="form-control" name="address" value="{{request.user.address}}">
                                     </div>
-                                    <div class="mb-3">
-                                        <label class="form-label">E-mail</label>
-                                        <input type="text" class="form-control" value="">
-                                    </div>
+
                                     <div class="mb-3">
                                         <label class="form-label">Number</label>
-                                        <input type="text" class="form-control" value="+977 ">
+                                        <input type="text" class="form-control" name="phone" value="{{request.user.phone_number}}">
                                     </div>
                                     <div class="text-end mt-3">
-                                        <button type="button" class="btn btn-primary">Save Changes</button>
-                                        <button type="button" class="btn btn-secondary">Cancel</button>
+                                        <button type="submit" class="btn btn-primary">Save Changes</button>
+                                        <button type="reset" class="btn btn-secondary">Cancel</button>
                                     </div>
+                                </form>
                                 </div>
                                 
                                 <!-- Change Password Tab -->
                                 <div class="tab-pane fade" id="account-change-password">
                                     <h1 class="mb-4">Change Your Password</h1>
-    
+                                    <form action="{% url 'change_password' %}" method="post">
+                                        {% csrf_token %}
                                     <div class="mb-3">
                                         <label class="form-label">Current Password</label>
-                                        <input type="password" class="form-control">
+                                        <input type="password" class="form-control" name="old_password">
                                     </div>
                                     <div class="mb-3">
                                         <label class="form-label">New Password</label>
-                                        <input type="password" class="form-control">
+                                        <input type="password" class="form-control" name="new_password1">
                                     </div>
                                     <div class="mb-3">
                                         <label class="form-label">Repeat New Password</label>
-                                        <input type="password" class="form-control">
+                                        <input type="password" class="form-control" name="new_password2">
                                     </div>
                                     <div class="text-end mt-3">
-                                        <button type="button" class="btn btn-primary">Save Changes</button>
-                                        <button type="button" class="btn btn-secondary">Cancel</button>
+                                        <button type="submit" class="btn btn-primary">Save Changes</button>
+                                        <button type="reset" class="btn btn-secondary">Cancel</button>
                                     </div>
+                                </form>
                                 </div>
             
                                 <!-- Order Table -->
@@ -92,15 +105,32 @@
                                             <div class="table-responsive">
                                               <table class="table table-bordered table-hover">
                                                 <thead class="table-dark">
-                                                  <tr>
-                                                    <th>Order ID</th>
-                                                    <th>Product</th>
-                                                    <th>Quantity</th>
-                                                    <th>Total Price</th>
-                                                    <th>Status</th>
-                                                    <th>Estimated Delivery</th>
-                                                    <th>Actions</th>
-                                                  </tr>
+                                                    {% for order in my_orders %}
+                                                    {% for item in order.items.all %}
+                                                    <tr>
+                                                        <td>{{ order.id }}</td>
+                                                        <td>{{ item.product.name }}</td>
+                                                        <td>{{ item.quantity }}</td>
+                                                        <td>{{ item.price }}</td>
+                                                        <td>
+                                                        <span class="badge bg-warning text-dark">
+                                                            {% if order.status == "OD" %}
+                                                            Out for Delivery
+                                                            {% elif order.status == "P" %}
+                                                            Pending
+                                                            {% elif order.status == "D" %}
+                                                            Delivered
+                                                            {% endif %}
+                                                        </span>
+                                                        </td>
+                                                        <td class="d-flex gap-2">
+                                                            <a href="{% url 'order_track' order.id %}"><button class="btn btn-primary btn-sm">View</button></a>
+                                                            <a href="{% url 'cancel_order' order.id  %}"><button class="btn btn-danger btn-sm">Cancel</button></a>
+                                                        </td>
+                                                      </tr>
+                                                    {% endfor %}
+                                                    
+                                                    {% endfor %}
                                                 </thead>
                                                 <tbody>
                                                   <!-- Example Order Row -->

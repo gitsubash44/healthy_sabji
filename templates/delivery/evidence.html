@@ -1,69 +1,10 @@
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <meta charset="UTF-8" />
-    <!-- Icon Font Stylesheet -->
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css"/>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
-
-    <!-- bootstrap css link -->
-    <link rel="stylesheet" href="/static/css/bootstrap.css">
-    <link rel="stylesheet" href="/static/css/bootstrap.min.css">
-
-    <!-- Custom Css Link -->
-    <link rel="stylesheet" href="/static/css/delivery.css">
-    <title>Delivery Dashboard</title>
-</head>
-<body>
-    <div class="d-flex" id="wrapper">
-        <!-- Sidebar -->
-        <div class="bg-white" id="sidebar-wrapper">
-            <div class="sidebar-heading text-center py-4 primary-text fs-4 fw-bold text-uppercase border-bottom">Healthy Sabji</div>
-            <div class="list-group list-group-flush my-3">
-                <a href="{% url 'delivery_dashboard' %}" class="list-group-item list-group-item-action bg-transparent second-text fw-bold"><i
-                        class="fas fa-tachometer-alt me-2"></i>Dashboard</a>
-                <a href="{% url 'drop' %}" class="list-group-item list-group-item-action bg-transparent second-text fw-bold"><i
-                        class="fas fa-gift me-2"></i>Drop Order</a>
-                <a href="#" class="list-group-item list-group-item-action bg-transparent second-text active"><i
-                        class="fas fa-eye me-2"></i>View Evidence</a>
-                <a href="#" class="list-group-item list-group-item-action bg-transparent text-danger fw-bold"><i
-                        class="fas fa-power-off me-2"></i>Logout</a>
-            </div>
-        </div>
-        <!-- /#sidebar-wrapper -->
-
-        <!-- Page Content -->
-        <div id="page-content-wrapper">
-            <nav class="navbar navbar-expand-lg navbar-light bg-transparent py-4 px-4">
-                <div class="d-flex align-items-center">
-                    <i class="fas fa-align-left primary-text fs-4 me-3" id="menu-toggle"></i>
-                    <h2 class="fs-2 m-0">Dashboard</h2>
-                </div>
-
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
-                    data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
-                    aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-
-                <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                    <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
-                        <li class="nav-item dropdown">
-                            <a class="fw-bold h4" href="#">
-                                <i class="fas fa-user me-2"></i>Subash Dhami
-                            </a>
-                        </li>
-                    </ul>
-                </div>
-            </nav>
-            
-            
+{% extends "delivery/base.html" %}
+{% block content %}
 
             <div class="container-fluid my-2">
                 <div class="card shadow-lg">
                     <div class="card-header bg-secondary text-white">
-                        <h5 class="mb-0 text-primary text-center">View Evidence</h5>
+                        <h5 class="mb-0 text-light text-center">View Evidence</h5>
                     </div>
                     <div class="card-body">
                         <table class="table table-bordered">
@@ -71,17 +12,20 @@
                                 <tr>
                                     <th>#</th>
                                     <th>Order ID</th>
+                                    <th>Payment amount</th>
                                     <th>Time</th>
                                     <th>Evidence Image</th>
                                 </tr>
                             </thead>
                             <tbody>
+                                {% for order in orders %}
                                 <tr>
-                                    <td>1</td>
-                                    <td>12345</td>
-                                    <td>December 25, 2024, 10:00 AM</td>
+                                    <td>{{forloop.counter}}</td>
+                                    <td>{{order.id}}</td>
+                                    <td>{{order.payment.amount}}</td>
+                                    <td>{{order.created_at}}</td>
                                     <td class="text-center">
-                                        <img src="/static/img/fruite-item-5.jpg" alt="Evidence Image" class="img-fluid border" style="max-height: 80px; border-radius: 8px;" data-bs-toggle="modal" data-bs-target="#imageModal">
+                                        <img src="{{order.evidence.url}}" alt="Evidence Image" class="img-fluid border" style="max-height: 80px; border-radius: 8px;" data-bs-toggle="modal" data-bs-target="#imageModal">
                                     </td>
                                     
                                     <!-- Modal -->
@@ -93,34 +37,17 @@
                                                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                                 </div>
                                                 <div class="modal-body">
-                                                    <img src="/static/img/fruite-item-5.jpg" alt="Full Evidence Image" class="img-fluid">
+                                                    <img src="{{order.evidence.url}}" alt="Full Evidence Image" class="img-fluid">
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                     
                                 </tr>
+                                {% endfor %}
                             </tbody>
                         </table>
                     </div>
                 </div>
             </div>
-            
-            
-            
-        </div>
-    </div>
-
-    <script>
-        var el = document.getElementById("wrapper");
-        var toggleButton = document.getElementById("menu-toggle");
-
-        toggleButton.onclick = function () {
-            el.classList.toggle("toggled");
-        };
-    </script>
-
-    <!-- Bootstrap js link -->
-    <script src="/static/js/bootstrap.js"></script>
-</body>
-</html>
+            {% endblock %}

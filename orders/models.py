@@ -1,4 +1,5 @@
 from django.db import models
+import datetime as dt
 
 
 order_choices = (
@@ -15,6 +16,7 @@ class Order(models.Model):
     status = models.CharField(max_length=10,choices=order_choices)
     payment = models.ForeignKey('Payment', on_delete=models.CASCADE, null=True, blank=True)
     evidence = models.ImageField(upload_to='evidence/',null=True, blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return self.user.email

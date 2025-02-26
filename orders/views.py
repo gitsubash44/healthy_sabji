@@ -6,6 +6,7 @@ from esewa.signature import verify_signature
 from django.contrib import messages
 import uuid
 import base64
+import datetime as dt
 from django.core.exceptions import PermissionDenied
 from django.contrib.auth.decorators import login_required
 
@@ -35,8 +36,21 @@ def evidence(request,order_id):
         image = request.FILES.get('evidence')
         order = Order.objects.get(id=order_id)
         order.evidence = image
+        order.status = 'D'
         order.save()
         return redirect('delivery_dashboard')
+    return redirect('delivery_dashboard')
+
+@login_required
+def cancel_order(request,order_id):
+    # Comment this
+    if dt.datetime.now().hour >= 12:
+        messages.warning(request, f'Sorry, Orders can only cancelled before 12 PM.,current time is {dt.datetime.now().hour}:{dt.datetime.now().minute}')
+        return redirect('product')
+    
+
+    order = Order.objects.get(id=order_id)
+    order.delete()
     return redirect('delivery_dashboard')
 
 @login_required
@@ -45,7 +59,7 @@ def evidences(request):
     context = {
         'orders':orders
         }
-    return render(request,'delivery/evidences.html',context)
+    return render(request,'delivery/evidence.html',context)
 
 def orderhistory(request):
     return render(request,'user/orderhistory.html')
@@ -53,11 +67,14 @@ def orderhistory(request):
 def all_order_history(request):
     return render(request,'user/all_order_history.html')
 
-def order_track(request):
+def order_track(request,order_id):
     return render(request,'user/order_track.html')
 
 def confirm_order(request):
     # Extract data from the Post request
+    if dt.datetime.now().hour >= 10:
+        messages.warning(request, f'Sorry, Orders are only accepted before 10 AM.,current time is {dt.datetime.now().hour}:{dt.datetime.now().minute}')
+        return redirect('product')
     if request.method == "POST":
         first_name = request.POST.get('first_name')
         last_name = request.POST.get('last_name')

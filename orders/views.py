@@ -28,7 +28,11 @@ def pickup(request):
     return render(request,'delivery/pickup.html')
 
 def drop(request):
-    return render(request,'delivery/drop.html')
+    orders = Order.objects.filter(status='OD',delivery_person=request.user)
+    context = {
+        'orders':orders
+        }
+    return render(request,'delivery/drop.html', context)
 
 @login_required
 def evidence(request,order_id):
@@ -44,9 +48,9 @@ def evidence(request,order_id):
 @login_required
 def cancel_order(request,order_id):
     # Comment this
-    if dt.datetime.now().hour >= 12:
-        messages.warning(request, f'Sorry, Orders can only cancelled before 12 PM.,current time is {dt.datetime.now().hour}:{dt.datetime.now().minute}')
-        return redirect('product')
+    # if dt.datetime.now().hour >= 12:
+    #     messages.warning(request, f'Sorry, Orders can only cancelled before 12 PM.,current time is {dt.datetime.now().hour}:{dt.datetime.now().minute}')
+    #     return redirect('product')
     
 
     order = Order.objects.get(id=order_id)
@@ -72,9 +76,10 @@ def order_track(request,order_id):
 
 def confirm_order(request):
     # Extract data from the Post request
-    if dt.datetime.now().hour >= 10:
-        messages.warning(request, f'Sorry, Orders are only accepted before 10 AM.,current time is {dt.datetime.now().hour}:{dt.datetime.now().minute}')
-        return redirect('product')
+    # if dt.datetime.now().hour >= 10:
+    #     messages.warning(request, f'Sorry, Orders are only accepted before 10 AM.,current time is {dt.datetime.now().hour}:{dt.datetime.now().minute}')
+    #     return redirect('product')
+    
     if request.method == "POST":
         first_name = request.POST.get('first_name')
         last_name = request.POST.get('last_name')
@@ -148,6 +153,10 @@ def confirm_order(request):
 #         return render(request,'order/failure.html')
 
 def success(request,id):
+    carts = Cart.objects.filter(user=request.user,active=True)
+    for cart in carts:
+        cart.active = False
+        cart.save()
     data = request.GET.get('data')
     is_valid, response = verify_signature(data)
     if is_valid:

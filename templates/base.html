@@ -35,6 +35,13 @@
                 </small>
             </div>
             <div class="top-link gap-2 pe-2">
+                {% if request.user.is_farmer %}
+                <a href="{% url 'farmer_dashboard' %}" class="btn btn-success border-2 border-success px-3 text-primary"><small class="text-white mx-2">Farmer dashboard</small></a>
+                {% endif %}
+                {% if request.user.is_delivery_person %}
+                <a href="{% url 'delivery_dashboard' %}" class="btn btn-danger border-2 border-success px-3 text-primary"><small class="text-white mx-2">Delivery dashboard</small></a>
+                {% endif %}
+
                 {% if request.user.is_authenticated %}
                 <form action="{% url 'logout' %}" method="post">
                     {% csrf_token %}
@@ -50,15 +57,15 @@
     </div>
     <div class="container px-0">
         <nav class="navbar navbar-light bg-white navbar-expand-xl">
-            <a href="#" class="navbar-brand">
-                <img src="/static/img/Healthy.png" alt="Logo" style="height: 60px;">
+            <a href="/" class="navbar-brand">
+                <img src="{% static 'img/Healthy.png' %}" alt="Logo" style="height: 60px;">
             </a>
             <button class="navbar-toggler py-2 px-3" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
                 <span class="fa fa-bars text-primary"></span>
             </button>
             <div class="collapse navbar-collapse bg-white" id="navbarCollapse">
                 <div class="navbar-nav mx-auto">
-                    <a href="{% url 'index' %}" class="nav-item nav-link active">Home</a>
+                    <a href="{% url 'index' %}" class="nav-item nav-link">Home</a>
                     <a href="{% url 'about' %}" class="nav-item nav-link">About Us</a>
                     <a href="{% url 'product' %}" class="nav-item nav-link">Product</a>
                     {% if product %}
@@ -135,7 +142,7 @@
                     <div class="row g-4">
                         <div class="col-auto">
                             <a href="#">
-                                <img src="/static/img/Healthy.png" alt="Fruitables Logo" style="height: 70px; width: 70;">    
+                                <img src="{% static '/img/Healthy.png' %}" alt="Fruitables Logo" style="height: 70px; width: 70;">    
                             </a>
                         </div>
                         <div class="col-lg-8">
@@ -211,13 +218,20 @@
         <a href="#" class="btn btn-primary border-3 border-primary rounded-circle back-to-top"><i class="fa fa-arrow-up"></i></a>   
 
         
-   
     <!-- Template Javascript -->
     
-   
+    <script>
+        navlinks = document.querySelectorAll('.nav-link');
+        navlinks.forEach(navlink => {
+            if (navlink.href == window.location.href) {
+                navlink.classList.add('active');
+            }
+        });
+    </script>
     
     
 <!-- Bootstrap js link -->
+
     <script src="/static/js/bootstrap.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/htmx/2.0.4/htmx.min.js" integrity="sha512-2kIcAizYXhIn8TzUvqzEDZNuDZ+aW7yE/+f1HJHXFjQcGNfv1kqzJSTBRBSlOgp6B/KZsz1K0a3ZTqP9dnxioQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 </body>

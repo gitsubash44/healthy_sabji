@@ -140,6 +140,21 @@ def edit_product(request,id):
     }
     return render(request,'farmer/add_products.html',context)
 
+@login_required
+def delete_product(request,id):
+    if request.method == "POST":
+        print(request.user.is_farmer)
+        print(request.user.is_superuser)
+        if request.user.is_farmer or request.user.is_superuser:
+            product = Product.objects.get(id=id)
+            product.delete()
+            messages.success(request,'Product deleted successfully')
+        else:
+            messages.error(request,'You are not authorized to delete this product',extra_tags='danger')
+        
+    next = request.META['HTTP_REFERER']
+    return redirect(next)
+
 
 def farmer_products(request):
     return render(request,'farmer/farmer_products.html')

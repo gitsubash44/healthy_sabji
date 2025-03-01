@@ -3,7 +3,7 @@
 
         <div class="container-fluid">
             <div class="row">
-                <h3 class="fs-4 mb-3">Orders Ready for Delivery</h3>
+                <h3 class="fs-4 mb-3">Orders to be delivered</h3>
                 <div class="col">
                     <table class="table table-bordered text-center">
                         <thead class="table-primary">
@@ -13,8 +13,8 @@
                                 <th scope="col">Customer Name</th>
                                 <th scope="col">Products</th>
                                 <th scope="col">Total Amount</th>
-                                <th scope="col">Drop-off Date</th>
-                                <th scope="col">Action</th>
+                                <th scope="col">Order Date</th>
+                                <th scope="col">Status</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -32,7 +32,7 @@
                                 <td>Rs {{order.payment.amount}}</td>
                                 <td>{{order.payment.payment_date}}</td>
                                 <td>
-                                    <button class="btn btn-secondary rounded-pill text-white">Droped</button>
+                                    <button class="btn btn-secondary rounded-pill text-white">To be Delivered</button>
                                 </td>
                             </tr>
                             {% endfor %}

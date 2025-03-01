@@ -6,6 +6,7 @@ class Cart(models.Model):
     user = models.ForeignKey('accounts.CustomUser', on_delete=models.CASCADE, related_name='cart_items')
     product = models.ForeignKey('sabji.Product', on_delete=models.CASCADE)
     quantity = models.PositiveIntegerField()
+    active = models.BooleanField(default=True)
     
     def __str__(self):
         return self.product.name

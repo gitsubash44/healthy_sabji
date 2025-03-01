@@ -103,15 +103,23 @@
                                         
                                             <!-- Orders Table -->
                                             <div class="table-responsive">
-                                              <table class="table table-bordered table-hover">
-                                                <thead class="table-dark">
-                                                    {% for order in my_orders %}
-                                                    {% for item in order.items.all %}
+                                            <table class="table table-bordered table-hover">
+                                                <tbody>
+                                                    {% for order in current_orders %}
+                                                    
                                                     <tr>
                                                         <td>{{ order.id }}</td>
-                                                        <td>{{ item.product.name }}</td>
-                                                        <td>{{ item.quantity }}</td>
-                                                        <td>{{ item.price }}</td>
+                                                        <td>
+                                                        {% for item in order.items.all %}
+                                                            {{ item.product.name }}
+                                                            {% if not forloop.last %}
+                                                            ,
+
+                                                            {% endif %}
+                                                        {% endfor %}
+                                                        </td>
+                                                        <td>{{ order.items.count }}</td>
+                                                        <td>{{ order.payment.amount }}</td>
                                                         <td>
                                                         <span class="badge bg-warning text-dark">
                                                             {% if order.status == "OD" %}
@@ -127,48 +135,18 @@
                                                             <a href="{% url 'order_track' order.id %}"><button class="btn btn-primary btn-sm">View</button></a>
                                                             <a href="{% url 'cancel_order' order.id  %}"><button class="btn btn-danger btn-sm">Cancel</button></a>
                                                         </td>
-                                                      </tr>
-                                                    {% endfor %}
+                                                    </tr>
                                                     
+                                                    {% empty %}
+                                                    <tr>
+                                                        <td colspan="6" class="text-center">No Orders Found</td>
+                                                    </tr>
                                                     {% endfor %}
-                                                </thead>
-                                                <tbody>
-                                                  <!-- Example Order Row -->
-                                                  <tr>
-                                                    <td>12345</td>
-                                                    <td>Fresh Tomatoes</td>
-                                                    <td>5 kg</td>
-                                                    <td>$25.00</td>
-                                                    <td>
-                                                      <span class="badge bg-warning text-dark">Processing</span>
-                                                    </td>
-                                                    <td>Nov 6, 2024</td>
-                                                    <td class="d-flex gap-2">
-                                                        <a href="{% url 'order_track' %}"><button class="btn btn-primary btn-sm">View</button></a>
-                                                        <a href=""><button class="btn btn-danger btn-sm">Cancel</button></a>
-                                                    </td>
-                                                  </tr>
-                                                  <!-- Additional Orders -->
-                                                  <tr>
-                                                    <td>12346</td>
-                                                    <td>Organic Lettuce</td>
-                                                    <td>3 kg</td>
-                                                    <td>$18.00</td>
-                                                    <td>
-                                                      <span class="badge bg-success">Shipped</span>
-                                                    </td>
-                                                    <td>Nov 5, 2024</td>
-                                                    <td class="d-flex gap-2">
-                                                        <a href="{% url 'order_track' %}"><button class="btn btn-primary btn-sm">View</button></a>
-                                                        <a href=""><button class="btn btn-danger btn-sm">Cancel</button></a>
-                                                    </td>
-                                                  </tr>
-                                                  <!-- More rows can be added here dynamically with backend data -->
                                                 </tbody>
-                                              </table>
+                                            </table>
                                             </div>
-                                          </div>
                                         </div>
+                                    </div>
                                     
             
             

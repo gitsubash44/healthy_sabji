@@ -67,7 +67,7 @@ def decrease_cart(request, id):
 
 
 def cart(request):
-    carts = Cart.objects.filter(user=request.user)
+    carts = Cart.objects.filter(user=request.user,active=True)
     total = 0
     for cart in carts:
         total += cart.product.price * cart.quantity
@@ -78,7 +78,7 @@ def cart(request):
     return render(request,'cart/cart.html',context)
 
 def checkout(request):
-    carts = Cart.objects.filter(user=request.user)
+    carts = Cart.objects.filter(user=request.user,active=True)
     total = 0
     for cart in carts:
         total += cart.product.price * cart.quantity

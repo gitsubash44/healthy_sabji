@@ -21,7 +21,9 @@
     <div class="d-flex" id="wrapper">
         <!-- Sidebar -->
         <div class="bg-white" id="sidebar-wrapper">
-            <div class="sidebar-heading text-center py-4 primary-text fs-4 fw-bold text-uppercase border-bottom">Healthy Sabji</div>
+            <a href="/">
+                <div class="sidebar-heading text-center py-4 primary-text fs-4 fw-bold text-uppercase border-bottom">Healthy Sabji</div>
+            </a>            
             <div class="list-group list-group-flush my-3">
                 <a href="{% url 'delivery_dashboard' %}" class="list-group-item list-group-item-action bg-transparent second-text  fw-bold"><i
                         class="fas fa-tachometer-alt me-2"></i>Dashboard</a>
@@ -50,7 +52,7 @@
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
                         <li class="nav-item dropdown">
-                            <a class="fw-bold h4" href="#">
+                            <a class="fw-bold h4" href="{% url 'user_profile' %}">
                                 <i class="fas fa-user me-2"></i>{{request.user.username}}
                             </a>
                         </li>

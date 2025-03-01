@@ -95,10 +95,10 @@
                                             <h2 class="text-center mb-4">Current Orders</h2>
                                         
                                             <!-- Orders Table -->
-                                            <div class="table-responsive">
-                                              <table class="table table-bordered table-hover">
+                                        <div class="table-responsive">
+                                            <table class="table table-bordered table-hover">
                                                 <thead class="table-dark">
-                                                  <tr>
+                                                <tr>
                                                     <th>Order ID</th>
                                                     <th>Product</th>
                                                     <th>Quantity</th>
@@ -106,45 +106,32 @@
                                                     <th>Status</th>
                                                     <th>Estimated Delivery</th>
                                                     <th>Actions</th>
-                                                  </tr>
+                                                </tr>
                                                 </thead>
                                                 <tbody>
-                                                  <!-- Example Order Row -->
-                                                  <tr>
+                                                <!-- Example Order Row -->
+                                                {% for order in orders %}
+                                                <tr>
                                                     <td>12345</td>
                                                     <td>Fresh Tomatoes</td>
                                                     <td>5 kg</td>
                                                     <td>$25.00</td>
                                                     <td>
-                                                      <span class="badge bg-warning text-dark">Processing</span>
+                                                    <span class="badge bg-warning text-dark">Processing</span>
                                                     </td>
                                                     <td>Nov 6, 2024</td>
                                                     <td class="d-flex gap-2">
-                                                        <a href="{% url 'order_track' %}"><button class="btn btn-primary btn-sm">View</button></a>
+                                                        <a href="{% url 'order_track' order.id %}"><button class="btn btn-primary btn-sm">View</button></a>
                                                         <a href=""><button class="btn btn-danger btn-sm">Cancel</button></a>
                                                     </td>
-                                                  </tr>
-                                                  <!-- Additional Orders -->
-                                                  <tr>
-                                                    <td>12346</td>
-                                                    <td>Organic Lettuce</td>
-                                                    <td>3 kg</td>
-                                                    <td>$18.00</td>
-                                                    <td>
-                                                      <span class="badge bg-success">Shipped</span>
-                                                    </td>
-                                                    <td>Nov 5, 2024</td>
-                                                    <td class="d-flex gap-2">
-                                                        <a href="{% url 'order_track' %}"><button class="btn btn-primary btn-sm">View</button></a>
-                                                        <a href=""><button class="btn btn-danger btn-sm">Cancel</button></a>
-                                                    </td>
-                                                  </tr>
-                                                  <!-- More rows can be added here dynamically with backend data -->
+                                                </tr>
+                                                {% endfor %}
+                                                <!-- Additional Orders -->
                                                 </tbody>
-                                              </table>
+                                            </table>
                                             </div>
-                                          </div>
                                         </div>
+                                    </div>
                                     
             
             

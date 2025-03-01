@@ -21,7 +21,9 @@
     <div class="d-flex" id="wrapper">
         <!-- Sidebar -->
         <div class="bg-white" id="sidebar-wrapper">
-            <div class="sidebar-heading text-center py-4 primary-text fs-4 fw-bold text-uppercase border-bottom">Healthy Sabji</div>
+            <a href="/">
+                <div class="sidebar-heading text-center py-4 primary-text fs-4 fw-bold text-uppercase border-bottom">Healthy Sabji</div>
+            </a>            
             <div class="list-group list-group-flush my-3">
                 <a href="{% url 'farmer_dashboard' %}" class="list-group-item list-group-item-action bg-transparent second-text fw-bold"><i
                         class="fas fa-tachometer-alt me-2"></i>Dashboard</a>
@@ -30,7 +32,7 @@
                 <a href="{% url 'new_order' %}" class="list-group-item list-group-item-action bg-transparent second-text fw-bold"><i
                         class="fas fa-gift me-2"></i>New Orders</a>
                 <a href="{% url 'drop_delivery' %}" class="list-group-item list-group-item-action bg-transparent second-text fw-bold"><i
-                        class="fas fa-gift me-2"></i>Drop to Delivery</a>
+                        class="fas fa-gift me-2"></i>To be Delivered</a>
                 <a href="#" class="list-group-item list-group-item-action bg-transparent text-danger fw-bold"><i
                         class="fas fa-power-off me-2"></i>Logout</a>
             </div>
@@ -54,8 +56,8 @@
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
                         <li class="nav-item dropdown">
-                            <a class="fw-bold h4" href="{% url 'farmer_profile' %}">
-                                <i class="fas fa-user me-2"></i>Subash Dhami
+                            <a class="fw-bold h4" href="{% url 'user_profile' %}">
+                                <i class="fas fa-user me-2"></i> {{request.user.username}} 
                             </a>
                         </li>
                     </ul>

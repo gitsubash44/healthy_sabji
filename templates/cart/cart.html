@@ -33,7 +33,7 @@
                           </tr>
                         </thead>
                         <tbody>
-                            {% for cart in request.user.cart_items.all %}
+                            {% for cart in carts %}
                             <tr>
                                 <th scope="row">
                                     <div class="d-flex align-items-center">
@@ -78,7 +78,10 @@
                                         <i class="fa fa-times text-danger"></i>
                                     </button>
                                 </td>
-                            
+                            </tr>
+                            {% empty %}
+                            <tr>
+                                <td colspan="6" class="text-center">No items in the cart</td>
                             </tr>
                             {% endfor %}
                         </tbody>

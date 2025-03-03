@@ -7,6 +7,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import PasswordChangeForm
 from django.http import HttpResponse
 from orders.models import Order
+from cart.models import *
 from django.contrib.auth import update_session_auth_hash  
 
 
@@ -19,7 +20,7 @@ def user_manage(request):
 
 # For User views Site.
 def index(request):
-    return render(request, 'user/index.html')
+    return render(request, 'user/index.html',)
 
 
 def about(request):

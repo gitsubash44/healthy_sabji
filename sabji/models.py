@@ -5,6 +5,7 @@ from django.urls import reverse
 class Product(models.Model):
     name = models.CharField(max_length=100)
     price = models.IntegerField(help_text='Price per kilo')
+    pre_discount_price = models.IntegerField(blank=True, null=True)
     description = models.TextField()
     image = models.ImageField(upload_to='product_images/')
     quantity = models.IntegerField()
@@ -35,6 +36,7 @@ class Product(models.Model):
 
 class Category(models.Model):
     name = models.CharField(max_length=100)
+    image = models.ImageField(upload_to='category_images/', blank=True, null=True)
 
     def __str__(self):
         return self.name

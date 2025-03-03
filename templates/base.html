@@ -68,6 +68,7 @@
                     <a href="{% url 'index' %}" class="nav-item nav-link">Home</a>
                     <a href="{% url 'about' %}" class="nav-item nav-link">About Us</a>
                     <a href="{% url 'product' %}" class="nav-item nav-link">Product</a>
+                    
                     {% if product %}
                     <a href="{% url 'productDetail' product.id %}" class="nav-item nav-link">Product Detail</a>
                     {% else %}

@@ -24,13 +24,16 @@ def login_view(request):
         if user is not None:
             login(request, user)
             
-            # Redirect based on user role
-            if user.is_farmer:
-                return redirect('farmer_dashboard')  # Redirect farmers
-            elif user.is_delivery_person:
-                return redirect('delivery_dashboard')  # Redirect delivery personnel
+            next = request.GET.get('next',None)
+            if next:
+                return redirect(next)
             else:
-                return redirect('index')  # Redirect regular users
+                if user.is_farmer:
+                    return redirect('farmer_dashboard')
+                elif user.is_delivery_person:
+                    return redirect('delivery_dashboard')
+                else:
+                    return redirect('index')
         
         else:
             messages.error(request, 'Username or Password is incorrect')
@@ -60,7 +63,7 @@ def register(request):
             return redirect('register')
         if user_type== 'F':
             farmer = True
-        user = CustomUser.objects.create_user(username=username,email=email,password=password,phone_number=phone_number,address=address,is_farmer=Farmer)
+        user = CustomUser.objects.create_user(username=username.strip(),email=email,password=password,phone_number=phone_number,address=address,is_farmer=Farmer)
         user.save()
         messages.success(request,'Account created successfully')
         return redirect('login')
@@ -104,6 +107,9 @@ def add_products(request):
     if request.method == "POST":
         name = request.POST.get('name')
         price = request.POST.get('price')
+        non_discount_price = request.POST.get('non_discount_price')
+        if non_discount_price == '':
+            non_discount_price = 0
         description = request.POST.get('description')
         image = request.FILES.get('image')
         quantity = request.POST.get('quantity')
@@ -111,6 +117,7 @@ def add_products(request):
         product = Product(
             name = name,
             price = price,
+            pre_discount_price = non_discount_price,
             description = description,
             image = image,
             quantity = quantity,
@@ -128,6 +135,10 @@ def edit_product(request,id):
         product.name = request.POST.get('name')
         product.price = request.POST.get('price')
         product.description = request.POST.get('description')
+        non_discount_price = request.POST.get('non_discount_price')
+        if non_discount_price == '':
+            non_discount_price = 0
+        product.pre_discount_price = non_discount_price
         if request.FILES.get('image'):
             product.image = request.FILES.get('image')
         product.quantity = request.POST.get('quantity')

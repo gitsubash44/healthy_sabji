@@ -24,13 +24,13 @@
               <div class="col-md-12 col-lg-6">
                 <div class="form-item w-100">
                   <label class="form-label my-3">First Name<sup>*</sup></label>
-                  <input type="text" class="form-control" name="first_name" value="{{request.user.first_name}}" />
+                  <input type="text" class="form-control" name="first_name" value="{{request.user.first_name}}"/>
                 </div>
               </div>
               <div class="col-md-12 col-lg-6">
                 <div class="form-item w-100">
                   <label class="form-label my-3">Last Name<sup>*</sup></label>
-                  <input type="text" class="form-control"name="last_name" value="{{request.user.last_name}}" />
+                  <input type="text" class="form-control"name="last_name" value="{{request.user.last_name}}"/>
                 </div>
               </div>
             </div>
@@ -86,7 +86,7 @@
                 </tr>
               </thead>
               <tbody>
-                {% for cart in request.user.cart_items.all %}
+                {% for cart in carts  %}
                 <tr>
                   <th scope="row">
                     <div class="d-flex align-items-center mt-2">

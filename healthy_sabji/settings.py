@@ -71,6 +71,8 @@ TEMPLATES = [
                 'django.contrib.messages.context_processors.messages',
                 'sabji.processors.productprocessor',
                 'sabji.processors.categoryprocessor',
+                'sabji.processors.discountprocessor',
+                'sabji.processors.cartprocessor',
             ],
         },
     },

@@ -66,14 +66,13 @@ def decrease_cart(request, id):
 
 def cart(request):
     carts = Cart.objects.filter(user=request.user,active=True)
-    print("Cart Items:", carts) 
     total = 0
     for cart in carts:
         total += cart.product.price * cart.quantity
     context = {
         'total': total,
         'shipping': 00,
-        'cart': carts
+        'carts': carts
     }
     return render(request,'cart/cart.html',context)
 

@@ -167,7 +167,7 @@
                           </div>
                           <div class="p-4 border border-secondary border-top-0 rounded-bottom">
                             <h4>{{ product.name }}</h4>
-                            <p>{{ product.description }}</p>
+                            <p>{{ product.description|truncatechars:155 }}</p>
                             <div class="d-flex justify-content-between flex-lg-wrap">
                               <p class="text-dark fs-5 fw-bold mb-0">Nrs. {{ product.price }} / kg</p>
                               <a href="#" class="btn border border-secondary rounded-pill px-3 text-primary">
@@ -201,10 +201,13 @@
                               <p>{{ product.description|truncatechars:155 }}</p>
                               <div class="d-flex justify-content-between flex-lg-wrap">
                                 <p class="text-dark fs-5 fw-bold mb-0">Nrs. {{ product.price }} / kg</p>
-                                <a href="#" class="btn border border-secondary rounded-pill px-3 text-primary">
-                                  <i class="fa fa-shopping-bag me-2 text-primary"></i>
-                                  Add to cart
-                                </a>
+                                <a href="#" hx-get="{% url 'add_to_cart' product.id 1 %}"
+                                hx-target="#cartCount"
+                                hx-swap="outerHTML"
+                                hx-trigger="click"
+                                class="btn border border-secondary rounded-pill px-3 text-primary">
+                                <i class="fa fa-shopping-bag me-2 text-primary"></i>
+                                Add to cart</a>
                               </div>
                             </div>
                           </div>

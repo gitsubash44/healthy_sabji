@@ -1,5 +1,7 @@
 from .models import Product, Category
+from orders.models import OrderItem
 
+from django.db.models import Sum
 
 def productprocessor(request):
     products = Product.objects.filter(quantity__gt=0)

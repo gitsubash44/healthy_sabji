@@ -151,7 +151,7 @@ def confirm_order(request):
 #     else:
         
 #         return render(request,'order/failure.html')
-
+@login_required
 def success(request,id):
     carts = Cart.objects.filter(user=request.user,active=True)
     for cart in carts:
@@ -167,7 +167,7 @@ def success(request,id):
     else:
         return render(request,'order/failure.html')
 
-
+@login_required
 def failure(request,id):
     messages.warning(request, 'Payment Failed. If any money was deducted, it will be refunded. Or try contacting Support.')
     return render(request,'order/failure.html')

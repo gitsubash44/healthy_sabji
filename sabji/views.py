@@ -7,9 +7,8 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import PasswordChangeForm
 from django.http import HttpResponse
 from orders.models import Order
-from cart.models import *
+from cart.models import Cart
 from django.contrib.auth import update_session_auth_hash  
-
 
 # For Admin Dashboard
 def admin_dashboard(request):

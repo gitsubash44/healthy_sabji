@@ -1,6 +1,4 @@
 from django.db import models
-import datetime as dt
-
 
 order_choices = (
     ('P', 'Pending'),

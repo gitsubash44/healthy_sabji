@@ -13,18 +13,18 @@
             <button type="submit" class="btn btn-primary border-2 border-secondary py-3 px-4 position-absolute rounded-pill text-white h-100" style="top: 0; right: 25%;">Submit Now</button>
           </div>
         </div>
+
         <div class="col-md-12 col-lg-5">
           <div id="carouselId" class="carousel slide position-relative" data-bs-ride="carousel">
             <div class="carousel-inner" role="listbox">
-              <div class="carousel-item active rounded">
-                <img src="/static/img/hero-img-1.jpg" class="img-fluid w-100 h-100 bg-secondary rounded" alt="First slide" />
-                <a href="#" class="btn px-4 py-2 text-white rounded">Fruits</a>
+              {% for cat in categories %}
+              <div class="carousel-item {% if forloop.first %} active {% endif %} rounded">
+                <img src="{% if cat.image %}{{cat.image.url}}{% endif %}" class="img-fluid w-100 h-100 bg-secondary rounded" alt="{{cat.name}}" />
+                <a href="#" class="btn px-4 py-2 text-white rounded">{{cat.name}}</a>
               </div>
-              <div class="carousel-item rounded">
-                <img src="/static/img/hero-img-2.jpg" class="img-fluid w-100 h-100 rounded" alt="Second slide" />
-                <a href="#" class="btn px-4 py-2 text-white rounded">Vegetables</a>
-              </div>
+              {% endfor %}
             </div>
+
             <button class="carousel-control-prev" type="button" data-bs-target="#carouselId" data-bs-slide="prev">
               <span class="carousel-control-prev-icon" aria-hidden="true"></span>
               <span class="visually-hidden">Previous</span>
@@ -50,8 +50,8 @@
               <i class="fas fa-car-side fa-3x text-white"></i>
             </div>
             <div class="featurs-content text-center">
-              <h5>Free Delivery</h5>
-              <p class="mb-0">Free on order over Rs:1000</p>
+              <h5>Delivery</h5>
+              <p class="mb-0">Custom Delivery Time</p>
             </div>
           </div>
         </div>
@@ -73,7 +73,7 @@
               <i class="fa fa-phone-alt fa-3x text-white"></i>
             </div>
             <div class="featurs-content text-center">
-              <h5>Customer Support</h5>
+              <h5>Support</h5>
               <p class="mb-0">Support every time fast</p>
             </div>
           </div>
@@ -88,45 +88,24 @@
     <div class="container py-5">
       <h1 class="mb-4">Enjoy in Discount</h1>
       <div class="row g-4 justify-content-center">
-        <div class="col-md-6 col-lg-4">
-          <a href="#">
-            <div class="service-item bg-secondary rounded border border-secondary">
-              <img src="/static/img/featur-1.jpg" class="img-fluid rounded-top w-100" alt="" />
-              <div class="px-4 rounded-bottom">
-                <div class="service-content bg-primary text-center p-4 rounded">
-                  <h5 class="text-white">Fresh Apples</h5>
-                  <h3 class="mb-0">20% OFF</h3>
-                </div>
-              </div>
-            </div>
-          </a>
+      {% for product in discounted_products|slice:":3" %}
+      <div class="col-md-6 col-lg-4">
+        <a href="#">
+        <div class="service-item bg-secondary rounded border border-secondary">
+          <img src="{{product.image.url}}" class="img-fluid rounded-top w-100" style="height: 350px; object-fit: cover;" alt="" />
+          <div class="px-4 rounded-bottom">
+          <div class="service-content bg-primary text-center p-3 rounded">
+            <h4 class="text-white">{{ product.name }}</h4>
+            <h4 class="mb-0"> <del style="color:red">{{ product.pre_discount_price }}</del></h4>
+            <h3 class="mb-0"> {{ product.price }}</h3>
+          </div>
+          </div>
         </div>
-        <div class="col-md-6 col-lg-4">
-          <a href="#">
-            <div class="service-item bg-secondary rounded border border-dark">
-              <img src="/static/img/featur-2.jpg" class="img-fluid rounded-top w-100" alt="" />
-              <div class="px-4 rounded-bottom">
-                <div class="service-content bg-primary text-center p-4 rounded">
-                  <h5 class="text-white">Tasty Fruits</h5>
-                  <h3 class="mb-0">Free delivery</h3>
-                </div>
-              </div>
-            </div>
-          </a>
-        </div>
-        <div class="col-md-6 col-lg-4">
-          <a href="#">
-            <div class="service-item bg-secondary rounded border border-primary">
-              <img src="/static/img/featur-3.jpg" class="img-fluid rounded-top w-100" alt="" />
-              <div class="px-4 rounded-bottom">
-                <div class="service-content bg-primary text-center p-4 rounded">
-                  <h5 class="text-white">Exotic Vegitable</h5>
-                  <h3 class="mb-0">Discount 30$</h3>
-                </div>
-              </div>
-            </div>
-          </a>
-        </div>
+        </a>
+      </div>
+      {% empty %}
+        <p class="text-center">No Discounted Products</p>
+      {% endfor %}
       </div>
     </div>
   </div>
@@ -163,17 +142,20 @@
                       <a href="{% url 'productDetail' product.id %}">
                         <div class="rounded position-relative fruite-item">
                           <div class="fruite-img">
-                            <img src="{{ product.image.url }}" class="img-fluid w-100 h-100 rounded-top" alt="" />
+                            <img src="{{ product.image.url }}" class="img-fluid w-100 rounded-top" style="height: 250px; object-fit: cover;" alt="" />
                           </div>
                           <div class="p-4 border border-secondary border-top-0 rounded-bottom">
                             <h4>{{ product.name }}</h4>
-                            <p>{{ product.description|truncatechars:155 }}</p>
+                            <p style="text-align: justify;">{{ product.description|truncatechars:155 }}</p>
                             <div class="d-flex justify-content-between flex-lg-wrap">
-                              <p class="text-dark fs-5 fw-bold mb-0">Nrs. {{ product.price }} / kg</p>
-                              <a href="#" class="btn border border-secondary rounded-pill px-3 text-primary">
-                                <i class="fa fa-shopping-bag me-2 text-primary"></i>
-                                Add to cart
-                              </a>
+                                <p class="text-dark fw-bold mb-0" style="font-size: 18px;">RS. {{ product.price }} / kg</p>
+                              <a href="#"
+                                  hx-get="{% url 'add_to_cart' product.id 1 %}"
+                                  hx-target="#cartCount"
+                                  hx-swap="outerHTML"
+                                  hx-trigger="click"
+                                  class="btn border border-secondary rounded-pill px-3 text-primary"
+                                  ><i class="fa fa-shopping-bag me-2 text-primary"></i>Add to cart</a>
                             </div>
                           </div>
                         </div>
@@ -241,7 +223,6 @@
           <div class="position-relative">
             <img src="/static/img/baner-1.png" class="img-fluid w-100 rounded" alt="" />
             <div class="d-flex align-items-center justify-content-center bg-white rounded-circle position-absolute" style="width: 150px; height: 150px; top: 0; left: 0;">
-              <!-- <h1 style="font-size: 100px;">1</h1> -->
               <div class="d-flex flex-column">
                 <span class="h2 mb-0">Rs:500</span>
                 <span class="h4 text-muted mb-0">1 kg</span>

@@ -61,11 +61,15 @@ def upload_photo(request):
 @login_required
 def user_profile(request):
     password_change_form = PasswordChangeForm(request.user)
-    my_orders = Order.objects.filter(user=request.user)
+    tmp1 = Order.objects.filter(user=request.user,status='P')
+    tmp2 = Order.objects.filter(user=request.user,status='OD')
+    current_orders = tmp1.union(tmp2)[:3]
+    order_history = Order.objects.filter(user=request.user)
     context = {
         'password_change_form':password_change_form,
-        'my_orders':my_orders
-    }
+        'current_orders':current_orders,
+        'order_history':order_history
+        }
     return render(request,'user/user_profile.html')
 
 

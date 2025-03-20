@@ -65,14 +65,23 @@ def evidences(request):
         }
     return render(request,'delivery/evidence.html',context)
 
-def orderhistory(request):
-    return render(request,'user/orderhistory.html')
+def orderhistory(request,id):
+    order = Order.objects.get(id=id)
+    return render(request,'user/orderhistory.html', {'order':order})
 
 def all_order_history(request):
-    return render(request,'user/all_order_history.html')
+    orders = Order.objects.filter(user=request.user)
+    context = {
+        'orders':orders
+        }
+    return render(request,'user/all_order_history.html', context)
 
 def order_track(request,order_id):
-    return render(request,'user/order_track.html')
+    order = Order.objects.get(id=order_id)
+    context = {
+        'order':order,
+        }
+    return render(request,'user/order_track.html', context)
 
 def confirm_order(request):
     # Extract data from the Post request

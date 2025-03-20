@@ -42,7 +42,7 @@ def register(request):
         phone_number = request.POST.get('phone')
         password = request.POST.get('password')
         password1 = request.POST.get('password1')
-        address= request.POST.get('address')
+        address = request.POST.get('address')
         user_type = request.POST.get('user_type')
         Farmer = False
         if password != password1:
@@ -55,7 +55,7 @@ def register(request):
             messages.error(request,'Email already exists')
             return redirect('register')
         if user_type== 'F':
-            farmer = True
+            Farmer = True
         user = CustomUser.objects.create_user(username=username.strip(),email=email,password=password,phone_number=phone_number,address=address,is_farmer=Farmer)
         user.save()
         messages.success(request,'Account created successfully')

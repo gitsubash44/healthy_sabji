@@ -169,39 +169,29 @@
                                                 </thead>
                                                 <tbody>
                                                     <!-- Sample Order Rows -->
+                                                    {% for order in order_history %}
+                                                    {% for item in order.items.all %}
                                                     <tr>
-                                                        <td>#00123</td>
-                                                        <td>Organic Lettuce</td>
-                                                        <td>2024-10-15</td>
-                                                        <td>5 items</td>
-                                                        <td><span class="badge bg-success">Delivered</span></td>
-                                                        <td>$120.00</td>
+                                                        <td>#{{ order.id }}</td>
+                                                        <td>{{ item.product.name }}</td>
+                                                        <td>{{ order.created_at }}</td>
+                                                        <td>{{ item.quantity }}</td>
                                                         <td>
-                                                            <a href="{% url 'orderhistory' %}"> <button class="btn btn-primary btn-sm">View Details</button> </a>
+                                                            {% if order.status == 'P' %}
+                                                            <span class="badge bg-warning">Pending</span>
+                                                            {% elif order.status == 'OD' %}
+                                                            <span class="badge bg-info">Out for Delivery</span>
+                                                            {% elif order.status == 'D' %}
+                                                            <span class="badge bg-success">Delivered</span>
+                                                            {% endif %}
+                                                        </td>
+                                                        <td>Rs.{{ order.payment.amount }}</td>
+                                                        <td>
+                                                            <a href="{% url 'orderhistory' order.id %}" class="btn btn-sm btn-primary">View Details</a>
                                                         </td>
                                                     </tr>
-                                                    <tr>
-                                                        <td>#00124</td>
-                                                        <td>Organic Lettuce</td>
-                                                        <td>2024-10-20</td>
-                                                        <td>3 items</td>
-                                                        <td><span class="badge bg-warning">Pending</span></td>
-                                                        <td>$75.00</td>
-                                                        <td>
-                                                            <a href="{% url 'orderhistory' %}"> <button class="btn btn-primary btn-sm">View Details</button> </a>
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>#00125</td>
-                                                        <td>Organic Lettuce</td>
-                                                        <td>2024-10-25</td>
-                                                        <td>2 items</td>
-                                                        <td><span class="badge bg-danger">Cancelled</span></td>
-                                                        <td>$45.00</td>
-                                                        <td>
-                                                            <a href="{% url 'orderhistory' %}"> <button class="btn btn-primary btn-sm">View Details</button> </a>
-                                                        </td>
-                                                    </tr>
+                                                    {% endfor %}
+                                                    {% endfor %}
                                                 </tbody>
                                             </table>
                                             <a href="{% url 'all_order_history' %}"> <button class="btn btn-primary btn-sm">View Details</button> </a>

@@ -10,24 +10,30 @@
 <!-- Single Page Header End -->
 
 <div class="container my-5">
-    <h2 class="text-center mb-4">Order #00123 Details</h2>
+    <h2 class="text-center mb-4">Order #{{order.id}} Details</h2>
     
     <!-- Order Summary Section -->
     <div class="row mb-4">
         <div class="col-md-6">
             <h5>Order Summary</h5>
             <ul class="list-group">
-                <li class="list-group-item"><strong>Order Date:</strong> 2024-10-15</li>
+                <li class="list-group-item"><strong>Order Date:</strong>{{order.created_at}}</li>
+                    {% if order.status == 'P' %}
+                    <li class="list-group-item"><strong>Status:</strong> <span class="badge bg-warning">Pending</span></li>
+                    {% elif order.status == 'OD' %}
+                    <li class="list-group-item"><strong>Status:</strong> <span class="badge bg-info">Out for Delivery</span></li>
+                    {% elif order.status == 'D' %}
                 <li class="list-group-item"><strong>Status:</strong> <span class="badge bg-success">Delivered</span></li>
-                <li class="list-group-item"><strong>Total:</strong> Rs: 120.00</li>
+                {% endif %}
+                <li class="list-group-item"><strong>Total:</strong> Rs:{{order.payment.amount}}</li>
             </ul>
         </div>
         <div class="col-md-6">
             <h5>Shipping Information</h5>
             <ul class="list-group">
-                <li class="list-group-item"><strong>Recipient:</strong> John Doe</li>
-                <li class="list-group-item"><strong>Address:</strong> 1234 Elm St, Springfield, IL</li>
-                <li class="list-group-item"><strong>Contact:</strong> +123 456 7890</li>
+                <li class="list-group-item"><strong>Recipient:</strong>{{order.location.first_name}} {{order.location.last_name}}</li>
+                <li class="list-group-item"><strong>Address:</strong> {{order.location.address}}, {{order.location.house_number_street_name}}, {{order.location.city_area}}</li>
+                <li class="list-group-item"><strong>Contact:</strong>  {{order.location.mobile}}</li>
             </ul>
         </div>
     </div>
@@ -44,17 +50,19 @@
                 </tr>
             </thead>
             <tbody>
+                {% for item in order.items.all %}
                 <tr>
-                    <td>Organic Lettuce</td>
-                    <td>5</td>
-                    <td>Rs: 24.00</td>
-                    <td>Rs: 120.00</td>
+                    <td>{{item.product.name}}</td>
+                    <td>{{item.quantity}}</td>
+                    <td>Rs: {{item.product.price}}</td>
+                    <td>Rs: {{item.price}}</td>
                 </tr>
+                {% endfor %}
             </tbody>
             <tfoot>
                 <tr>
                     <th colspan="3" class="text-end">Total</th>
-                    <th>Rs: 120.00</th>
+                    <th>Rs: {{order.payment.amount}}</th>
                 </tr>
             </tfoot>
         </table>
@@ -65,8 +73,8 @@
         <div class="col-md-6">
             <h5>Payment Information</h5>
             <ul class="list-group">
-                <li class="list-group-item"><strong>Payment Method:</strong> Credit Card</li>
-                <li class="list-group-item"><strong>Transaction ID:</strong> 5A3F8B7G6H</li>
+                <li class="list-group-item"><strong>Payment Method:</strong> Esewa</li>
+                <li class="list-group-item"><strong>Transaction ID:</strong> {{order.payment.payment_uuid}}</li>
                 <li class="list-group-item"><strong>Payment Status:</strong> Paid</li>
             </ul>
         </div>

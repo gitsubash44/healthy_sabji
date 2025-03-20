@@ -24,35 +24,21 @@
             </thead>
             <tbody>
                 <!-- Example row 1 -->
+                {% for order in order_history %}
                 <tr>
-                    <td>#00123</td>
-                    <td>2024-10-15</td>
-                    <td>Apples</td>
-                    <td>Rs: 120.00</td>
+                    <td>#{{order.id}}</td>
+                    <td>{{order.created_at}}</td>
                     <td>
-                        <a href="{% url 'orderhistory' %}" class="btn btn-sm btn-primary">View Details</a>
+                        {% for i in order.items.all %}
+                        {{i.product.name}} x {{i.quantity}}<br>
+                        {% endfor %}
+                    </td>
+                    <td>{{order.payment.amount}}</td>
+                    <td>
+                        <a href="{% url 'orderhistory' oredr.id %}" class="btn btn-sm btn-primary">View Details</a>
                     </td>
                 </tr>
-                <!-- Example row 2 -->
-                <tr>
-                    <td>#00124</td>
-                    <td>2024-10-16</td>
-                    <<td>Potato</td>
-                    <td>Rs: 240.00</td>
-                    <td>
-                        <a href="{% url 'orderhistory' %}" class="btn btn-sm btn-primary">View Details</a>
-                    </td>
-                </tr>
-                <!-- Example row 3 -->
-                <tr>
-                    <td>#00125</td>
-                    <td>2024-10-17</td>
-                    <td>Brocoli</td>
-                    <td>Rs: 0.00</td>
-                    <td>
-                        <a href="{% url 'orderhistory' %}" class="btn btn-sm btn-primary">View Details</a>
-                    </td>
-                </tr>
+                {% endfor %}
             </tbody>
         </table>
     </div>

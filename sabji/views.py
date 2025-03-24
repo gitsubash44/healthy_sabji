@@ -70,7 +70,7 @@ def user_profile(request):
         'current_orders':current_orders,
         'order_history':order_history
         }
-    return render(request,'user/user_profile.html')
+    return render(request,'user/user_profile.html',context)
 
 
 @login_required

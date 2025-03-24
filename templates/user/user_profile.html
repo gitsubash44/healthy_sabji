@@ -35,7 +35,8 @@
                                 <div class="tab-pane fade show active" id="account-general">
                                     <h2 id="exampleModalLabel py-5">Your Profile</h2>
                                     <div class="d-flex align-items-center mb-3">
-                                        <img src="{{request.user.photo.url}}" alt class="rounded-circle me-3" width="80">
+                                        <img src="{{ request.user.photo.url }}" alt="User Photo" class="rounded-circle me-3" 
+                                        style="width: 100px; height: 100px; object-fit: cover;">                                   
                                         <div>
                                             <form action="{% url 'upload_photo' %}" method="post" enctype="multipart/form-data">
                                                 {% csrf_token %}
@@ -53,23 +54,29 @@
                                         <input type="text" class="form-control" readonly value="{{request.user.id}}">
                                     </div>
                                     <div class="mb-3">
-                                        <label class="form-label">Name</label>
-                                        <input type="text" class="form-control" name="name" value="{{request.user.first_name}} {{request.user.last_name}}">
+                                        <label class="form-label">UserName</label>
+                                        <input type="text" class="form-control" readonly value="{{request.user.username}}">
                                     </div>
-                                    <div class="mb-3">
-                                        <label class="form-label">Address</label>
-                                        <input type="text" class="form-control" name="address" value="{{request.user.address}}">
-                                    </div>
+                                    <form action="{% url 'update_profile' %}" method="post">
+                                            {% csrf_token %}
+                                        <div class="mb-3">
+                                            <label class="form-label">Name</label>
+                                            <input type="text" class="form-control" name="name" value="{{request.user.first_name}} {{request.user.last_name}}">
+                                        </div>
+                                        <div class="mb-3">
+                                            <label class="form-label">Address</label>
+                                            <input type="text" class="form-control" name="address" value="{{request.user.address}}">
+                                        </div>
 
-                                    <div class="mb-3">
-                                        <label class="form-label">Number</label>
-                                        <input type="text" class="form-control" name="phone" value="{{request.user.phone_number}}">
-                                    </div>
-                                    <div class="text-end mt-3">
-                                        <button type="submit" class="btn btn-primary">Save Changes</button>
-                                        <button type="reset" class="btn btn-secondary">Cancel</button>
-                                    </div>
-                                </form>
+                                        <div class="mb-3">
+                                            <label class="form-label">Number</label>
+                                            <input type="text" class="form-control" name="phone" value="{{request.user.phone_number}}">
+                                        </div>
+                                        <div class="text-end mt-3">
+                                            <button type="submit" class="btn btn-primary">Save Changes</button>
+                                            <button type="reset" class="btn btn-secondary">Cancel</button>
+                                        </div>
+                                    </form>
                                 </div>
                                 
                                 <!-- Change Password Tab -->

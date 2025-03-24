@@ -46,7 +46,7 @@ def evidence(request,order_id):
     return redirect('delivery_dashboard')
 
 @login_required
-def cancel_order(request,order_id):
+def cancel_order(request, order_id):
     # Comment this
     # if dt.datetime.now().hour >= 12:
     #     messages.warning(request, f'Sorry, Orders can only cancelled before 12 PM.,current time is {dt.datetime.now().hour}:{dt.datetime.now().minute}')

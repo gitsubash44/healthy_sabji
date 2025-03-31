@@ -63,7 +63,7 @@ def decrease_cart(request, id):
     }
     return render(request, 'cart/cart_checkout.html',context)
 
-
+@login_required
 def cart(request):
     carts = Cart.objects.filter(user=request.user,active=True)
     total = 0
@@ -76,6 +76,7 @@ def cart(request):
     }
     return render(request,'cart/cart.html',context)
 
+@login_required
 def checkout(request):
     carts = Cart.objects.filter(user=request.user,active=True)
     total = 0

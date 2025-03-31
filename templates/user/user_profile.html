@@ -35,7 +35,7 @@
                                 <div class="tab-pane fade show active" id="account-general">
                                     <h2 id="exampleModalLabel py-5">Your Profile</h2>
                                     <div class="d-flex align-items-center mb-3">
-                                        <img src="{{ request.user.photo.url }}" alt="User Photo" class="rounded-circle me-3" 
+                                        <img src="{{ request.user.photo.url }}" alt="Photo" class="rounded-circle me-3" 
                                         style="width: 100px; height: 100px; object-fit: cover;">                                   
                                         <div>
                                             <form action="{% url 'upload_photo' %}" method="post" enctype="multipart/form-data">

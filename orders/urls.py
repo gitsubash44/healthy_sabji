@@ -13,4 +13,5 @@ urlpatterns = [
     path('order_track/<int:order_id>',views.order_track,name="order_track"),
     path('success/<int:id>',views.success,name="success"),
     path('failure/<int:id>',views.failure,name="failure"),
+    path('orderhistory/<int:order_id>/invoice/', views.generate_invoice, name='download_invoice'),
 ]

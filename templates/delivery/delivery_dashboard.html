@@ -34,6 +34,7 @@
                                 <tr>
                                     <th scope="col" width="50">#</th>
                                     <th scope="col">Order ID</th>
+                                    <th scope="col">Product</th>
                                     <th scope="col">Delivery Address</th>
                                     <th scope="col">Action</th>
                                     <th scope="col">More</th>
@@ -42,8 +43,13 @@
                             <tbody>
                                 {% for order in orders %}
                                 <tr>
-                                    <th scope="row">1</th>
+                                    <th scope="row">{{forloop.counter}}</th>
                                     <td>{{order.id}}</td>
+                                    <td>{% for item in order.items.all %}
+                                        {{item.product.name}}
+                                            {% if not forloop.last %},
+                                            {% endif %}
+                                            {% endfor %}</td>
                                     <td>{{order.location}}</td>
                                     <td>
                                         <button type="button" class="btn border border-secondary rounded-pill px text-primary btn-sm" data-bs-toggle="modal" data-bs-target="#orderModal{{order.id}}">
@@ -59,6 +65,12 @@
                                                     <div class="modal-body">
                                                         <p><strong>Order ID:</strong> {{order.id}}</p>
                                                         <p><strong>Date:</strong> {{order.order_date|date:" j M Y  "}}</p>
+                                                        <p><strong>Product:</strong> {% for item in order.items.all %}
+                                                            {{item.product.name}}
+                                                            {% if not forloop.last %},
+                                                            {% endif %}
+                                                            {% endfor %}</p>
+                                                        <p><strong>first Name:</strong> {{order.location.first_name}}</p>
                                                         <p><strong>Last Name:</strong> {{order.location.last_name}}</p>
                                                         <p><strong>Address:</strong> {{order.location.address}}</p>
                                                         <p><strong>House Number/Street Name:</strong> {{order.location.house_number_street_name}}</p>

@@ -75,11 +75,19 @@
             <ul class="list-group">
                 <li class="list-group-item"><strong>Payment Method:</strong> Esewa</li>
                 <li class="list-group-item"><strong>Transaction ID:</strong> {{order.payment.payment_uuid}}</li>
-                <li class="list-group-item"><strong>Payment Status:</strong> Paid</li>
+                <li class="list-group-item"><strong>Payment Status:</strong>
+                    {% if order.payment.status == 'C' %}
+                    <span class="badge bg-success">Completed</span>
+                    {% elif order.payment.status == 'P' %}
+                    <span class="badge bg-warning">Pending</span>
+                    {% else %}
+                    <span class="badge bg-danger">Failed</span>
+                    {% endif %}
+                </li>
             </ul>
         </div>
         <div class="col-md-6 d-flex align-items-center justify-content-end">
-            <button class="btn btn-secondary me-2">Download Invoice</button>
+            <a  href="{% url 'download_invoice' order.id %}" class="btn btn-secondary me-2">Download Invoice</a>
         </div>
     </div>
 </div>

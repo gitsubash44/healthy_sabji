@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="container mt-5 py-5">
+    <div class="row">
+        <div class="col-md-12 mt-5">
+            <h5 class="mb-4">Search by keyword</h5>
+            <div class="input-group w-100 mx-auto d-flex">
+                <form method="get" class="d-inline-flex" action="{% url 'search' %}">
+					<input type="search" name="query" class="form-control p-3 w-100" placeholder="keywords" value="{{ request.GET.query }}" aria-describedby="search-icon-1">
+                    <button type="submit" class="btn btn-primary ml-2 p-3"><i class="fa fa-search"></i></button>
+                </form>                
+            </div>
+            <div class="searchResults mt-4">
+                {% for product in products %}
+					<div class="col-md-6 col-lg-4 col-xl-3 h-100 ">
+						<a href="{% url 'productDetail' product.id %}">
+						<div
+							class="rounded position-relative fruite-item">
+							<div class="fruite-img">
+								<img
+									src="{{product.image.url}}"
+									class="img-fluid w-100 h-100 rounded-top"
+									alt="" />
+							</div>
+							<div
+								class="p-4 border border-secondary border-top-0 rounded-bottom">
+								<h4>{{product.name}}</h4>
+								<p class="">{{product.description|truncatechars:155}}</p>
+								<div
+									class="d-flex justify-content-between flex-lg-wrap">
+									<p
+										class="text-dark fs-5 fw-bold mb-0">
+										Nrs. {{product.price}} /
+										kg
+									</p>
+									<a
+										href="#"
+										hx-get="{% url 'add_to_cart' product.id 1 %}"
+										hx-target="#cartCount"
+										hx-swap="outerHTML"
+										hx-trigger="click"
+										class="btn border border-secondary rounded-pill px-3 text-primary"
+										><i
+											class="fa fa-shopping-bag me-2 text-primary"></i>
+										Add to cart</a
+									>
+								</div>
+							</div>
+						</div>
+						</a>
+					</div>
+				{% empty %}
+				<p class="text-muted">
+					No such products 
+				</p>
+				{% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Add your JavaScript code here
+</script>
+{% endblock content %}

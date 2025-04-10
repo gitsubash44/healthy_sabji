@@ -42,11 +42,11 @@
                             <div class="col-xl-3">
                                 <div class="bg-light ps-3 py-3 rounded d-flex justify-content-between mb-4">
                                     <label for="fruits">Default Sorting:</label>
-                                    <select id="fruits" name="fruitlist" class="border-0 form-select-sm bg-light me-3" form="fruitform">
-                                        <option value="volvo">Nothing</option>
-                                        <option value="saab">Popularity</option>
-                                        <option value="opel">Organic</option>
-                                        <option value="audi">Fantastic</option>
+                                    <select id="fruits" name="fruitlist" class="border-0 form-select-sm bg-light me-3" onchange="changeOrdering(this.value)">
+                                        <option value="asc">Ascending&uarr;</option>
+                                        <option value="dec">Descending&darr;</option>
+                                        <option value="cheap">Price &uarr;</option>
+                                        <option value="expensive">Price &darr;</option>
                                     </select>
                                 </div>
                             </div>
@@ -57,49 +57,22 @@
                                     <div class="col-lg-12">
                                         <div class="mb-3">
                                             <h4>Categories</h4>
-                                            <ul class="list-unstyled fruite-categorie">
+                                            <ul class="nav nav-tabs mb-3" id="productTabs">
+                                                <li class="nav-item">
+                                                    <a class="nav-link active" data-bs-toggle="tab" href="#" onclick="filterProducts('all')">All</a>
+                                                </li>
                                                 {% for category in categories %}
-                                                <li>
-                                                    <div class="d-flex justify-content-between fruite-name">
-                                                        <a href="#"><i class="fas fa-apple-alt me-2"></i>{{category.name}}</a>
-                                                        <span>({{category.products.count}})</span>
-                                                    </div>
+                                                <li class="nav-item">
+                                                    <a class="nav-link" data-bs-toggle="tab" href="#" onclick="filterProducts('{{ category.id }}')">{{ category.name }}</a>
                                                 </li>
                                                 {% endfor %}
-                                                
+                                                <li class="nav-item">
+                                                    <a class="nav-link" data-bs-toggle="tab" href="#" onclick="filterProducts('discounted')">Discounted</a>
+                                                </li>
                                             </ul>
                                         </div>
                                     </div>
-                                    <!-- <div class="col-lg-12">
-                                        <div class="mb-3">
-                                            <h4 class="mb-2">Price</h4>
-                                            <input type="range" class="form-range w-100" id="rangeInput" name="rangeInput" min="0" max="500" value="0" oninput="amount.value=rangeInput.value">
-                                            <output id="amount" name="amount" min-velue="0" max-value="500" for="rangeInput">0</output>
-                                        </div>
-                                    </div>  -->
-                                    <div class="col-lg-12">
-                                        <div class="mb-3">
-                                            <h4>Additional</h4>
-                                            <div class="mb-2">
-                                                <input type="radio" class="me-2" id="Categories-1" name="Categories-1" value="Beverages">
-                                                <label for="Categories-1"> Organic</label>
-                                            </div>
-                                            <div class="mb-2">
-                                                <input type="radio" class="me-2" id="Categories-2" name="Categories-1" value="Beverages">
-                                                <label for="Categories-2"> Fresh</label>
-                                            </div>
-                                            <div class="mb-2">
-                                                <input type="radio" class="me-2" id="Categories-3" name="Categories-1" value="Beverages">
-                                                <label for="Categories-3"> Sales</label>
-                                            </div>
-                                            <div class="mb-2">
-                                                <input type="radio" class="me-2" id="Categories-4" name="Categories-1" value="Beverages">
-                                                <label for="Categories-4"> Discount</label>
-                                            </div>
-                                            
-                                        </div>
-                                    </div>
-                                    
+                                
                                     <div class="col-lg-12">
                                         <div class="position-relative">
                                             <img src="/static/img/banner-fruits.jpg" class="img-fluid w-100 rounded" alt="">
@@ -113,7 +86,7 @@
                             <div class="col-lg-9">
                                 <div class="row g-4 justify-content-center">
                                     {% for product in products %}
-                                    <div class="col-md-6 col-lg-6 col-xl-4">
+                                    <div class="col-md-6 col-lg-6 col-xl-4 product-item" data-category="{{ product.category.id }}" {% if product.pre_discount_price %} data-discounted="true" {% endif %}>
                                         <a href="{% url 'productDetail' product.id %}">
                                         <div class="rounded position-relative fruite-item">
                                             <div class="fruite-img">
@@ -133,7 +106,8 @@
                                             </div>
                                         </div>
                                         </a>
-                                    </div>{% endfor %}
+                                    </div>
+                                    {% endfor %}
                                     
                                     <div class="col-12">
                                         <div class="pagination d-flex justify-content-center mt-5">
@@ -164,5 +138,79 @@
             </div>
         </div>
         <!-- Fruits Shop End-->
+
+        <script>
+            function filterProducts(category) {
+                let products = document.querySelectorAll('.product-item');
+        
+                products.forEach(product => {
+                    let productCategory = product.getAttribute('data-category');
+                    let isDiscounted = product.hasAttribute('data-discounted');
+        
+                    if (category === 'all') {
+                        product.style.display = 'block';
+                    } else if (category === 'discounted') {
+                        product.style.display = isDiscounted ? 'block' : 'none';
+                    } else {
+                        product.style.display = productCategory === category ? 'block' : 'none';
+                    }
+                });
+            }
+
+            function changeOrdering(value)
+            {
+                if (value=='asc')
+                {
+                    let products = document.querySelectorAll('.product-item');
+                    let sortedProducts = Array.from(products).sort((a, b) => {
+                        return a.querySelector('h4').innerText.localeCompare(b.querySelector('h4').innerText);
+                    });
+                    sortedProducts.forEach(product => {
+                        product.parentNode.appendChild(product);
+                    });
+                }
+                else if (value=='dec')
+                {
+                    let products = document.querySelectorAll('.product-item');
+                    let sortedProducts = Array.from(products).sort((a, b) => {
+                        return b.querySelector('h4').innerText.localeCompare(a.querySelector('h4').innerText);
+                    });
+                    sortedProducts.forEach(product => {
+                        product.parentNode.appendChild(product);
+                    });
+                }
+                else if (value=="cheap")
+                {
+                    let products = document.querySelectorAll('.product-item');
+                    let sortedProducts = Array.from(products).sort((a, b) => {
+                        return parseFloat(a.querySelector('.text-dark').innerText.replace('Nrs', '')) - parseFloat(b.querySelector('.text-dark').innerText.replace('Nrs', ''));
+                    });
+                    sortedProducts.forEach(product => {
+                        product.parentNode.appendChild(product);
+                    });
+                }
+                else if (value=="expensive")
+                {
+                    let products = document.querySelectorAll('.product-item');
+                    let sortedProducts = Array.from(products).sort((a, b) => {
+                        return parseFloat(b.querySelector('.text-dark').innerText.replace('Nrs', '')) - parseFloat(a.querySelector('.text-dark').innerText.replace('Nrs', ''));
+                    });
+                    sortedProducts.forEach(product => {
+                        product.parentNode.appendChild(product);
+                    });
+                }
+                else
+                {
+                    let products = document.querySelectorAll('.product-item');
+                    let sortedProducts = Array.from(products).sort((a, b) => {
+                        return a.querySelector('h4').innerText.localeCompare(b.querySelector('h4').innerText);
+                    });
+                    sortedProducts.forEach(product => {
+                        product.parentNode.appendChild(product);
+                    });
+                }
+            }
+            changeOrdering('asc')
+        </script>
 
         {% endblock %}

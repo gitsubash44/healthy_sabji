@@ -47,8 +47,10 @@ def drop(request):
 @login_required
 def evidence(request,order_id):
     if request.method == "POST":
+        print(request.FILES)
         image = request.FILES.get('evidence')
         order = Order.objects.get(id=order_id)
+        print(order,order_id)
         order.evidence = image
         order.status = 'D'
         order.save()

@@ -8,10 +8,10 @@
         <div class="col-md-12 col-lg-7">
           <h4 class="mb-3 text-secondary">100% Organic Foods</h4>
           <h1 class="mb-5 display-3 text-primary">Organic Veggies & Fruits Foods</h1>
-          <div class="position-relative mx-auto">
-            <input class="form-control border-2 border-secondary w-75 py-3 px-4 rounded-pill" type="number" placeholder="Search" />
+          <form class="position-relative mx-auto" action="{% url 'search' %}" method="get">
+            <input class="form-control border-2 border-secondary w-75 py-3 px-4 rounded-pill" type="search" name="query" placeholder="Search" />
             <button type="submit" class="btn btn-primary border-2 border-secondary py-3 px-4 position-absolute rounded-pill text-white h-100" style="top: 0; right: 25%;">Submit Now</button>
-          </div>
+          </form>
         </div>
 
         <div class="col-md-12 col-lg-5">
@@ -215,51 +215,31 @@
         <p>Latin words, combined with a handful of model sentence structures, to generate Lorem Ipsum which looks reasonable.</p>
       </div>
       <div class="row g-4">
+        {% for bs in bestsellers %} 
         <div class="col-lg-6 col-xl-4">
           <div class="p-4 rounded bg-light">
             <div class="row align-items-center">
               <div class="col-6">
-                <img src="/static/img/best-product-1.jpg" class="img-fluid rounded-circle w-100" alt="" />
+                <img src="{{ bs.image.url }}" class="img-fluid rounded-circle w-100" alt="{{ bs.name }}" />
               </div>
               <div class="col-6">
-                <a href="#" class="h5">Organic Oranges</a>
+                <a href="{% url 'productDetail' bs.id %}" class="h5">{{ bs.name }}</a>
 
-                <h4 class="mb-3">3.12 </h4>
-                <a href="#" class="btn border border-secondary rounded-pill px-3 text-primary"><i class="fa fa-shopping-bag me-2 text-primary"></i> Add to cart</a>
+                <h4 class="mb-3">{{ bs.price }}</h4>
+                <a href="#" hx-get="{% url 'add_to_cart' bs.id 1 %}"
+                hx-target="#cartCount"
+                hx-swap="outerHTML"
+                hx-trigger="click"
+                class="btn border border-secondary rounded-pill px-3 text-primary">
+                <i class="fa fa-shopping-bag me-2 text-primary"></i>
+                Add to cart</a>
               </div>
             </div>
           </div>
         </div>
-        <div class="col-lg-6 col-xl-4">
-          <div class="p-4 rounded bg-light">
-            <div class="row align-items-center">
-              <div class="col-6">
-                <img src="/static/img/best-product-2.jpg" class="img-fluid rounded-circle w-100" alt="" />
-              </div>
-              <div class="col-6">
-                <a href="#" class="h5">Organic Raspberries</a>
-
-                <h4 class="mb-3">3.12 </h4>
-                <a href="#" class="btn border border-secondary rounded-pill px-3 text-primary"><i class="fa fa-shopping-bag me-2 text-primary"></i> Add to cart</a>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="col-lg-6 col-xl-4">
-          <div class="p-4 rounded bg-light">
-            <div class="row align-items-center">
-              <div class="col-6">
-                <img src="/static/img/best-product-3.jpg" class="img-fluid rounded-circle w-100" alt="" />
-              </div>
-              <div class="col-6">
-                <a href="#" class="h5">Organic Banana</a>
-
-                <h4 class="mb-3">3.12 </h4>
-                <a href="#" class="btn border border-secondary rounded-pill px-3 text-primary"><i class="fa fa-shopping-bag me-2 text-primary"></i> Add to cart</a>
-              </div>
-            </div>
-          </div>
-        </div>
+        {% empty %}
+          <p class="text-center">No Bestseller Products</p>
+        {% endfor %}
       </div>
     </div>
   </div>

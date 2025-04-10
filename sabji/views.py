@@ -8,7 +8,8 @@ from django.contrib.auth.forms import PasswordChangeForm
 from django.http import HttpResponse
 from orders.models import Order
 from cart.models import Cart
-from django.contrib.auth import update_session_auth_hash  
+from django.contrib.auth import update_session_auth_hash 
+from django.core import serializers
 
 # For Admin Dashboard
 def admin_dashboard(request):
@@ -18,6 +19,14 @@ def user_manage(request):
     return render(request,'admin/user_manage.html')
 
 # For User views Site.
+def search(request):
+    query = request.GET.get('query')
+    products = {}
+    if query:
+        products = Product.objects.filter(name__icontains=query)
+    return render(request, 'user/search.html', {'products': products})
+
+
 def index(request):
     return render(request, 'user/index.html',)
 

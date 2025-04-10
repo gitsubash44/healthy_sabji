@@ -25,11 +25,11 @@
                                     <td>{{order.payment.amount}}</td>
                                     <td>{{order.created_at}}</td>
                                     <td class="text-center">
-                                        <img src="{{order.evidence.url}}" alt="Evidence Image" class="img-fluid border" style="max-height: 80px; border-radius: 8px;" data-bs-toggle="modal" data-bs-target="#imageModal">
+                                        <img src="{{order.evidence.url}}" alt="Evidence Image" class="img-fluid border" style="max-height: 80px; border-radius: 8px;" data-bs-toggle="modal" data-bs-target="#imageModal-{{order.id}}">
                                     </td>
                                     
                                     <!-- Modal -->
-                                    <div class="modal fade" id="imageModal" tabindex="-1" aria-labelledby="imageModalLabel" aria-hidden="true">
+                                    <div class="modal fade" id="imageModal-{{order.id}}" tabindex="-1" aria-labelledby="imageModalLabel" aria-hidden="true">
                                         <div class="modal-dialog modal-dialog-centered">
                                             <div class="modal-content">
                                                 <div class="modal-header">

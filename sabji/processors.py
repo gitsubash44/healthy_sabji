@@ -24,3 +24,18 @@ def cartprocessor(request):
     if request.user.is_authenticated:
         cart_count = request.user.cart_items.filter(active=True).count()
     return {'cart_count': cart_count}
+
+
+
+def bestsellerprocessor(request):
+    # Get bestselling products ordered by total quantity sold
+    bestseller_data = (
+        OrderItem.objects.values('product__id', 'product__name')
+        .annotate(total_quantity=Sum('quantity'))
+        .order_by('-total_quantity')
+    )
+    # Convert to list of tuples (Product ID, Product Name, Quantity Sold)
+    bestseller_ids = [item['product__id'] for item in bestseller_data[:3]]
+    bestseller = Product.objects.filter(id__in=bestseller_ids)
+
+    return {'bestsellers': bestseller}

@@ -21,7 +21,7 @@
                         <tbody>
                             {% for order in orders %}
                             <tr>
-                                <th scope="row">1</th>
+                                <th scope="row">{{forloop.counter}}</th>
                                 <td>{{order.id}}</td>
                                 <td>{{order.user.username}}</td>
                                 <td>{% for item in order.items.all %}

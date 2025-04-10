@@ -73,6 +73,7 @@ TEMPLATES = [
                 'sabji.processors.categoryprocessor',
                 'sabji.processors.discountprocessor',
                 'sabji.processors.cartprocessor',
+                'sabji.processors.bestsellerprocessor',
             ],
         },
     },

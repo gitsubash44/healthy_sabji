@@ -47,6 +47,7 @@
                                         <option value="dec">Descending&darr;</option>
                                         <option value="cheap">Price &uarr;</option>
                                         <option value="expensive">Price &darr;</option>
+                                    
                                     </select>
                                 </div>
                             </div>
@@ -56,20 +57,14 @@
                                 <div class="row g-4">
                                     <div class="col-lg-12">
                                         <div class="mb-3">
-                                            <h4>Categories</h4>
-                                            <ul class="nav nav-tabs mb-3" id="productTabs">
-                                                <li class="nav-item">
-                                                    <a class="nav-link active" data-bs-toggle="tab" href="#" onclick="filterProducts('all')">All</a>
-                                                </li>
+                                            <h4 class="mb-3">Categories</h4>
+                                            <div class="list-group" id="productTabs">
+                                                <a class="list-group-item list-group-item-action active" data-bs-toggle="tab" href="#" onclick="filterProducts('all')">All</a>
                                                 {% for category in categories %}
-                                                <li class="nav-item">
-                                                    <a class="nav-link" data-bs-toggle="tab" href="#" onclick="filterProducts('{{ category.id }}')">{{ category.name }}</a>
-                                                </li>
+                                                <a class="list-group-item list-group-item-action" data-bs-toggle="tab" href="#" onclick="filterProducts('{{ category.id }}')">{{ category.name }}</a>
                                                 {% endfor %}
-                                                <li class="nav-item">
-                                                    <a class="nav-link" data-bs-toggle="tab" href="#" onclick="filterProducts('discounted')">Discounted</a>
-                                                </li>
-                                            </ul>
+                                                <a class="list-group-item list-group-item-action" data-bs-toggle="tab" href="#" onclick="filterProducts('discounted')">Discounted</a>
+                                            </div>
                                         </div>
                                     </div>
                                 
@@ -77,7 +72,6 @@
                                         <div class="position-relative">
                                             <img src="/static/img/banner-fruits.jpg" class="img-fluid w-100 rounded" alt="">
                                             <div class="position-absolute" style="top: 50%; right: 10px; transform: translateY(-50%);">
-                                                <h3 class="text-secondary fw-bold">Fresh <br> Fruits <br> Banner</h3>
                                             </div>
                                         </div>
                                     </div>
@@ -86,49 +80,51 @@
                             <div class="col-lg-9">
                                 <div class="row g-4 justify-content-center">
                                     {% for product in products %}
-                                    <div class="col-md-6 col-lg-6 col-xl-4 product-item" data-category="{{ product.category.id }}" {% if product.pre_discount_price %} data-discounted="true" {% endif %}>
+                                    <div class="col-md-6 col-lg-6 col-xl-4 product-item" data-category="{{ product.category.id }}" {% if product.pre_discount_price %} data-discounted="true" {% endif %}>                                        
                                         <a href="{% url 'productDetail' product.id %}">
-                                        <div class="rounded position-relative fruite-item">
-                                            <div class="fruite-img">
-                                                <img src="{{product.image.url}}" class="img-fluid w-100 rounded-top" alt="" style="height: 200px; object-fit: cover;">
-                                            </div>
-                                            <div class="p-4 border border-secondary border-top-0 rounded-bottom">
-                                                <h4>{{product.name}}</h4>
-                                                <p style="text-align: justify;">{{ product.description|truncatewords:18 }}</p>
-                                                <div class="d-flex justify-content-between flex-lg-wrap">
-                                                    <p class="text-dark fw-bold mb-0" style="font-size: 18px;">RS:{{product.price}} / kg</p>
-                                                    <a href="#" class="btn border border-secondary rounded-pill px-3 text-primary"
-                                                    hx-get="{% url 'add_to_cart' product.id 1 %}"
-														hx-target="#cartCount"
-														hx-swap="outerHTML"
-														hx-trigger="click"><i class="fa fa-shopping-bag me-2 text-primary"></i> Add to cart</a>
+                                            <div class="rounded position-relative fruite-item">
+                                                <div class="fruite-img">
+                                                    <img src="{{product.image.url}}" class="img-fluid w-100 rounded-top" alt="" style="height: 200px; object-fit: cover;">
+                                                </div>
+                                                <div class="p-4 border border-secondary border-top-0 rounded-bottom">
+                                                    <h4>{{ product.name }}</h4>
+                                                    <p style="text-align: justify;">{{ product.description|truncatewords:18 }}</p>
+                                                    <div class="d-flex justify-content-between flex-lg-wrap">
+                                                        <p class="text-dark fw-bold mb-0" style="font-size: 18px;">Nrs{{ product.price }} / kg</p>
+                                                        <a href="#" class="btn border border-secondary rounded-pill px-3 text-primary"
+                                                            hx-get="{% url 'add_to_cart' product.id 1 %}"
+                                                            hx-target="#cartCount"
+                                                            hx-swap="outerHTML"
+                                                            hx-trigger="click">
+                                                            <i class="fa fa-shopping-bag me-2 text-primary"></i> Add to cart
+                                                        </a>
+                                                    </div>
                                                 </div>
                                             </div>
-                                        </div>
                                         </a>
                                     </div>
                                     {% endfor %}
-                                    
-                                    <div class="col-12">
-                                        <div class="pagination d-flex justify-content-center mt-5">
-                                            {% if products.has_previous %}
-                                                <a href="?page=1" class="rounded">&laquo;&laquo;</a>
-                                                <a href="?page={{ products.previous_page_number }}" class="rounded">&laquo;</a>
-                                            {% endif %}
+                                </div>
+                                <div class="col-12">
+                                    <div class="pagination d-flex justify-content-center mt-5">
+                                        {% if products.has_previous %}
+                                            <a href="?page=1" class="rounded">&laquo;&laquo;</a>
+                                            <a href="?page={{ products.previous_page_number }}" class="rounded">&laquo;</a>
+                                        {% endif %}
 
-                                            {% for num in products.paginator.page_range %}
-                                                {% if products.number == num %}
-                                                    <a href="?page={{ num }}" class="active rounded">{{ num }}</a>
-                                                {% elif num > products.number|add:'-3' and num < products.number|add:'3' %}
-                                                    <a href="?page={{ num }}" class="rounded">{{ num }}</a>
-                                                {% endif %}
+
+                                        {% for num in products.paginator.page_range %}
+                                            {% if products.number == num %}
+                                                <a href="?page={{ num }}" class="active rounded">{{ num }}</a>
+                                            {% elif num > products.number|add:'-3' and num < products.number|add:'3' %}
+                                                <a href="?page={{ num }}" class="rounded">{{ num }}</a>
+                                            {% endif %}
                                             {% endfor %}
 
                                             {% if products.has_next %}
                                                 <a href="?page={{ products.next_page_number }}" class="rounded">&raquo;</a>
                                                 <a href="?page={{ products.paginator.num_pages }}" class="rounded">&raquo;&raquo;</a>
                                             {% endif %}
-                                        </div>
                                     </div>
                                 </div>
                             </div>

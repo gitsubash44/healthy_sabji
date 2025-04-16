@@ -29,6 +29,7 @@
                             <tbody>
                                 <!-- Sample Product Row Start -->
                                 {% for product in products %}
+                                {% if request.user.is_superuser or product.farmer == request.user %}
                                 <tr>
                                     <td>{{forloop.counter}}</td>
                                     <td>{{product.name}}</td>
@@ -48,6 +49,11 @@
                                             </button>
                                         </form>
                                     </td>
+                                </tr>
+                                {% endif %}
+                                {% empty %}
+                                <tr>
+                                    <td colspan="7" class="text-center">No products available.</td>
                                 </tr>
                                 {% endfor %}
                                 <!-- Sample Product Row End -->

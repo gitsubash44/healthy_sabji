@@ -90,12 +90,12 @@
       <div class="row g-4 justify-content-center">
       {% for product in discounted_products|slice:":3" %}
       <div class="col-md-6 col-lg-4">
-        <a href="#">
+        <a href="{% url 'productDetail' product.id %}">
         <div class="service-item bg-secondary rounded border border-secondary">
           <img src="{{product.image.url}}" class="img-fluid rounded-top w-100" style="height: 350px; object-fit: cover;" alt="" />
           <div class="px-4 rounded-bottom">
-          <div class="service-content bg-primary text-center p-3 rounded">
-            <h4 class="text-white">{{ product.name }}</h4>
+          <div class="service-content bg-light text-center p-3 rounded">
+            <h4 class="text-primary">{{ product.name }}</h4>
             <h4 class="mb-0"> <del style="color:red">{{ product.pre_discount_price }}</del></h4>
             <h3 class="mb-0"> {{ product.price }}</h3>
           </div>
@@ -176,11 +176,11 @@
                         <a href="{% url 'productDetail' product.id %}">
                           <div class="rounded position-relative fruite-item">
                             <div class="fruite-img">
-                              <img src="{{ product.image.url }}" class="img-fluid w-100 rounded-top" alt="" />
-                            </div>
+                              <img src="{{product.image.url}}" class="img-fluid w-100 rounded-top" alt="" style="height: 200px; object-fit: cover;">
+                          </div>
                             <div class="p-4 border border-secondary border-top-0 rounded-bottom">
                               <h4>{{ product.name }}</h4>
-                              <p>{{ product.description|truncatechars:155 }}</p>
+                              <p style="text-align: justify;">{{ product.description|truncatewords:18 }}</p>
                               <div class="d-flex justify-content-between flex-lg-wrap">
                                 <p class="text-dark fs-5 fw-bold mb-0">Nrs. {{ product.price }} / kg</p>
                                 <a href="#" hx-get="{% url 'add_to_cart' product.id 1 %}"

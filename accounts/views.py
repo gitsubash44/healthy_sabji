@@ -74,13 +74,16 @@ def logout_view(request):
 # for Farmer site.
 @login_required
 def farmer_dashboard(request):
-    products = Product.objects.all()
-    orders = Order.objects.filter(status='P')
+    products = Product.objects.filter(farmer=request.user)
+    if request.user.is_superuser:
+        products = Product.objects.all()
+    orders = Order.objects.filter(user=request.user).prefetch_related('items__product')
     for order in orders:
         total = 0
         for item in order.items.all():
             total += item.quantity
-        order.total = total        
+        order.total = total
+            
     total = 0 
     for o in orders:
         total += o.payment.amount
@@ -107,9 +110,11 @@ def add_products(request):
         image = request.FILES.get('image')
         quantity = request.POST.get('quantity')
         category = request.POST.get('category')
+        farmer = request.user
         product = Product(
             name = name,
             price = price,
+            farmer = farmer,
             pre_discount_price = non_discount_price,
             description = description,
             image = image,
@@ -151,8 +156,12 @@ def delete_product(request,id):
         print(request.user.is_superuser)
         if request.user.is_farmer or request.user.is_superuser:
             product = Product.objects.get(id=id)
-            product.delete()
-            messages.success(request,'Product deleted successfully')
+            if product.farmer == request.user or request.user.is_superuser:
+                product.image.delete()
+                product.delete()
+                messages.success(request,'Product deleted successfully')
+            else:
+                messages.error(request,'You are not authorized to delete this product',extra_tags='danger')
         else:
             messages.error(request,'You are not authorized to delete this product',extra_tags='danger')
         
@@ -165,7 +174,10 @@ def farmer_products(request):
 
 @login_required
 def new_order(request):
-    orders = Order.objects.filter(status='P')
+    orders = Order.objects.filter(
+        items__product__farmer=request.user, 
+        status='P'
+    ).distinct()
     deliverers = CustomUser.objects.filter(is_delivery_person=True)
     for order in orders:
         total = 0
@@ -180,7 +192,9 @@ def new_order(request):
 
 @login_required
 def drop_delivery(request):
-    orders = Order.objects.filter(status='OD')
+    orders = Order.objects.filter(
+        items__product__farmer=request.user, 
+        status='OD').distinct()
     for order in orders:
         total = 0
         for item in order.items.all():

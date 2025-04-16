@@ -1,5 +1,6 @@
 from django.db import models
 from django.urls import reverse
+from accounts.models import CustomUser
 # Create your models here.
 
 class Product(models.Model):
@@ -9,6 +10,8 @@ class Product(models.Model):
     description = models.TextField()
     image = models.ImageField(upload_to='product_images/')
     quantity = models.IntegerField()
+    farmer = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='products', limit_choices_to={'is_farmer': True})
+    date_added = models.DateTimeField(auto_now_add=True)
     category = models.ForeignKey('Category', on_delete=models.SET_NULL, related_name='products',null=True)
 
 

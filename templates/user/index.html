@@ -244,4 +244,25 @@
     </div>
   </div>
   <!-- Bestsaler Product End -->
+
+
+<!-- if user not login  Login Alert Modal for add-to-cart section -->
+<div class="modal fade" id="loginAlertModal" tabindex="-1" aria-labelledby="loginAlertLabel" aria-hidden="true">
+  <div class="modal-dialog">
+  <div class="modal-content">
+    <div class="modal-header">
+    <h5 class="modal-title" id="loginAlertLabel">Login Required</h5>
+    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+    </div>
+    <div class="modal-body">
+    You must be logged in to perform this action.
+    </div>
+    <div class="modal-footer">
+    <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+    <a href="/login" class="btn btn-success">Login</a>
+    </div>
+  </div>
+  </div>
+</div>
+<!--End Login Alert Modal-->
 {% endblock %}

@@ -7,6 +7,7 @@ from django.contrib.auth import authenticate,login,logout
 from django.http import HttpResponse
 from django.contrib.auth.decorators import login_required
 
+
 # Create your views here.
 def login_view(request):
     if request.method == 'POST':
@@ -56,7 +57,9 @@ def register(request):
             return redirect('register')
         if user_type== 'F':
             Farmer = True
-        user = CustomUser.objects.create_user(username=username.strip(),email=email,password=password,phone_number=phone_number,address=address,is_farmer=Farmer)
+        user = CustomUser.objects.create_user(
+            username=username.strip(),
+            email=email,password=password,phone_number=phone_number,address=address,is_farmer=Farmer)
         user.save()
         messages.success(request,'Account created successfully')
         return redirect('login')
@@ -170,6 +173,7 @@ def delete_product(request,id):
 
 
 def farmer_products(request):
+    products = Product.objects.filter(farmer=request.user)
     return render(request,'farmer/farmer_products.html')
 
 @login_required

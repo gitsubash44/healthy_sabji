@@ -110,6 +110,9 @@ def confirm_order(request):
         mobile = request.POST.get('mobile')
         email = request.POST.get('email')
         order_notes = request.POST.get('order_notes')
+        method = request.POST.get('method')
+        if method == 'COD':
+            return pay_via_cod(request)
 
         #Create location for dropoff first since it is a foreign key in Order
         location = Location.objects.create(
@@ -152,26 +155,27 @@ def confirm_order(request):
         payment.save()
         context = {'order': order,'location':location,'payment':payment,'form':epayment.generate_form()}
         return render(request,'order/confirm_order.html',context)
+    
+def pay_via_cod(request):
+    paymentobj = Payment.objects.create(
+        amount=0, payment_method='COD',
+        signature = "Cash On Delivery",
+        payment_uuid=uuid.uuid4(), status='C')
+    order = Order.objects.create(
+        user=request.user, location=None,
+        status='C', payment=paymentobj)
+    carts = Cart.objects.filter(user=request.user)
+    for product in carts:
+        OrderItem.objects.create(
+            order=order, product=product.product,
+            quantity=product.quantity, price=product.product.price)
+    for cart in carts:
+        cart.active = False
+        cart.save()
+    order_items = order.items.all()
+    return render(request,'order/success.html',{'transaction_id':paymentobj.payment_uuid,'order_items':order_items})
 
-# def success(request,id):
-#     data = request.GET.get('data')
-#     payment = Payment.objects.get(id=id)
-#     epayment = EsewaPayment(
-#         success_url=f"http://localhost:8000/success/{payment.id}",
-#         failure_url=f"http://localhost:8000/failure/{payment.id}",
 
-#         )
-#     epayment.create_signature(
-#             payment.amount,
-#             payment.payment_uuid
-#         )
-#     if epayment.is_completed(True):
-#         payment.status = 'C'
-#         payment.save()
-#         return render(request,'order/success.html')
-#     else:
-        
-#         return render(request,'order/failure.html')
 @login_required
 def success(request,id):
     carts = Cart.objects.filter(user=request.user,active=True)
@@ -179,12 +183,28 @@ def success(request,id):
         cart.active = False
         cart.save()
     data = request.GET.get('data')
-    is_valid, response = verify_signature(data)
+    payment = Payment.objects.get(id=id)
+    epayment = EsewaPayment(
+        success_url=f"http://localhost:8000/success/{payment.id}",
+        failure_url=f"http://localhost:8000/failure/{payment.id}",
+        )
+    signature = epayment.create_signature(
+            payment.amount,
+            payment.payment_uuid
+        )
+    is_valid = epayment.is_completed(True)
     if is_valid:
-        payment = Payment.objects.get(id=id)
         payment.status = 'C'
         payment.save()
-        return render(request,'order/success.html')
+        # Get the order associated with this payment
+        order = Order.objects.filter(payment=payment).first()
+        if order:
+            order_items = order.items.all()
+            for item in order_items:
+                product = item.product
+                product.decrease_quantity(item.quantity)
+        
+        return render(request,'order/success.html',{'transaction_id':payment.payment_uuid,'order_items':order_items})
     else:
         return render(request,'order/failure.html')
 

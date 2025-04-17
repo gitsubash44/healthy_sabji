@@ -63,4 +63,4 @@ class Location(models.Model):
     order_notes = models.TextField(blank=True)
     
     def __str__(self):
-        return self.address + ' ' + self.city_are
+        return self.address + ' ' + self.city_area

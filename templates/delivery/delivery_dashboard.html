@@ -1,5 +1,5 @@
 {% extends 'delivery/base.html' %}
-
+{% load custom_filters %}
 {% block content %}
 
             <div class="container-fluid px-4">
@@ -35,62 +35,73 @@
                                     <th scope="col" width="50">#</th>
                                     <th scope="col">Order ID</th>
                                     <th scope="col">Product</th>
-                                    <th scope="col">Delivery Address</th>
-                                    <th scope="col">Action</th>
-                                    <th scope="col">More</th>
+                                    <th scope="col">Location</th>
+                                    <th scope="col">Details</th>
+                                    <th scope="col">Actions </th>
                                 </tr> 
                             </thead>
                             <tbody>
                                 {% for order in orders %}
-                                <tr>
-                                    <th scope="row">{{forloop.counter}}</th>
-                                    <td>{{order.id}}</td>
-                                    <td>{% for item in order.items.all %}
-                                        {{item.product.name}}
-                                            {% if not forloop.last %},
-                                            {% endif %}
-                                            {% endfor %}</td>
-                                    <td>{{order.location}}</td>
+                                <>
+                                    <th scope="row">{{ forloop.counter }}</th>
+                                    <td>{{ order.id }}</td>
                                     <td>
-                                        <button type="button" class="btn border border-secondary rounded-pill px text-primary btn-sm" data-bs-toggle="modal" data-bs-target="#orderModal{{order.id}}">
+                                        {% for item in order.items.all %}
+                                            {{ item.product.name }}
+                                            {% if not forloop.last %}, {% endif %}
+                                        {% endfor %}
+                                    </td>
+                                    <td>
+                                        <!-- Delivery Address -->
+                                        <strong>Delivery Address:</strong>
+                                        <p>{{ order.delivery_address.first_name }} {{ order.delivery_address.last_name }}</p>
+                                        <p>{{ order.delivery_address.address }}</p>
+                                        <p>{{ order.delivery_address.city_area }}</p>
+                                        <p>{{ order.delivery_address.mobile }}</p>
+                        
+                                        <!-- Pickup Addresses -->
+                                        <strong>Pickup Locations:</strong>
+                                        {% for pickup in order.pickup_addresses %}
+                                            <p>Product: {{ pickup.product_name }} | Farmer: {{ pickup.farmer_name }} | Pickup Address: {{ pickup.pickup_address }}</p>
+                                        {% endfor %}
+                                    </td>
+                                    <td>
+                                        <button type="button" class="btn border border-secondary rounded-pill px text-primary btn-sm" data-bs-toggle="modal" data-bs-target="#orderModal{{ order.id }}">
                                             Details
                                         </button>
-                                        <div class="modal fade" id="orderModal{{order.id}}" tabindex="-1" aria-labelledby="orderModalLabel{{order.id}}" aria-hidden="true">
+                                        <div class="modal fade" id="orderModal{{ order.id }}" tabindex="-1" aria-labelledby="orderModalLabel{{ order.id }}" aria-hidden="true">
                                             <div class="modal-dialog">
                                                 <div class="modal-content">
                                                     <div class="modal-header">
-                                                        <h5 class="modal-title" id="orderModalLabel{{order.id}}">Order Details</h5>
+                                                        <h5 class="modal-title" id="orderModalLabel{{ order.id }}">Order Details</h5>
                                                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                                     </div>
                                                     <div class="modal-body">
-                                                        <p><strong>Order ID:</strong> {{order.id}}</p>
-                                                        <p><strong>Date:</strong> {{order.order_date|date:" j M Y  "}}</p>
+                                                        <p><strong>Order ID:</strong> {{ order.id }}</p>
+                                                        <p><strong>Date:</strong> {{ order.order_date|date:" j M Y  " }}</p>
                                                         <p><strong>Product:</strong> {% for item in order.items.all %}
-                                                            {{item.product.name}}
-                                                            {% if not forloop.last %},
-                                                            {% endif %}
+                                                            {{ item.product.name }}
+                                                            {% if not forloop.last %}, {% endif %}
                                                             {% endfor %}</p>
-                                                        <p><strong>first Name:</strong> {{order.location.first_name}}</p>
-                                                        <p><strong>Last Name:</strong> {{order.location.last_name}}</p>
-                                                        <p><strong>Address:</strong> {{order.location.address}}</p>
-                                                        <p><strong>House Number/Street Name:</strong> {{order.location.house_number_street_name}}</p>
-                                                        <p><strong>City/Area:</strong> {{order.location.city_area}}</p>
-                                                        <p><strong>Mobile:</strong> {{order.location.mobile}}</p>
-                                                        <p><strong>Email:</strong> {{order.location.email}}</p>
-                                                        <p><strong>Order Notes:</strong> {{order.location.order_notes}}</p>
-                                                        <p><strong>Payment Status:</strong> {% if order.payment.status == "C" %}Completed {% else %}Pending{% endif %}</p>
-                                                    </div>
+                                                            <p><strong>Last Name:</strong> {{ order.location.last_name }}</p>
+                                                            <p><strong>First Name:</strong> {{ order.location.first_name }}</p>
+                                                            <p><strong>Address:</strong> {{ order.location.address }}</p>
+                                                            <p><strong>House Number/Street Name:</strong> {{ order.location.house_number_street_name }}</p>
+                                                            <p><strong>City/Area:</strong> {{ order.location.city_area }}</p>
+                                                            <p><strong>Mobile:</strong> {{ order.location.mobile }}</p>
+                                                            <p><strong>Email:</strong> {{ order.location.email }}</p>
+                                                            <p><strong>Order Notes:</strong> {{ order.location.order_notes }}</p>
+                                                            <p><strong>Payment Status:</strong> {% if order.payment.status == "C" %}Completed {% else %}Pending{% endif %}</p>
+                                                        </div>
                                                     <div class="modal-footer">
                                                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
-                                    
                                     </td>
                                     <td>
-                                        
-                                        <a href="tel:+977-{{order.location.mobile}}" class="btn btn-primary">Call</a>
+                                        <a href="tel:+977-{{ order.location.mobile }}" class="btn btn-primary">Call</a>
                                         <form action="{% url 'evidence' order.id %}" method="post" class="d-inline" enctype="multipart/form-data">
                                             {% csrf_token %}
                                             <label for="photo-upload" class="btn btn-secondary">
@@ -98,12 +109,12 @@
                                             </label>
                                             <input type="file" id="photo-upload" name="evidence" accept="image/*" style="display: none;" onchange="this.form.submit()">
                                         </form>
-    
                                     </td>
+                                
                                 </tr>
                                 {% empty %}
                                 <tr>
-                                    <td colspan="4" class="text-center">No Orders</td>
+                                    <td colspan="6" class="text-center">No Orders</td>
                                 </tr>
                                 {% endfor %}
                             </tbody>

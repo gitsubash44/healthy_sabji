@@ -185,9 +185,14 @@ def new_order(request):
     deliverers = CustomUser.objects.filter(is_delivery_person=True)
     for order in orders:
         total = 0
+        farmer_ids = set()  # to collect all farmer ids in the order
         for item in order.items.all():
             total += item.quantity
+            farmer_ids.add(item.product.farmer_id)  # collect farmer id from each item
         order.total = total
+        # homogenous means only 1 unique farmer (and it's the current user)
+        order.is_homogenous = (len(farmer_ids) == 1 and request.user.id in farmer_ids)
+        
     context = {
         'orders':orders,
         'deliverers':deliverers

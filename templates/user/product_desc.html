@@ -86,12 +86,14 @@
                                                     "X-Requested-With": "XMLHttpRequest",
                                                 },
                                             })
-                                            .then(response => response.json())
-                                            .then(data => {
-                                                if (data.success) {
-                                                    alert("Product added to cart!");
-                                                } else {
-                                                    alert("Failed to add product.");
+                                            .then(response => response.text())  // we expect HTML, not JSON
+                                            .then(html => {
+                                                const parser = new DOMParser();
+                                                const doc = parser.parseFromString(html, "text/html");
+                                                const newCartCount = doc.querySelector("#cartCount");
+                                                const currentCartCount = document.querySelector("#cartCount");
+                                                if (newCartCount && currentCartCount) {
+                                                    currentCartCount.replaceWith(newCartCount);
                                                 }
                                             })
                                             .catch(error => console.error("Error:", error));

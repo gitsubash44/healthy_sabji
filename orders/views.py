@@ -24,13 +24,32 @@ from reportlab.lib.styles import getSampleStyleSheet
 def delivery_dashboard(request):
     if request.user.is_delivery_person != True:
         raise PermissionDenied
-    orders = Order.objects.filter(status='OD',delivery_person=request.user)
+    orders = Order.objects.filter(status='OD', delivery_person=request.user)
     all_orders = Order.objects.filter(delivery_person=request.user)
-    context = {
-        'orders':orders,
-        'all_orders':all_orders,
+    for order in orders:
+        order.delivery_address = {
+            'last_name': order.location.last_name,
+            'first_name': order.location.first_name,
+            'address': order.location.address,
+            'house_number_street_name': order.location.house_number_street_name,
+            'city_area': order.location.city_area,
+            'mobile': order.location.mobile,
+            'email': order.location.email,
         }
-    return render(request,'delivery/delivery_dashboard.html',context)
+        order.pickup_addresses = []
+        for item in order.items.all():
+            farmer_location = item.product.farmer.address if item.product.farmer else 'No pickup location available'
+            order.pickup_addresses.append({
+                'product_name': item.product.name,
+                'farmer_name': item.product.farmer.username if item.product.farmer else 'Unknown Farmer',
+                'pickup_address': farmer_location
+            })
+            
+    context = {
+        'orders': orders,
+        'all_orders': all_orders,
+    }
+    return render(request, 'delivery/delivery_dashboard.html', context)
 
 
 def pickup(request):
@@ -39,10 +58,30 @@ def pickup(request):
 
 def drop(request):
     orders = Order.objects.filter(status='OD',delivery_person=request.user)
-    context = {
-        'orders':orders
+    for order in orders:
+        order.delivery_address = {
+            'last_name': order.location.last_name,
+            'first_name': order.location.first_name,
+            'address': order.location.address,
+            'house_number_street_name': order.location.house_number_street_name,
+            'city_area': order.location.city_area,
+            'mobile': order.location.mobile,
+            'email': order.location.email,
         }
-    return render(request,'delivery/drop.html', context)
+        
+        order.pickup_addresses = []
+        for item in order.items.all():
+            farmer_location = item.product.farmer.address if item.product.farmer else 'No pickup location available'
+            order.pickup_addresses.append({
+                'product_name': item.product.name,
+                'farmer_name': item.product.farmer.username if item.product.farmer else 'Unknown Farmer',
+                'pickup_address': farmer_location,
+                'farmer_phone': item.product.farmer.phone_number if item.product.farmer else 'Unknown Farmer Phone',
+            })
+    context = {
+        'orders': orders
+    }
+    return render(request, 'delivery/drop.html', context)
 
 @login_required
 def evidence(request,order_id):

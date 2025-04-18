@@ -2,7 +2,6 @@
 
 {% block content %}
 
-
         <!-- Single Page Header start -->
         <div class="container-fluid page-header py-5">
             <h1 class="text-center text-white display-6">Product</h1>
@@ -34,20 +33,19 @@
                         <div class="row g-4">
                             <div class="col-xl-3">
                                 <div class="input-group w-100 mx-auto d-flex">
-                                    <input type="search" class="form-control p-3" placeholder="keywords" aria-describedby="search-icon-1">
+                                    <input type="search" id="searchInput" class="form-control p-3" placeholder="Search products..." aria-describedby="search-icon-1" onkeyup="searchProducts()">
                                     <span id="search-icon-1" class="input-group-text p-3"><i class="fa fa-search"></i></span>
                                 </div>
                             </div>
                             <div class="col-6"></div>
                             <div class="col-xl-3">
                                 <div class="bg-light ps-3 py-3 rounded d-flex justify-content-between mb-4">
-                                    <label for="fruits">Default Sorting:</label>
-                                    <select id="fruits" name="fruitlist" class="border-0 form-select-sm bg-light me-3" onchange="changeOrdering(this.value)">
-                                        <option value="asc">Ascending&uarr;</option>
-                                        <option value="dec">Descending&darr;</option>
-                                        <option value="cheap">Price &uarr;</option>
-                                        <option value="expensive">Price &darr;</option>
-                                    
+                                    <label for="sorting">Sort by:</label>
+                                    <select id="sorting" name="sorting" class="border-0 form-select-sm bg-light me-3" onchange="changeOrdering(this.value)">
+                                        <option value="asc">Name (A-Z)</option>
+                                        <option value="dec">Name (Z-A)</option>
+                                        <option value="cheap">Price (Low-High)</option>
+                                        <option value="expensive">Price (High-Low)</option>
                                     </select>
                                 </div>
                             </div>
@@ -59,30 +57,43 @@
                                         <div class="mb-3">
                                             <h4 class="mb-3">Categories</h4>
                                             <div class="list-group" id="productTabs">
-                                                <a class="list-group-item list-group-item-action active" data-bs-toggle="tab" href="#" onclick="filterProducts('all')">All</a>
+                                                <a class="list-group-item list-group-item-action active" data-bs-toggle="tab" href="#" onclick="filterProducts('all')">All Products</a>
                                                 {% for category in categories %}
                                                 <a class="list-group-item list-group-item-action" data-bs-toggle="tab" href="#" onclick="filterProducts('{{ category.id }}')">{{ category.name }}</a>
                                                 {% endfor %}
-                                                <a class="list-group-item list-group-item-action" data-bs-toggle="tab" href="#" onclick="filterProducts('discounted')">Discounted</a>
+                                                <a class="list-group-item list-group-item-action" data-bs-toggle="tab" href="#" onclick="filterProducts('discounted')">Discounted Items</a>
                                             </div>
                                         </div>
                                     </div>
-                                
+                                    
+                                    
+                                    
+                                    
                                     <div class="col-lg-12">
                                         <div class="position-relative">
                                             <img src="/static/img/banner-fruits.jpg" class="img-fluid w-100 rounded" alt="">
-                                            <div class="position-absolute" style="top: 50%; right: 10px; transform: translateY(-50%);">
-                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                             <div class="col-lg-9">
-                                <div class="row g-4 justify-content-center">
+                                <div class="row g-4 justify-content-center" id="productContainer">
                                     {% for product in products %}
-                                    <div class="col-md-6 col-lg-6 col-xl-4 product-item" data-category="{{ product.category.id }}" {% if product.pre_discount_price %} data-discounted="true" {% endif %}>                                        
+                                    <div class="col-md-6 col-lg-6 col-xl-4 product-item" 
+                                        data-category="{{ product.category.id }}" 
+                                        data-price="{{ product.price }}"
+                                        data-name="{{ product.name|lower }}"
+                                        data-date="{{ product.created_at|date:'Y-m-d' }}"
+                                        {% if product.pre_discount_price %} data-discounted="true" {% endif %}
+                                        {% if product.stock <= 0 %} data-outofstock="true" {% endif %}>
                                         <a href="{% url 'productDetail' product.id %}">
                                             <div class="rounded position-relative fruite-item">
+                                                {% if product.pre_discount_price %}
+                                                <div class="discount-badge">Sale!</div>
+                                                {% endif %}
+                                                {% if product.stock <= 0 %}
+                                                <div class="outofstock-badge">Out of Stock</div>
+                                                {% endif %}
                                                 <div class="fruite-img">
                                                     <img src="{{product.image.url}}" class="img-fluid w-100 rounded-top" alt="" style="height: 200px; object-fit: cover;">
                                                 </div>
@@ -90,12 +101,20 @@
                                                     <h4>{{ product.name }}</h4>
                                                     <p style="text-align: justify;">{{ product.description|truncatewords:18 }}</p>
                                                     <div class="d-flex justify-content-between flex-lg-wrap">
-                                                        <p class="text-dark fw-bold mb-0" style="font-size: 18px;">Nrs{{ product.price }} / kg</p>
+                                                        {% if product.pre_discount_price %}
+                                                            <p class="text-dark fw-bold mb-0" style="font-size: 18px;">
+                                                                <span class="text-muted">Nrs{{ product.price }}</span>
+                                                                <span class="text-decoration-line-through text-danger ms-2">Nrs{{ product.pre_discount_price }}</span>
+                                                            </p>
+                                                        {% else %}
+                                                            <p class="text-dark fw-bold mb-0" style="font-size: 18px;">Nrs{{ product.price }} / kg</p>
+                                                        {% endif %}
                                                         <a href="#" class="btn border border-secondary rounded-pill px-3 text-primary"
                                                             hx-get="{% url 'add_to_cart' product.id 1 %}"
                                                             hx-target="#cartCount"
                                                             hx-swap="outerHTML"
-                                                            hx-trigger="click">
+                                                            hx-trigger="click"
+                                                            {% if product.stock <= 0 %} disabled style="pointer-events: none; opacity: 0.5;" {% endif %}>
                                                             <i class="fa fa-shopping-bag me-2 text-primary"></i> Add to cart
                                                         </a>
                                                     </div>
@@ -112,19 +131,18 @@
                                             <a href="?page={{ products.previous_page_number }}" class="rounded">&laquo;</a>
                                         {% endif %}
 
-
                                         {% for num in products.paginator.page_range %}
                                             {% if products.number == num %}
                                                 <a href="?page={{ num }}" class="active rounded">{{ num }}</a>
                                             {% elif num > products.number|add:'-3' and num < products.number|add:'3' %}
                                                 <a href="?page={{ num }}" class="rounded">{{ num }}</a>
                                             {% endif %}
-                                            {% endfor %}
+                                        {% endfor %}
 
-                                            {% if products.has_next %}
-                                                <a href="?page={{ products.next_page_number }}" class="rounded">&raquo;</a>
-                                                <a href="?page={{ products.paginator.num_pages }}" class="rounded">&raquo;&raquo;</a>
-                                            {% endif %}
+                                        {% if products.has_next %}
+                                            <a href="?page={{ products.next_page_number }}" class="rounded">&raquo;</a>
+                                            <a href="?page={{ products.paginator.num_pages }}" class="rounded">&raquo;&raquo;</a>
+                                        {% endif %}
                                     </div>
                                 </div>
                             </div>
@@ -134,6 +152,48 @@
             </div>
         </div>
         <!-- Fruits Shop End-->
+
+        <style>
+            .discount-badge {
+                position: absolute;
+                top: 10px;
+                right: 10px;
+                background-color: #ff6b6b;
+                color: white;
+                padding: 5px 10px;
+                border-radius: 5px;
+                font-size: 12px;
+                font-weight: bold;
+                z-index: 1;
+            }
+            
+            .outofstock-badge {
+                position: absolute;
+                top: 10px;
+                left: 10px;
+                background-color: #6c757d;
+                color: white;
+                padding: 5px 10px;
+                border-radius: 5px;
+                font-size: 12px;
+                font-weight: bold;
+                z-index: 1;
+            }
+            
+            .price-range-slider {
+                padding: 10px;
+                background: #f8f9fa;
+                border-radius: 5px;
+            }
+            
+            .form-range::-webkit-slider-thumb {
+                background: #198754;
+            }
+            
+            .form-range::-moz-range-thumb {
+                background: #198754;
+            }
+        </style>
 
         <script>
             function filterProducts(category) {

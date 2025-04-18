@@ -1,50 +1,75 @@
 {% extends "delivery/base.html" %}
 {% block content %}
-
             <div class="container-fluid my-2">
                 {% for order in orders %}
-                <div class="card">
-                    <div class="card-header bg-secondary text-white">
-                        <h5 class="mb-0 text-white">Drop Product Details</h5>
-                    </div>
-                    <div class="card-body">
-                        <div class="row mb-3">
-                            <div class="col-md-6">
-                                <p><strong>Drop Location:</strong> {{ order.location }}</p>
-                            </div>
-                            <div class="col-md-6">
-                                <p><strong>Order Date:</strong>{{ order.order_date|date:'d M Y' }}</p>
-                            </div>
+                    <div class="card">
+                        <div class="card-header bg-secondary text-white">
+                            <h5 class="mb-0 text-white">Drop Product Details</h5>
                         </div>
-                        <div class="row mb-3">
-                            <div class="col-md-6">
-                                <p><strong>Drop Time:</strong>{{ order.order_date|date:'H:i' }}</p>
+                        <div class="card-body">
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <p><strong>Drop Location:</strong> {{ order.location }}</p>
+                                </div>
+                                <div class="col-md-6">
+                                    <p><strong>Order Date:</strong> {{ order.order_date|date:'d M Y' }}</p>
+                                </div>
                             </div>
-                            <div class="col-md-6">
-                                <p><strong>Contact Person:</strong>  {{order.user.first_name}} {{order.user.last_name}} </p>
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <p><strong>Drop Time:</strong> {{ order.order_date|date:'H:i' }} </p>
+                                </div>
+                                <div class="col-md-6">
+                                    <p><strong>Contact Person:</strong> {{ order.user.first_name }} {{ order.user.last_name }} </p>
+                                </div>
                             </div>
-                        </div>
-                        <div class="row mb-3">
-                            <div class="col-md-6">
-                                <p><strong>Order ID:</strong> {{order.id}} </p>
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <p><strong>Order ID:</strong>{{ order.id }}</p>
+                                </div>
                             </div>
-                        </div>
-                        <div class="d-flex justify-content-end gap-2">
-                            <a href="tel:+977-9862451644" class="btn btn-primary">Call</a>
-                            <a href="sms:+977-9862451644" class="btn btn-primary">Message</a>
-                            <form method="post" action="{% url 'evidence' order.id %}" enctype="multipart/form-data">
-                                {% csrf_token %}
-                            <label for="photo-upload" class="btn btn-secondary">
-                                <i class="fas fa-upload me-2"></i>Submit Evidence
-                            </label>
-                            <input type="file" id="photo-upload-{{order.id}}" name="evidence" accept="image/*" style="display: none;" onchange="this.form.submit()">
-                            </form>
-                        </div>
-                    </div>
-                    {% empty %}
-                        <div class="alert alert-info">No orders to deliver.</div>
-                    {% endfor %}
-                </div>
+                            <!-- Delivery Address -->
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <p><strong>Delivery Address:</strong></p>
+                                    <hr>
+                                    <p>{{ order.delivery_address.first_name }} {{ order.delivery_address.last_name }}</p>
+                                    <p>{{ order.delivery_address.address }}</p>
+                                    <p>{{ order.delivery_address.city_area }}</p>
+                                    <p>{{ order.delivery_address.mobile }}</p>
+                                </div>
+                            </div>
+                            <!-- Pickup Locations -->
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <strong>Pickup Locations:</strong>
+                                    <hr>
+                                    {% for pickup in order.pickup_addresses %}
+                                            <p>Product: {{ pickup.product_name }} 
+                                                <br>Farmer: {{ pickup.farmer_name }} 
+                                                <br> Pickup Address: {{ pickup.pickup_address }}
+                                            <br>
+                                            <a href="tel:{{ pickup.farmer_phone }}" class="btn btn-success" >Call Farmer</a></p>
+                                            
+                                        {% endfor %}
+                                </div>
+                            </div>
 
+                            <div class="d-flex justify-content-end gap-2">
+                                <a href="tel:+977-9862451644" class="btn btn-primary">Call</a>
+                                <a href="sms:+977-9862451644" class="btn btn-primary">Message</a>
+                                <form method="post" action="{% url 'evidence' order.id %}" enctype="multipart/form-data">
+                                    {% csrf_token %}
+                                    <label for="photo-upload-{{ order.id }}" class="btn btn-secondary">
+                                        <i class="fas fa-upload me-2"></i>Submit Evidence</label>
+                                    <input type="file" id="photo-upload-{{ order.id }}" name="evidence" accept="image/*" style="display: none;" onchange="this.form.submit()">
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                {% empty %}
+                    <div class="alert alert-info">No orders to deliver.</div>
+                {% endfor %}
 
-    {% endblock content %}
+            </div>
+            {% endblock content %}

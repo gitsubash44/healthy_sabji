@@ -33,7 +33,8 @@
                                 <td>Rs {{order.payment.amount}}</td>
                                 <td>{{order.payment.payment_date}}</td>
                                 <td><span class="badge bg-warning">Pending</span></td>
-                                <td>
+                                <td style="width: 200px;">
+                                    {% if order.is_homogenous %}
                                     <form method="post" action="{% url 'assign_deliverer' order.id %}">
                                         {% csrf_token %}
                                         <select class="form-select" id="deliverer" name="deliverer" required>
@@ -44,6 +45,10 @@
                                         </select>
                                         <button type="submit" class="btn border border-secondary rounded-pill px-3 text-primary btn-sm mt-2">Accept</button>
                                     </form>
+                                    {% else %}
+                                    <p class="text-muted">Delivery assigning will be handled by the admin as this order includes items from other farmers</p>
+                                    {% endif %}
+                                </td>
                             </tr>
                             {% empty %}
                             <tr>

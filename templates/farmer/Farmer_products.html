@@ -21,7 +21,7 @@
                                     <th>Product Name</th>
                                     <th>Category</th>
                                     <th>Price (Rs)</th>
-                                    <th>Weight (Kg)</th>
+                                    <th>Weight (Pr/Kg)</th>
                                     <th>in Stock</th>
                                     <th>Actions</th>
                                 </tr>
@@ -31,12 +31,18 @@
                                 {% for product in products %}
                                 {% if request.user.is_superuser or product.farmer == request.user %}
                                 <tr>
-                                    <td>{{forloop.counter}}</td>
-                                    <td>{{product.name}}</td>
-                                    <td>{{product.category}}</td>
-                                    <td>{{product.price}}</td>
+                                    <td>{{ forloop.counter }}</td>
+                                    <td>{{ product.name }}</td>
+                                    <td>{{ product.category }}</td>
+                                    <td>{{ product.price }}</td>
                                     <td>1</td>
-                                    <td>{{product.quantity}}</td>
+                                    <td>
+                                        {% if product.quantity > 0 %}
+                                            {{ product.quantity }}
+                                        {% else %}
+                                            <span class="text-danger">Out of Stock</span>
+                                        {% endif %}
+                                    </td>
                                     <td>
                                         <a href="{% url 'edit_product' product.id %}" class="btn btn-warning btn-sm rounded-pill px-3">
                                             <i class="fa fa-edit"></i> Edit

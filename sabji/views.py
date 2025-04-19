@@ -36,6 +36,11 @@ def about(request):
 
 def product(request):
     products = Product.objects.all()
+    for product in products:
+        if product.quantity == 0:
+            product.out_of_stock = True
+        else:
+            product.out_of_stock = False
     paginator = Paginator(products, 6)
     page = request.GET.get('page')
     products = paginator.get_page(page)

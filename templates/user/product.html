@@ -76,6 +76,8 @@
                                     </div>
                                 </div>
                             </div>
+
+                            <!-- Products Start -->
                             <div class="col-lg-9">
                                 <div class="row g-4 justify-content-center" id="productContainer">
                                     {% for product in products %}
@@ -110,12 +112,16 @@
                                                             <p class="text-dark fw-bold mb-0" style="font-size: 18px;">Nrs{{ product.price }} / kg</p>
                                                         {% endif %}
                                                         <a href="#" class="btn border border-secondary rounded-pill px-3 text-primary"
-                                                            hx-get="{% url 'add_to_cart' product.id 1 %}"
-                                                            hx-target="#cartCount"
-                                                            hx-swap="outerHTML"
-                                                            hx-trigger="click"
+                                                            {% if user.is_authenticated %}
+                                                                hx-get="{% url 'add_to_cart' product.id 1 %}"
+                                                                hx-target="#cartCount"
+                                                                hx-swap="outerHTML"
+                                                                hx-trigger="click"
+                                                            {% else %}
+                                                                data-bs-toggle="modal" data-bs-target="#loginModal"
+                                                            {% endif %}
                                                             {% if product.stock <= 0 %} disabled style="pointer-events: none; opacity: 0.5;" {% endif %}>
-                                                            <i class="fa fa-shopping-bag me-2 text-primary"></i> Add to cart
+                                                            <i class="fa fa-shopping-bag me-2 text-primary"></i> cart
                                                         </a>
                                                     </div>
                                                 </div>
@@ -124,6 +130,29 @@
                                     </div>
                                     {% endfor %}
                                 </div>
+
+                                <!-- Login Modal -->
+                                <div class="modal fade" id="loginModal" tabindex="-1" aria-labelledby="loginModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="loginModalLabel">Login Required</h5>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                            </div>
+                                            <div class="modal-body">
+                                                You need to log in first to add items to your cart.
+                                            </div>
+                                            <div class="modal-footer">
+                                                <a href="{% url 'login' %}" class="btn btn-primary">Login</a>
+                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+
+                                <!-- Pagination Start -->
                                 <div class="col-12">
                                     <div class="pagination d-flex justify-content-center mt-5">
                                         {% if products.has_previous %}
@@ -267,6 +296,23 @@
                 }
             }
             changeOrdering('asc')
+        </script>
+
+
+        <script>
+            function searchProducts() {
+                let input = document.getElementById('searchInput').value.toLowerCase();
+                let products = document.querySelectorAll('.product-item');
+
+                products.forEach(product => {
+                    let productName = product.getAttribute('data-name');
+                    if (productName.includes(input)) {
+                        product.style.display = 'block';
+                    } else {
+                        product.style.display = 'none';
+                    }
+                });
+            }
         </script>
 
         {% endblock %}

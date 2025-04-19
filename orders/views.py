@@ -21,6 +21,7 @@ from reportlab.lib.styles import getSampleStyleSheet
 
 # Create your views here.
 # For delivery Site.
+@login_required
 def delivery_dashboard(request):
     if request.user.is_delivery_person != True:
         raise PermissionDenied
@@ -55,7 +56,7 @@ def delivery_dashboard(request):
 def pickup(request):
     return render(request,'delivery/pickup.html')
 
-
+@login_required
 def drop(request):
     orders = Order.objects.filter(status='OD',delivery_person=request.user)
     for order in orders:

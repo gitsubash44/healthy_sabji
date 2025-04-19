@@ -88,7 +88,7 @@
     <div class="container py-5">
       <h1 class="mb-4">Enjoy in Discount</h1>
       <div class="row g-4 justify-content-center">
-      {% for product in discounted_products|slice:":3" %}
+      {% for product in discounted_products|dictsortreversed:"id"|slice:":3" %}
       <div class="col-md-6 col-lg-4">
         <a href="{% url 'productDetail' product.id %}">
         <div class="service-item bg-secondary rounded border border-secondary">
@@ -149,13 +149,40 @@
                             <p style="text-align: justify;">{{ product.description|truncatechars:155 }}</p>
                             <div class="d-flex justify-content-between flex-lg-wrap">
                                 <p class="text-dark fw-bold mb-0" style="font-size: 18px;">RS. {{ product.price }} / kg</p>
-                              <a href="#"
-                                  hx-get="{% url 'add_to_cart' product.id 1 %}"
-                                  hx-target="#cartCount"
-                                  hx-swap="outerHTML"
-                                  hx-trigger="click"
-                                  class="btn border border-secondary rounded-pill px-3 text-primary"
-                                  ><i class="fa fa-shopping-bag me-2 text-primary"></i>Add to cart</a>
+                                {% if user.is_authenticated %}
+                                <a href="#" class="btn border border-secondary rounded-pill px-3 text-primary"
+                                    hx-get="{% url 'add_to_cart' product.id 1 %}"
+                                    hx-target="#cartCount"
+                                    hx-swap="outerHTML"
+                                    hx-trigger="click">
+                                    <i class="fa fa-shopping-bag me-2 text-primary"></i>
+                                    Add to cart
+                                </a>
+                            {% else %}
+                                <button type="button" class="btn border border-secondary rounded-pill px-3 text-primary" data-bs-toggle="modal" data-bs-target="#loginModal">
+                                    <i class="fa fa-shopping-bag me-2 text-primary"></i>
+                                    Add to cart
+                                </button>
+                                
+                                <!-- Login Modal -->
+                                <div class="modal fade" id="loginModal" tabindex="-1" aria-labelledby="loginModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="loginModalLabel">Login Required</h5>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                            </div>
+                                            <div class="modal-body">
+                                                You need to log in first to add items to your cart.
+                                            </div>
+                                            <div class="modal-footer">
+                                                <a href="{% url 'login' %}" class="btn btn-primary">Login</a>
+                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endif %}
                             </div>
                           </div>
                         </div>
@@ -183,13 +210,40 @@
                               <p style="text-align: justify;">{{ product.description|truncatewords:18 }}</p>
                               <div class="d-flex justify-content-between flex-lg-wrap">
                                 <p class="text-dark fs-5 fw-bold mb-0">Nrs. {{ product.price }} / kg</p>
-                                <a href="#" hx-get="{% url 'add_to_cart' product.id 1 %}"
-                                hx-target="#cartCount"
-                                hx-swap="outerHTML"
-                                hx-trigger="click"
-                                class="btn border border-secondary rounded-pill px-3 text-primary">
-                                <i class="fa fa-shopping-bag me-2 text-primary"></i>
-                                Add to cart</a>
+                                {% if user.is_authenticated %}
+                                    <a href="#" class="btn border border-secondary rounded-pill px-3 text-primary"
+                                        hx-get="{% url 'add_to_cart' product.id 1 %}"
+                                        hx-target="#cartCount"
+                                        hx-swap="outerHTML"
+                                        hx-trigger="click">
+                                        <i class="fa fa-shopping-bag me-2 text-primary"></i>
+                                        Add to cart
+                                    </a>
+                                {% else %}
+                                    <button type="button" class="btn border border-secondary rounded-pill px-3 text-primary" data-bs-toggle="modal" data-bs-target="#loginModal">
+                                        <i class="fa fa-shopping-bag me-2 text-primary"></i>
+                                        Add to cart
+                                    </button>
+                                    
+                                    <!-- Login Modal -->
+                                    <div class="modal fade" id="loginModal" tabindex="-1" aria-labelledby="loginModalLabel" aria-hidden="true">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title" id="loginModalLabel">Login Required</h5>
+                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    You need to log in first to add items to your cart.
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <a href="{% url 'login' %}" class="btn btn-primary">Login</a>
+                                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                {% endif %}
                               </div>
                             </div>
                           </div>
@@ -226,13 +280,40 @@
                 <a href="{% url 'productDetail' bs.id %}" class="h5">{{ bs.name }}</a>
 
                 <h4 class="mb-3">{{ bs.price }}</h4>
-                <a href="#" hx-get="{% url 'add_to_cart' bs.id 1 %}"
-                hx-target="#cartCount"
-                hx-swap="outerHTML"
-                hx-trigger="click"
-                class="btn border border-secondary rounded-pill px-3 text-primary">
-                <i class="fa fa-shopping-bag me-2 text-primary"></i>
-                Add to cart</a>
+                {% if user.is_authenticated %}
+                <a href="#" class="btn border border-secondary rounded-pill px-3 text-primary"
+                    hx-get="{% url 'add_to_cart' product.id 1 %}"
+                    hx-target="#cartCount"
+                    hx-swap="outerHTML"
+                    hx-trigger="click">
+                    <i class="fa fa-shopping-bag me-2 text-primary"></i>
+                    Add to cart
+                </a>
+            {% else %}
+                <button type="button" class="btn border border-secondary rounded-pill px-3 text-primary" data-bs-toggle="modal" data-bs-target="#loginModal">
+                    <i class="fa fa-shopping-bag me-2 text-primary"></i>
+                    Add to cart
+                </button>
+                
+                <!-- Login Modal -->
+                <div class="modal fade" id="loginModal" tabindex="-1" aria-labelledby="loginModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="loginModalLabel">Login Required</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                You need to log in first to add items to your cart.
+                            </div>
+                            <div class="modal-footer">
+                                <a href="{% url 'login' %}" class="btn btn-primary">Login</a>
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endif %}
               </div>
             </div>
           </div>

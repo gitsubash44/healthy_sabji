@@ -32,7 +32,7 @@ def bestsellerprocessor(request):
     bestseller_data = (
         OrderItem.objects.values('product__id', 'product__name')
         .annotate(total_quantity=Sum('quantity'))
-        .order_by('-total_quantity')
+        .order_by('-total_quantity', 'product__name')  # Order by total quantity sold, then by product name
     )
     # Convert to list of tuples (Product ID, Product Name, Quantity Sold)
     bestseller_ids = [item['product__id'] for item in bestseller_data[:3]]

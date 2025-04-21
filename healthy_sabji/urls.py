@@ -27,7 +27,7 @@ urlpatterns = [
     path('', include('orders.urls')),  
     path('', include('sabji.urls')),
     path('', include('cart.urls')),
-    
+    path('terms_of_use/',views.terms_of_use,name="terms_of_use"),
     path('admin_dashboard/',views.admin_dashboard,name="admin_dashboard"),
     path('user_manage/',views.user_manage,name="user_manage"),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT) + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

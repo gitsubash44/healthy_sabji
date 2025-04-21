@@ -18,6 +18,9 @@ def admin_dashboard(request):
 def user_manage(request):
     return render(request,'admin/user_manage.html')
 
+def terms_of_use(request):
+    return render(request,'user/terms_of_use.html')
+
 # For User views Site.
 def search(request):
     query = request.GET.get('query')

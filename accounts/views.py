@@ -114,23 +114,36 @@ def add_products(request):
         quantity = request.POST.get('quantity')
         category = request.POST.get('category')
         farmer = request.user
+
+        # Validate price and quantity
+        if float(price) <= 0:
+            messages.error(request, 'Keep price above Zero')
+            return redirect('add_products')
+        if int(quantity) <= 0:
+            messages.error(request, 'Quantity is Zero')
+            return redirect('add_products')
+        if float(non_discount_price) < float(price):
+            messages.error(request, 'Pre-discount price must be greater than or equal to the price')
+            return redirect('add_products')
+
         product = Product(
-            name = name,
-            price = price,
-            farmer = farmer,
-            pre_discount_price = non_discount_price,
-            description = description,
-            image = image,
-            quantity = quantity,
-            category = Category.objects.get(id=category)
+            name=name,
+            price=price,
+            farmer=farmer,
+            pre_discount_price=non_discount_price,
+            description=description,
+            image=image,
+            quantity=quantity,
+            category=Category.objects.get(id=category)
         )
         product.save()
-        messages.success(request,'Product added successfully')
+        messages.success(request, 'Product added successfully')
         return redirect('farmer_dashboard')
-    return render(request,'farmer/add_products.html')
+    return render(request, 'farmer/add_products.html')
+
 
 @login_required
-def edit_product(request,id):
+def edit_product(request, id):
     product = Product.objects.get(id=id)
     if request.method == "POST":
         product.name = request.POST.get('name')
@@ -139,18 +152,31 @@ def edit_product(request,id):
         non_discount_price = request.POST.get('non_discount_price')
         if non_discount_price == '':
             non_discount_price = 0
-        product.pre_discount_price = non_discount_price
+        # Validate price and quantity
+        if float(product.price) <= 0:
+            messages.error(request, 'Keep price above Zero')
+            return redirect('edit_product', id=id)
+        if int(request.POST.get('quantity')) <= 0:
+            messages.error(request, 'Quantity is Zero')
+            return redirect('edit_product', id=id)
+        if float(non_discount_price) < float(product.price):
+            messages.error(request, 'Pre-discount price must be greater than or equal to the price')
+            return redirect('edit_product', id=id)
+        if int(request.POST.get('quantity')) <= 0:
+            messages.error(request, 'Quantity is Zero')
+            return redirect('edit_product', id=id)
+
         if request.FILES.get('image'):
             product.image = request.FILES.get('image')
         product.quantity = request.POST.get('quantity')
         product.category = Category.objects.get(id=request.POST.get('category'))
         product.save()
-        messages.success(request,'Product updated successfully')
+        messages.success(request, 'Product updated successfully')
         return redirect('farmer_dashboard')
     context = {
-        'product':product
+        'product': product
     }
-    return render(request,'farmer/add_products.html',context)
+    return render(request, 'farmer/add_products.html', context)
 
 @login_required
 def delete_product(request,id):

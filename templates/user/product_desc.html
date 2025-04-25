@@ -93,7 +93,7 @@
                                             let productId = this.getAttribute("data-product-id");
                                             let quantityInput = document.getElementById(`quantity-${productId}`);
                                             let currentValue = parseInt(quantityInput.value) || 1;
-                                
+
                                             if (this.classList.contains("btn-plus")) {
                                                 quantityInput.value = currentValue + 1;
                                             } else if (this.classList.contains("btn-minus") && currentValue > 1) {
@@ -101,14 +101,15 @@
                                             }
                                         });
                                     });
-                                
+
                                     // Handle Add to Cart button
-                                    document.querySelectorAll(".add-to-cart").forEach(function (button) {
-                                        button.addEventListener("click", function () {
-                                            let productId = this.getAttribute("data-product-id");
+                                    document.querySelectorAll(".btn.border").forEach(function (button) {
+                                        button.addEventListener("click", function (event) {
+                                            event.preventDefault();
+                                            let productId = this.getAttribute("hx-get").split('/')[3]; // Extract product ID from hx-get URL
                                             let quantityInput = document.getElementById(`quantity-${productId}`);
                                             let quantity = quantityInput ? quantityInput.value : 1;
-                                
+
                                             fetch(`/cart/add/${productId}/${quantity}/`, {
                                                 method: "GET",
                                                 headers: {

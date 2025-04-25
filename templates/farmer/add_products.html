@@ -9,6 +9,16 @@
                         <div class="card-header bg-primary text-white text-center">
                             <h4 class="fw-bold text-white">Add New Product</h4>
                         </div>
+                        {% if messages %}
+                        <div class="alert-container mt-3">
+                            {% for message in messages %}
+                            <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert" style="border-color: red; color: red;">
+                                {{ message }}
+                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                            </div>
+                            {% endfor %}
+                        </div>
+                        {% endif %}
                         <div class="card-body">
                             <form action="" method="POST" enctype="multipart/form-data">
                                 {% csrf_token %}

@@ -111,6 +111,16 @@
                                             <!-- Orders Table -->
                                             <div class="table-responsive">
                                             <table class="table table-bordered table-hover">
+                                                <thead class="table-dark">
+                                                    <tr>
+                                                        <th scope="col">Order ID</th>
+                                                        <th scope="col">Products</th>
+                                                        <th scope="col">Items</th>
+                                                        <th scope="col">Total</th>
+                                                        <th scope="col">Status</th>
+                                                        <th scope="col">Actions</th>
+                                                    </tr>
+                                                </thead>
                                                 <tbody>
                                                     {% for order in current_orders %}
                                                     
@@ -121,7 +131,6 @@
                                                             {{ item.product.name }}
                                                             {% if not forloop.last %}
                                                             ,
-
                                                             {% endif %}
                                                         {% endfor %}
                                                         </td>

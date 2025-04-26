@@ -106,9 +106,7 @@ def add_products(request):
     if request.method == "POST":
         name = request.POST.get('name')
         price = request.POST.get('price')
-        non_discount_price = request.POST.get('non_discount_price')
-        if non_discount_price == '':
-            non_discount_price = 0
+        non_discount_price = request.POST.get('non_discount_price', None)
         description = request.POST.get('description')
         image = request.FILES.get('image')
         quantity = request.POST.get('quantity')
@@ -122,7 +120,7 @@ def add_products(request):
         if int(quantity) <= 0:
             messages.error(request, 'Quantity is Zero')
             return redirect('add_products')
-        if float(non_discount_price) < float(price):
+        if non_discount_price and float(non_discount_price) < float(price):
             messages.error(request, 'Pre-discount price must be greater than or equal to the price')
             return redirect('add_products')
 
@@ -130,7 +128,7 @@ def add_products(request):
             name=name,
             price=price,
             farmer=farmer,
-            pre_discount_price=non_discount_price,
+            pre_discount_price=non_discount_price if non_discount_price else None,
             description=description,
             image=image,
             quantity=quantity,
@@ -146,33 +144,39 @@ def add_products(request):
 def edit_product(request, id):
     product = Product.objects.get(id=id)
     if request.method == "POST":
-        product.name = request.POST.get('name')
-        product.price = request.POST.get('price')
-        product.description = request.POST.get('description')
-        non_discount_price = request.POST.get('non_discount_price')
-        if non_discount_price == '':
-            non_discount_price = 0
+        name = request.POST.get('name')
+        price = request.POST.get('price')
+        non_discount_price = request.POST.get('non_discount_price', None)
+        description = request.POST.get('description')
+        image = request.FILES.get('image', None)
+        quantity = request.POST.get('quantity')
+        category = request.POST.get('category')
+
         # Validate price and quantity
-        if float(product.price) <= 0:
+        if float(price) <= 0:
             messages.error(request, 'Keep price above Zero')
             return redirect('edit_product', id=id)
-        if int(request.POST.get('quantity')) <= 0:
+        if int(quantity) <= 0:
             messages.error(request, 'Quantity is Zero')
             return redirect('edit_product', id=id)
-        if float(non_discount_price) < float(product.price):
+        if non_discount_price and float(non_discount_price) < float(price):
             messages.error(request, 'Pre-discount price must be greater than or equal to the price')
             return redirect('edit_product', id=id)
-        if int(request.POST.get('quantity')) <= 0:
-            messages.error(request, 'Quantity is Zero')
-            return redirect('edit_product', id=id)
 
-        if request.FILES.get('image'):
-            product.image = request.FILES.get('image')
-        product.quantity = request.POST.get('quantity')
-        product.category = Category.objects.get(id=request.POST.get('category'))
+        # Update product fields
+        product.name = name
+        product.price = price
+        product.pre_discount_price = non_discount_price if non_discount_price else None
+        product.description = description
+        if image:
+            product.image = image
+        product.quantity = quantity
+        product.category = Category.objects.get(id=category)
         product.save()
+
         messages.success(request, 'Product updated successfully')
         return redirect('farmer_dashboard')
+
     context = {
         'product': product
     }

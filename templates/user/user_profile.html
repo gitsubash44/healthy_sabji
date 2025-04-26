@@ -63,9 +63,10 @@
                                             <label class="form-label">Name</label>
                                             <input type="text" class="form-control" name="name" value="{{request.user.first_name}} {{request.user.last_name}}">
                                         </div>
+
                                         <div class="mb-3">
-                                            <label class="form-label">Address</label>
-                                            <input type="text" class="form-control" name="address" value="{{request.user.address}}">
+                                            <label class="form-label">Email</label>
+                                            <input type="email" class="form-control" name="email" value="{{request.user.email}}">
                                         </div>
 
                                         <div class="mb-3">
@@ -104,67 +105,75 @@
                                 </div>
             
                                 <!-- Order Table -->
-                                    <div class="tab-pane fade" id="account-info">
-                                        <div class="container mt-5">
-                                            <h2 class="text-center mb-4">Current Orders</h2>
-                                        
-                                            <!-- Orders Table -->
-                                            <div class="table-responsive">
-                                            <table class="table table-bordered table-hover">
-                                                <thead class="table-dark">
-                                                    <tr>
-                                                        <th scope="col">Order ID</th>
-                                                        <th scope="col">Products</th>
-                                                        <th scope="col">Items</th>
-                                                        <th scope="col">Total</th>
-                                                        <th scope="col">Status</th>
-                                                        <th scope="col">Actions</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    {% for order in current_orders %}
-                                                    
-                                                    <tr>
-                                                        <td>{{ order.id }}</td>
-                                                        <td>
-                                                        {% for item in order.items.all %}
-                                                            {{ item.product.name }}
-                                                            {% if not forloop.last %}
-                                                            ,
-                                                            {% endif %}
+                                        <div class="tab-pane fade" id="account-info">
+                                            <div class="container mt-5">
+                                                <h2 class="text-center mb-4">Current Orders</h2>
+                                            
+                                                <!-- Orders Table -->
+                                                <div class="table-responsive">
+                                                <table class="table table-bordered table-hover">
+                                                    <thead class="table-dark">
+                                                        <tr>
+                                                            <th scope="col">Order ID</th>
+                                                            <th scope="col">Products</th>
+                                                            <th scope="col">Items</th>
+                                                            <th scope="col">Total</th>
+                                                            <th scope="col">Payment Method</th>
+                                                            <th scope="col">Order Date</th>
+                                                            <th scope="col">Status</th>
+                                                            <th scope="col">Actions</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        {% for order in current_orders %}
+                                                        
+                                                        <tr>
+                                                            <td>{{ order.id }}</td>
+                                                            <td>
+                                                            {% for item in order.items.all %}
+                                                                {{ item.product.name }}
+                                                                {% if not forloop.last %}
+                                                                ,
+                                                                {% endif %}
+                                                            {% endfor %}
+                                                            </td>
+                                                            <td>{{ order.items.count }}</td>
+                                                            <td>{{ order.payment.amount }}</td>
+                                                            <td>
+                                                                {% if order.payment.method == "COD" %}
+                                                                Cash on Delivery
+                                                                {% else %}
+                                                                Online Payment
+                                                                {% endif %}
+                                                            </td>
+                                                            <td>{{ order.created_at }}</td>
+                                                            <td>
+                                                            <span class="badge bg-warning text-dark">
+                                                                {% if order.status == "OD" %}
+                                                                Out for Delivery
+                                                                {% elif order.status == "P" %}
+                                                                Pending
+                                                                {% elif order.status == "D" %}
+                                                                Delivered
+                                                                {% endif %}
+                                                            </span>
+                                                            </td>
+                                                            <td class="d-flex gap-2">
+                                                                <a href="{% url 'order_track' order.id %}"><button class="btn btn-primary btn-sm">View</button></a>
+                                                                <a href="{% url 'cancel_order' order.id  %}"><button class="btn btn-danger btn-sm">Cancel</button></a>
+                                                            </td>
+                                                        </tr>
+                                                        
+                                                        {% empty %}
+                                                        <tr>
+                                                            <td colspan="8" class="text-center">No Orders Found</td>
+                                                        </tr>
                                                         {% endfor %}
-                                                        </td>
-                                                        <td>{{ order.items.count }}</td>
-                                                        <td>{{ order.payment.amount }}</td>
-                                                        <td>
-                                                        <span class="badge bg-warning text-dark">
-                                                            {% if order.status == "OD" %}
-                                                            Out for Delivery
-                                                            {% elif order.status == "P" %}
-                                                            Pending
-                                                            {% elif order.status == "D" %}
-                                                            Delivered
-                                                            {% endif %}
-                                                        </span>
-                                                        </td>
-                                                        <td class="d-flex gap-2">
-                                                            <a href="{% url 'order_track' order.id %}"><button class="btn btn-primary btn-sm">View</button></a>
-                                                            <a href="{% url 'cancel_order' order.id  %}"><button class="btn btn-danger btn-sm">Cancel</button></a>
-                                                        </td>
-                                                    </tr>
-                                                    
-                                                    {% empty %}
-                                                    <tr>
-                                                        <td colspan="6" class="text-center">No Orders Found</td>
-                                                    </tr>
-                                                    {% endfor %}
-                                                </tbody>
-                                            </table>
+                                                    </tbody>
+                                                </table>
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
-                                    
-            
             
                                 <!-- Order History Tab -->
                                 <div class="tab-pane fade" id="account-notifications">
@@ -175,7 +184,7 @@
                                                 <thead class="table-dark">
                                                     <tr>
                                                         <th scope="col">Order ID</th>
-                                                        <th scope="col">Product</th>
+                                                        <th scope="col">Products</th>
                                                         <th scope="col">Order Date</th>
                                                         <th scope="col">Items</th>
                                                         <th scope="col">Status</th>
@@ -184,14 +193,17 @@
                                                     </tr>
                                                 </thead>
                                                 <tbody>
-                                                    <!-- Sample Order Rows -->
                                                     {% for order in order_history %}
-                                                    {% for item in order.items.all %}
                                                     <tr>
                                                         <td>#{{ order.id }}</td>
-                                                        <td>{{ item.product.name }}</td>
+                                                        <td>
+                                                            {% for item in order.items.all %}
+                                                                {{ item.product.name }}
+                                                                {% if not forloop.last %}, {% endif %}
+                                                            {% endfor %}
+                                                        </td>
                                                         <td>{{ order.created_at }}</td>
-                                                        <td>{{ item.quantity }}</td>
+                                                        <td>{{ order.items.count }}</td>
                                                         <td>
                                                             {% if order.status == 'P' %}
                                                             <span class="badge bg-warning">Pending</span>
@@ -199,6 +211,8 @@
                                                             <span class="badge bg-info">Out for Delivery</span>
                                                             {% elif order.status == 'D' %}
                                                             <span class="badge bg-success">Delivered</span>
+                                                            {% elif order.payment.method == 'COD' and order.status == 'P' %}
+                                                            <span class="badge bg-secondary">COD Pending</span>
                                                             {% endif %}
                                                         </td>
                                                         <td>Rs.{{ order.payment.amount }}</td>
@@ -206,14 +220,16 @@
                                                             <a href="{% url 'orderhistory' order.id %}" class="btn btn-sm btn-primary">View Details</a>
                                                         </td>
                                                     </tr>
-                                                    {% endfor %}
+                                                    {% empty %}
+                                                    <tr>
+                                                        <td colspan="7" class="text-center">No Orders Found</td>
+                                                    </tr>
                                                     {% endfor %}
                                                 </tbody>
                                             </table>
-                                            <a href="{% url 'all_order_history' %}"> <button class="btn btn-primary btn-sm">View Details</button> </a>
+                                            <a href="{% url 'all_order_history' %}"> <button class="btn btn-primary btn-sm">View All Orders</button> </a>
                                         </div>
                                     </div>
-                                    
                                 </div>
                             </div>
                         </div>

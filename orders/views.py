@@ -117,9 +117,17 @@ def evidences(request):
         }
     return render(request,'delivery/evidence.html',context)
 
-def orderhistory(request,id):
-    order = Order.objects.get(id=id)
-    return render(request,'user/orderhistory.html', {'order':order})
+def orderhistory(request, id):
+    try:
+        order = Order.objects.get(id=id)
+        if order.status == 'C':  # Assuming 'C' represents a canceled order
+            order.delete()
+            messages.info(request, "The order has been canceled and removed from history.")
+            return redirect('all_order_history')  # Redirect to the order history page
+        return render(request, 'user/orderhistory.html', {'order': order})
+    except Order.DoesNotExist:
+        messages.warning(request, "The order does not exist or has already been removed.")
+        return redirect('all_order_history')
 
 def all_order_history(request):
     orders = Order.objects.filter(user=request.user)

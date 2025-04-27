@@ -23,6 +23,8 @@ from django.conf.urls.static import static
 urlpatterns = [
     # path for Admin Dashboard
     path('admin/', admin.site.urls),
+    path('i18n/', include('django.conf.urls.i18n')),
+    
     path('', include('accounts.urls')),
     path('', include('orders.urls')),  
     path('', include('sabji.urls')),

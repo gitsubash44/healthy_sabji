@@ -6,7 +6,7 @@ from accounts.models import CustomUser
 from django.contrib.auth import authenticate,login,logout 
 from django.http import HttpResponse
 from django.contrib.auth.decorators import login_required
-
+from accounts.validation import validate_custom_password
 
 # Create your views here.
 def login_view(request):
@@ -55,6 +55,14 @@ def register(request):
         if CustomUser.objects.filter(email=email).exists():
             messages.error(request,'Email already exists')
             return redirect('register')
+        if len(phone_number)!= 10 or not phone_number.isdigit():
+                messages.error(request, "Phone Number must be 10 digits and contain number only")
+                return redirect('register')
+        # Validate password
+        errors = validate_custom_password(password)
+        if errors:
+            messages.error(request, errors[0])
+            return redirect('register')
         if user_type== 'F':
             Farmer = True
         user = CustomUser.objects.create_user(
@@ -77,25 +85,33 @@ def logout_view(request):
 # for Farmer site.
 @login_required
 def farmer_dashboard(request):
+    # Get products for the current farmer (or all products if superuser)
     products = Product.objects.filter(farmer=request.user)
     if request.user.is_superuser:
         products = Product.objects.all()
-    orders = Order.objects.filter(user=request.user).prefetch_related('items__product')
+    
+    orders = Order.objects.filter(
+        items__product__farmer=request.user
+    ).distinct().prefetch_related('items__product')
+    
     for order in orders:
-        total = 0
-        for item in order.items.all():
-            total += item.quantity
-        order.total = total
+        total_quantity = 0
+        for item in order.items.filter(product__farmer=request.user):
+            total_quantity += item.quantity
+        order.total = total_quantity
+    
+    total_income = 0
+    for order in orders:
+        for item in order.items.filter(product__farmer=request.user):
+            total_income += item.product.price * item.quantity   
             
-    total = 0 
-    for o in orders:
-        total += o.payment.amount
     context = {
-        'products':products,
-        'orders':orders,
-        'total':total
+        'products': products,
+        'orders': orders,
+        'total': total_income
     }
-    return render(request,'farmer/farmer_dashboard.html', context)
+    return render(request, 'farmer/farmer_dashboard.html', context)
+
 
 @login_required
 def farmer_profile(request):
@@ -199,7 +215,7 @@ def delete_product(request,id):
             messages.error(request,'You are not authorized to delete this product',extra_tags='danger')
         
     next = request.META['HTTP_REFERER']
-    return redirect(next)
+    return redirect(next)  
 
 
 def farmer_products(request):

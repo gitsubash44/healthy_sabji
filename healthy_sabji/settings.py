@@ -33,6 +33,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'jazzmin',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -166,3 +167,122 @@ EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 EMAIL_HOST_USER = 'dhamisubash866@gmail.com'
 EMAIL_HOST_PASSWORD = 'siuc eumd dour nwpl'
+
+
+
+JAZZMIN_SETTINGS = {
+    # Title of the window
+    "site_title": "Healthy Sabji",
+
+    # Title on the login screen
+    "site_header": "Healthy Sabji",
+
+    # Title on the brand
+    "site_brand": "Healthy Sabji",
+
+    # Logo to use for your site (adjust path according to your static files)
+    "site_logo": "../static/img/Healthy.png",  # Assuming you place a logo here
+
+    # Logo for login page (if same as site_logo, you can leave as None)
+    "login_logo": None,
+
+    # Logo for dark theme login (optional)
+    "login_logo_dark": None,
+
+    # CSS classes applied to the logo
+    "site_logo_classes": "img-circle",
+
+    # Favicon
+    "site_icon": "../static/img/Healthy.png",  # Optional if you have a favicon
+
+    # Welcome text on the login screen
+    "welcome_sign": "Welcome to Healthy Sabji",
+
+    # Copyright
+    "copyright": "Healthy Sabji Pvt. Ltd.",
+
+    # Search models
+    "search_model": ["auth.User", "auth.Group", "products.Product"],
+
+    # User avatar field (optional)
+    "user_avatar": None,
+
+    ############
+    # Top Menu #
+    ############
+    "topmenu_links": [
+        {"name": "Dashboard", "url": "admin:index", "permissions": ["auth.view_user"]},
+        {"model": "auth.User"},
+        {"app": "products"},
+    ],
+
+    #############
+    # User Menu #
+    #############
+    "usermenu_links": [
+        {"name": "Help & Support", "url": "https://healthysabji.com/support", "new_window": True},
+        {"model": "auth.user"}
+    ],
+
+    #############
+    # Side Menu #
+    #############
+    "show_sidebar": True,
+    "navigation_expanded": True,
+    "hide_apps": [],
+    "hide_models": [],
+    "order_with_respect_to": [
+        "auth", 
+        "products", 
+        "orders", 
+        "delivery", 
+        "users"
+    ],
+
+    "custom_links": {
+        "products": [{
+            "name": "Add Bulk Products",
+            "url": "bulk_add_products", 
+            "icon": "fas fa-plus-square",
+            "permissions": ["products.add_product"]
+        }]
+    },
+
+    "icons": {
+        "auth": "fas fa-users-cog",
+        "auth.user": "fas fa-user",
+        "auth.Group": "fas fa-users",
+        "products": "fas fa-carrot",         # For your vegetable/fruits products
+        "orders": "fas fa-shopping-cart",     # For orders
+        "delivery": "fas fa-truck",            # For delivery team
+        "users": "fas fa-user-friends",        # For normal users/customers
+    },
+
+    "default_icon_parents": "fas fa-chevron-circle-right",
+    "default_icon_children": "fas fa-circle",
+
+    #################
+    # Related Modal #
+    #################
+    "related_modal_active": True,
+
+    #############
+    # UI Tweaks #
+    #############
+    "custom_css": None,
+    "custom_js": None,
+    "use_google_fonts_cdn": True,
+    "show_ui_builder": False,
+
+    ###############
+    # Change view #
+    ###############
+    "changeform_format": "horizontal_tabs",
+    "changeform_format_overrides": {
+        "auth.user": "collapsible",
+        "auth.group": "vertical_tabs",
+        "products.product": "single",
+    },
+
+    "language_chooser": True,
+}

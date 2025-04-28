@@ -19,5 +19,6 @@ urlpatterns = [
     path('farmer_products/',views.farmer_products,name="farmer_products"),
     path('new_order/',views.new_order,name="new_order"),
     path('drop_delivery/',views.drop_delivery,name="drop_delivery"),
+    path('delivered/',views.delivered,name="delivered"),
     path('assign_delivery/<int:id>/',views.assign_deliverer,name="assign_deliverer"),
 ]

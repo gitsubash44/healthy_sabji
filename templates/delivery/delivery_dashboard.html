@@ -76,38 +76,35 @@
                                     <i class="fas fa-map-marker-alt text-danger me-2"></i>
                                     <div>
                                         <div class="fw-bold">{{ order.delivery_address.city_area }}</div>
-                                        <small class="text-muted">{{ order.delivery_address.address|truncatechars:20 }}</small>
+                                        <small
+                                            class="text-muted">{{ order.delivery_address.address|truncatechars:20 }}</small>
                                     </div>
                                 </div>
                             </td>
                             <td class="text-center">
-                                <button class="btn btn-sm btn-outline-primary rounded-pill px-3" 
-                                        data-bs-toggle="modal" 
-                                        data-bs-target="#orderModal{{ order.id }}">
+                                <button class="btn btn-sm btn-outline-primary rounded-pill px-3" data-bs-toggle="modal"
+                                    data-bs-target="#orderModal{{ order.id }}">
                                     View Details
                                 </button>
                             </td>
                             <td class="pe-4">
                                 <div class="d-flex justify-content-end gap-2">
-                                    <a href="tel:+977-{{ order.location.mobile }}" 
-                                       class="btn btn-sm btn-primary rounded-circle"
-                                       data-bs-toggle="tooltip" 
-                                       data-bs-placement="top" 
-                                       title="Call Customer">
+                                    <a href="tel:+977-{{ order.location.mobile }}"
+                                        class="btn btn-sm btn-primary rounded-circle" data-bs-toggle="tooltip"
+                                        data-bs-placement="top" title="Call Customer">
                                         <i class="fas fa-phone"></i>
                                     </a>
-                                    
-                                    <form action="{% url 'evidence' order.id %}" method="post" class="d-inline" enctype="multipart/form-data">
+
+                                    <form action="{% url 'evidence' order.id %}" method="post" class="d-inline"
+                                        enctype="multipart/form-data">
                                         {% csrf_token %}
-                                        <label for="photo-upload-{{ order.id }}" 
-                                               class="btn btn-sm btn-success rounded-circle"
-                                               data-bs-toggle="tooltip" 
-                                               data-bs-placement="top" 
-                                               title="Upload Evidence">
+                                        <label for="photo-upload-{{ order.id }}"
+                                            class="btn btn-sm btn-success rounded-circle" data-bs-toggle="tooltip"
+                                            data-bs-placement="top" title="Upload Evidence">
                                             <i class="fas fa-camera"></i>
                                         </label>
-                                        <input type="file" id="photo-upload-{{ order.id }}" name="evidence" 
-                                               accept="image/*" style="display: none;" onchange="this.form.submit()">
+                                        <input type="file" id="photo-upload-{{ order.id }}" name="evidence"
+                                            accept="image/*" style="display: none;" onchange="this.form.submit()">
                                     </form>
                                 </div>
                             </td>
@@ -119,7 +116,8 @@
                                 <div class="modal-content">
                                     <div class="modal-header bg-light">
                                         <h5 class="modal-title">Order #{{ order.id }} Details</h5>
-                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                            aria-label="Close"></button>
                                     </div>
                                     <div class="modal-body">
                                         <div class="row">
@@ -131,20 +129,23 @@
                                                         </h6>
                                                     </div>
                                                     <div class="card-body">
-                                                        <p><strong>Name:</strong> {{ order.location.first_name }} {{ order.location.last_name }}</p>
+                                                        <p><strong>Name:</strong> {{ order.location.first_name }}
+                                                            {{ order.location.last_name }}</p>
                                                         <p><strong>Contact:</strong> {{ order.location.mobile }}</p>
                                                         <p><strong>Email:</strong> {{ order.location.email }}</p>
-                                                        <p><strong>Order Date:</strong> {{ order.order_date|date:"j M Y" }}</p>
+                                                        <p><strong>Order Date:</strong>
+                                                            {{ order.order_date|date:"j M Y" }}</p>
                                                         <p class="mb-0">
-                                                            <strong>Payment:</strong> 
-                                                            <span class="badge {% if order.payment.status == 'C' %}bg-success{% else %}bg-warning{% endif %}">
+                                                            <strong>Payment:</strong>
+                                                            <span
+                                                                class="badge {% if order.payment.status == 'C' %}bg-success{% else %}bg-warning{% endif %}">
                                                                 {% if order.payment.status == "C" %}Completed{% else %}Pending{% endif %}
                                                             </span>
                                                         </p>
                                                     </div>
                                                 </div>
                                             </div>
-                                            
+
                                             <div class="col-md-6">
                                                 <div class="card mb-3 border-0">
                                                     <div class="card-header bg-white border-bottom">
@@ -156,12 +157,13 @@
                                                         <p>{{ order.delivery_address.address }}</p>
                                                         <p>{{ order.delivery_address.house_number_street_name }}</p>
                                                         <p>{{ order.delivery_address.city_area }}</p>
-                                                        <p class="mb-0"><strong>Notes:</strong> {{ order.location.order_notes }}</p>
+                                                        <p class="mb-0"><strong>Notes:</strong>
+                                                            {{ order.location.order_notes }}</p>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
-                                        
+
                                         <div class="card border-0">
                                             <div class="card-header bg-white border-bottom">
                                                 <h6 class="mb-0">
@@ -172,9 +174,12 @@
                                                 {% for pickup in order.pickup_addresses %}
                                                 <div class="border-bottom pb-3 mb-3">
                                                     <h6>{{ pickup.product_name }}</h6>
-                                                    <p class="mb-1"><strong>Farmer:</strong> {{ pickup.farmer_name }}</p>
-                                                    <p class="mb-1"><strong>Pickup Address:</strong> {{ pickup.pickup_address }}</p>
-                                                    <a href="tel:{{ pickup.farmer_phone }}" class="btn btn-sm btn-outline-primary mt-2">
+                                                    <p class="mb-1"><strong>Farmer:</strong> {{ pickup.farmer_name }}
+                                                    </p>
+                                                    <p class="mb-1"><strong>Pickup Address:</strong>
+                                                        {{ pickup.pickup_address }}</p>
+                                                    <a href="tel:{{ pickup.farmer_phone }}"
+                                                        class="btn btn-sm btn-outline-primary mt-2">
                                                         <i class="fas fa-phone me-1"></i>Call Farmer
                                                     </a>
                                                 </div>
@@ -183,7 +188,8 @@
                                         </div>
                                     </div>
                                     <div class="modal-footer">
-                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                        <button type="button" class="btn btn-secondary"
+                                            data-bs-dismiss="modal">Close</button>
                                     </div>
                                 </div>
                             </div>

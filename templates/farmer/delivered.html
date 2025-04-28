@@ -1,0 +1,45 @@
+{% extends "farmer/base.html" %}
+{% block content %}
+
+<div class="container-fluid">
+    <div class="row">
+        <h3 class="fs-4 mb-3">Delivered Orders</h3>
+        <div class="col">
+            <table class="table table-bordered text-center">
+                <thead class="table-primary">
+                    <tr>
+                        <th scope="col" width="50">#</th>
+                        <th scope="col">Order ID</th>
+                        <th scope="col">Customer Name</th>
+                        <th scope="col">Products</th>
+                        <th scope="col">Total Amount</th>
+                        <th scope="col">Order Date</th>
+                        <th scope="col">Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for order in orders %}
+                    <tr>
+                        <th scope="row">{{ forloop.counter }}</th>
+                        <td>{{ order.id }}</td>
+                        <td>{{ order.user.username }}</td>
+                        <td>
+                            {% for item in order.items.all %}
+                                {{ item.product.name }}
+                                {% if not forloop.last %}, {% endif %}
+                            {% endfor %}
+                        </td>
+                        <td>Rs {{ order.payment.amount }}</td>
+                        <td>{{ order.payment.payment_date }}</td>
+                        <td>
+                            <button class="btn btn-success rounded-pill text-white">Delivered</button>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+{% endblock content %}

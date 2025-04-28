@@ -51,6 +51,8 @@
                                     <th scope="col">Products Name</th>
                                     <th scope="col">Location</th>
                                     <th scope="col">Quantity</th>
+                                    <th scope="col">Total Price</th>
+                                    <th scope="col">Status</th>
                                     <th scope="col">Action</th>
                                 </tr>
                             </thead>
@@ -67,6 +69,16 @@
                                     </td>
                                     <td>{{order.location}}</td>
                                     <td> {{ order.total}}KG</td>
+                                    <td>Rs {{order.payment.amount}}</td>
+                                    <td>
+                                        {% if order.status == 'P' %}
+                                            <span class="badge bg-warning">Pending</span>
+                                        {% elif order.status == 'C' %}
+                                            <span class="badge bg-danger">Cancelled</span>
+                                        {% else %}
+                                            <span class="badge bg-success">Delivered</span>
+                                        {% endif %}
+                                    </td>
                                     <td>
                                         <button class="btn border border-secondary rounded-pill px-3 text-primary btn-sm" data-bs-toggle="modal" data-bs-target="#orderDetailsModal{{ forloop.counter }}">Details</button>
                                         <!-- Modal -->
@@ -78,6 +90,10 @@
                                                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                                     </div>
                                                     <div class="modal-body">
+                                                        <p class="mb-1">{{ order.user.first_name }} {{ order.user.last_name }}</p>
+                                                        <a href="tel:{{ order.delivery_address.mobile }}" class="text-decoration-none">
+                                                            <i class="fas fa-phone me-2"></i>{{ order.delivery_address.mobile }}
+                                                        </a>
                                                         <p><strong>Order ID:</strong> {{ order.payment.payment_uuid }}</p>
                                                         <p><strong>Products:</strong>
                                                             {% for item in order.items.all %}
@@ -87,6 +103,20 @@
                                                         </p>
                                                         <p><strong>Location:</strong> {{ order.location }}</p>
                                                         <p><strong>Total Quantity:</strong> {{ order.total }} KG</p>
+                                                        <p><strong>Total Price:</strong> Rs {{ order.payment.amount }}</p>
+                                                        <p><strong>Status:</strong>
+                                                            {% if order.status == 'P' %}
+                                                                Pending
+                                                            {% elif order.status == 'C' %}
+                                                                Cancelled
+                                                            {% else %}
+                                                                Delivered
+                                                            {% endif %}
+                                                        </p>
+                                                        <p><strong>Order Date:</strong> {{ order.created_at|date:"d M Y, H:i" }}</p>
+                                                        <p class="mb-1">{{ order.delivery_address.address }}</p>
+                                                        <p class="mb-1">{{ order.delivery_address.city_area }}</p>
+                                                        <p class="mb-0">{{ order.location }}</p>
                                                     </div>
                                                     <div class="modal-footer">
                                                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>

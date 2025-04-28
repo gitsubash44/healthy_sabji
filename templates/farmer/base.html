@@ -33,7 +33,9 @@
                         class="fas fa-gift me-2"></i>New Orders</a>
                 <a href="{% url 'drop_delivery' %}" class="list-group-item list-group-item-action bg-transparent second-text fw-bold"><i
                         class="fas fa-gift me-2"></i>To be Delivered</a>
-                <a href="#" class="list-group-item list-group-item-action bg-transparent text-danger fw-bold"><i
+                <a href="{% url 'delivered' %}" class="list-group-item list-group-item-action bg-transparent second-text fw-bold"><i
+                        class="fas fa-gift me-2"></i>Delivered Orders</a>
+                <a href="{% url 'logout' %}" class="list-group-item list-group-item-action bg-transparent text-danger fw-bold"><i
                         class="fas fa-power-off me-2"></i>Logout</a>
             </div>
         </div>

@@ -92,13 +92,13 @@ def farmer_dashboard(request):
     
     orders = Order.objects.filter(
         items__product__farmer=request.user
-    ).distinct().prefetch_related('items__product')
+    ).distinct().prefetch_related('items__product', 'payment').order_by('-created_at')  # Order by newest first
     
     for order in orders:
         total_quantity = 0
         for item in order.items.filter(product__farmer=request.user):
             total_quantity += item.quantity
-        order.total = total_quantity
+        order.total = total_quantity  # Total quantity for the order
     
     total_income = 0
     for order in orders:
@@ -152,7 +152,7 @@ def add_products(request):
         )
         product.save()
         messages.success(request, 'Product added successfully')
-        return redirect('farmer_dashboard')
+        return redirect('add_products')
     return render(request, 'farmer/add_products.html')
 
 
@@ -191,7 +191,7 @@ def edit_product(request, id):
         product.save()
 
         messages.success(request, 'Product updated successfully')
-        return redirect('farmer_dashboard')
+        return redirect('add_products')
 
     context = {
         'product': product
@@ -247,18 +247,45 @@ def new_order(request):
 
 @login_required
 def drop_delivery(request):
+    if request.method == 'POST':
+        order_id = request.POST.get('order_id')
+        try:
+            order = Order.objects.get(id=order_id, items__product__farmer=request.user, status='OD')
+            order.status = 'D'  # Update status to Delivered
+            order.save()
+            messages.success(request, 'Order marked as delivered successfully')
+        except Order.DoesNotExist:
+            messages.error(request, 'Order not found or you are not authorized to update this order')
+        return redirect('drop_delivery')
+
     orders = Order.objects.filter(
         items__product__farmer=request.user, 
-        status='OD').distinct()
+        status='OD'
+    ).distinct()
     for order in orders:
         total = 0
         for item in order.items.all():
             total += item.quantity
         order.total = total
     context = {
-        'orders':orders
+        'orders': orders
     }
-    return render(request,'farmer/drop_delivery.html',context)
+    return render(request, 'farmer/drop_delivery.html', context)
+
+def delivered(request):
+    orders = Order.objects.filter(
+        items__product__farmer=request.user, 
+        status='D'
+    ).distinct()
+    for order in orders:
+        total = 0
+        for item in order.items.all():
+            total += item.quantity
+        order.total = total
+    context = {
+        'orders': orders
+    }
+    return render(request, 'farmer/delivered.html', context)
 
 @login_required
 def assign_deliverer(request,id):

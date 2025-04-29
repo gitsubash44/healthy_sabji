@@ -36,15 +36,15 @@
     <section class="bg-dark" style="height: 98vh;">
         <div class="container py-4">
             {% if messages %}
-        <div class="container mt-4">
-            {% for message in messages %}
-                <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+            <div class="container mt-4">
+                {% for message in messages %}
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
                     {{ message }}
                     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                 </div>
-            {% endfor %}
-        </div>
-    {% endif %}
+                {% endfor %}
+            </div>
+            {% endif %}
             <div class="row d-flex justify-content-center align-items-center">
                 <div class="col">
                     <div class="card card-login my-4">
